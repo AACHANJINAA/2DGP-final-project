@@ -1,24 +1,24 @@
 from pico2d import*
 import game_framework
 
-map = None
+image = None
 
 def enter():
-    global map
-    map = load_image('map.png')
+    global image
+    image = load_image('map.png')
     clear_canvas()
 
 def exit():
-    global map
-    del map
+    global image
+    del image
 
 def update():
     # 포탈 위치 들어갔을 때
     pass
 
-def basic_map():
-    global map
-    map.draw(800 // 2, 399 // 2)
+def draw():
+    global image
+    image.draw(800 // 2, 400 // 2)
     update_canvas()
 
 def handle_events():
