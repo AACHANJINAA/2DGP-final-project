@@ -4,16 +4,21 @@ import map_state
 import logo_state
 import move_kirby
 
-state = logo_state
-def map_print():
+
+def state_print():
     state.enter()
     state.draw()
     state.handle_events()
 
+states = [logo_state, map_state]
+for state in states:
+    while state == logo_state or state == map_state:
+        state_print()
+
+
 open_canvas(800, 400)
 
-while state == logo_state or state == map_state:
-    map_print()
+
 
 state.exit()
 close_canvas()

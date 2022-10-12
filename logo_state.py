@@ -1,6 +1,5 @@
 from pico2d import*
 import game_framework
-import main
 import map_state
 
 image = None
@@ -19,7 +18,7 @@ def update():
     global logo_time
     delay(0.05)
     logo_time += 0.05
-    if logo_time > 1.0:
+    if logo_time > 3.0:
         game_framework.change_state(map_state)
     pass
 
