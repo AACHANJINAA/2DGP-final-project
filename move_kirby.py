@@ -14,9 +14,10 @@ class Kirby:
 
         self.run_appear = True
         self.jump_appear = False
+        self.absorb_appear = False
 
-        self.R_move = False
         self.L_move = False
+        self.R_move = False
         self.jump_move = False
 
     def update(self):
@@ -32,10 +33,9 @@ class Kirby:
                 self.dir_y = 0
                 self.x += self.dir_x * 10
                 self.frame = (self.frame - 1) % 7
-
         if self.jump_appear:
             if self.jump_move:
-                self.y += self.jump_y * 20
+                self.y += self.jump_y * 25
                 self.frame = (self.frame + 1) % 8
                 delay(0.01)
                 if self.frame > 3:
@@ -47,13 +47,14 @@ class Kirby:
                     self.jump_appear = False
                     self.run_appear = True
                     self.frame = 7
+
                     
     def draw(self):
         if self.run_appear:
             self.Run.clip_draw(self.frame * self.kx, self.ky - self.dir_y * self.ky,
                                self.kx, self.ky, self.x, self.y)
         elif self.jump_appear:
-            self.Jump.clip_draw(self.frame * self.kx + 3, 0,
+            self.Jump.clip_draw(self.frame * self.kx, self.ky - self.dir_y * self.ky,
                                 self.kx, self.ky, self.x, self.y)
 
 def handle_events():
