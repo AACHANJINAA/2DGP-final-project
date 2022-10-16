@@ -11,6 +11,7 @@ class Kirby:
 
         self.Run = load_image('kirby_move.png')
         self.Jump = load_image('kirby_jump.png')
+        self.absorb = load_image('kirby_absorb.png')
 
         self.run_appear = True
         self.jump_appear = False
@@ -19,6 +20,7 @@ class Kirby:
         self.L_move = False
         self.R_move = False
         self.jump_move = False
+        self.absorb_move = False
 
     def update(self):
         if self.run_appear:
@@ -47,6 +49,15 @@ class Kirby:
                     self.jump_appear = False
                     self.run_appear = True
                     self.frame = 7
+        if self.absorb_appear:
+            if self.absorb_move:
+                self.frame = (self.frame + 1) % 8
+                delay(0.05)
+                if self.frame == 0:
+                    self.absorb_move = False
+                    self.absorb_appear = False
+                    self.run_appear = True
+                    self.frame = 7
 
                     
     def draw(self):
@@ -56,6 +67,9 @@ class Kirby:
         elif self.jump_appear:
             self.Jump.clip_draw(self.frame * self.kx, self.ky - self.dir_y * self.ky,
                                 self.kx, self.ky, self.x, self.y)
+        elif self.absorb_appear:
+            self.absorb.clip_draw(self.frame * self.kx + 3, self.ky - self.dir_y * self.ky,
+                                  self.kx, self.ky, self.x, self.y)
 
 def handle_events():
     global running, kirby
@@ -74,6 +88,11 @@ def handle_events():
             kirby.run_appear = False
             kirby.jump_appear = True
             kirby.jump_move = True
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_a:
+            kirby.frame = 0
+            kirby.run_appear = False
+            kirby.absorb_appear = True
+            kirby.absorb_move = True
 
         if event.type == SDL_KEYUP and event.key == SDLK_RIGHT:
             kirby.R_move = False
