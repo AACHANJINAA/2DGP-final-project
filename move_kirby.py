@@ -2,7 +2,7 @@ from pico2d import*
 
 class Kirby:
     def __init__(self):
-        self.x, self.y = 0, 100
+        self.x, self.y = 30, 100
         self.kx, self.ky = 70, 55
         self.dir_x = 1
         self.dir_y = 1
@@ -59,7 +59,7 @@ class Kirby:
                     self.run_appear = True
                     self.frame = 7
 
-                    
+
     def draw(self):
         if self.run_appear:
             self.Run.clip_draw(self.frame * self.kx, self.ky - self.dir_y * self.ky,
@@ -100,7 +100,6 @@ def handle_events():
         elif event.type == SDL_KEYUP and event.key == SDLK_LEFT:
             kirby.L_move = False
             kirby.frame = 7
-
 
 open_canvas(800, 400)
 
