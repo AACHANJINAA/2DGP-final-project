@@ -59,9 +59,10 @@ class Kirby:
                     self.run_appear = True
                     self.frame = 7
 
-
     def draw(self):
         if self.run_appear:
+            if self.y != 100 and self.jump_appear == False:
+                self.y = 100
             self.Run.clip_draw(self.frame * self.kx, self.ky - self.dir_y * self.ky,
                                self.kx, self.ky, self.x, self.y)
         elif self.jump_appear:
@@ -75,24 +76,25 @@ def handle_events():
     global running, kirby
     events = get_events()
     for event in events:
-        if event.type == SDL_QUIT:
-            running = False
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
-            running = False
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_RIGHT:
-            kirby.R_move = True
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_LEFT:
-            kirby.L_move = True
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_UP:
-            kirby.frame = 0
-            kirby.run_appear = False
-            kirby.jump_appear = True
-            kirby.jump_move = True
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_a:
-            kirby.frame = 0
-            kirby.run_appear = False
-            kirby.absorb_appear = True
-            kirby.absorb_move = True
+        if kirby.run_appear == True:
+            if event.type == SDL_QUIT:
+                running = False
+            elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
+                running = False
+            elif event.type == SDL_KEYDOWN and event.key == SDLK_RIGHT:
+                kirby.R_move = True
+            elif event.type == SDL_KEYDOWN and event.key == SDLK_LEFT:
+                kirby.L_move = True
+            elif event.type == SDL_KEYDOWN and event.key == SDLK_UP:
+                kirby.frame = 0
+                kirby.run_appear = False
+                kirby.jump_appear = True
+                kirby.jump_move = True
+            elif event.type == SDL_KEYDOWN and event.key == SDLK_a:
+                kirby.frame = 0
+                kirby.run_appear = False
+                kirby.absorb_appear = True
+                kirby.absorb_move = True
 
         if event.type == SDL_KEYUP and event.key == SDLK_RIGHT:
             kirby.R_move = False
