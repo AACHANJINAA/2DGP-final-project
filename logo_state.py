@@ -20,7 +20,6 @@ def update():
     logo_time += 0.05
     if logo_time > 3.0:
         game_framework.change_state(map_state)
-    pass
 
 def draw():
     global image

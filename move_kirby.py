@@ -7,7 +7,7 @@ class Kirby:
         self.dir_x = 1
         self.dir_y = 1
         self.jump_y = 1
-        self.frame = 6
+        self.frame = 7
 
         self.Run = load_image('kirby_move.png')
         self.Jump = load_image('kirby_jump.png')
@@ -61,7 +61,7 @@ class Kirby:
 
     def draw(self):
         if self.run_appear:
-            if self.y != 100 and self.jump_appear == False:
+            if self.y != 100 and not self.jump_appear:
                 self.y = 100
             self.Run.clip_draw(self.frame * self.kx, self.ky - self.dir_y * self.ky,
                                self.kx, self.ky, self.x, self.y)
@@ -76,7 +76,8 @@ def handle_events():
     global running, kirby
     events = get_events()
     for event in events:
-        if kirby.run_appear == True:
+        #keydown
+        if kirby.run_appear and not kirby.jump_appear and not kirby.absorb_appear:
             if event.type == SDL_QUIT:
                 running = False
             elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
@@ -95,7 +96,7 @@ def handle_events():
                 kirby.run_appear = False
                 kirby.absorb_appear = True
                 kirby.absorb_move = True
-
+        #keyup
         if event.type == SDL_KEYUP and event.key == SDLK_RIGHT:
             kirby.R_move = False
             kirby.frame = 7
