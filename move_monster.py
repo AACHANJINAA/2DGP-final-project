@@ -8,13 +8,17 @@ class Monster:
         self.dir_y = 1
         self.frame = 0
         self.cnt = 0
+        self.s_time = 0.01
+        self.s_dis = 3
 
-        self.Run = load_image('basic_monster.png')
+        self.basic_monster_move = load_image('basic_monster.png')
+        self.sword_monster_move = load_image('sword_monster.png')
 
-        self.run_appear = True
+        self.basic_appear = False
+        self.sword_appear = True
 
     def update(self):
-        if self.run_appear:
+        if self.basic_appear:
             self.x += self.dir_x * 5
             self.frame = (self.frame + 1) % 4
             self.cnt = (self.cnt + 1) % 64
@@ -27,10 +31,36 @@ class Monster:
                     self.dir_x = 1
                     self.dir_y = 1
 
+        if self.sword_appear:
+            self.x += self.dir_x * self.s_dis
+            self.frame = (self.frame + 1) % 3
+            self.cnt = (self.cnt + 1) % 9
+            delay(self.s_time)
+            if self.frame == 0:
+                self.s_time = 0.2
+                self.s_dis = 3
+            elif self.frame == 1:
+                self.s_time = 0.1
+                self.s_dis = 20
+            elif self.frame == 2:
+                self.s_time = 0.4
+                self.s_dis = 10
+
+            if self.cnt == 0:
+                if self.dir_x == 1 and self.dir_y == 1:
+                    self.dir_x = -1
+                    self.dir_y = 0
+                elif self.dir_x == -1 and self.dir_y == 0:
+                    self.dir_x = 1
+                    self.dir_y = 1
+
     def draw(self):
-        if self.run_appear:
-            self.Run.clip_draw(self.frame * self.kx, self.ky - self.dir_y * self.ky,
-                               self.kx, self.ky, self.x, self.y)
+        if self.basic_appear:
+            self.basic_monster_move.clip_draw(self.frame * self.kx, self.ky - self.dir_y * self.ky,
+                                              self.kx, self.ky, self.x, self.y)
+        if self.sword_appear:
+            self.sword_monster_move.clip_draw(self.frame * self.kx, self.ky - self.dir_y * self.ky,
+                                              self.kx, self.ky, self.x, self.y)
 
 def handle_events():
     global running
