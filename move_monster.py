@@ -8,14 +8,17 @@ class Monster:
         self.dir_y = 1
         self.frame = 0
         self.cnt = 0
-        self.s_time = 0.01
+        self.s_time = 0.1
+        self.b_time = 0.1
         self.s_dis = 3
 
         self.basic_monster_move = load_image('basic_monster.png')
         self.sword_monster_move = load_image('sword_monster.png')
+        self.beam_monster_move = load_image('beam_monster.png')
 
         self.basic_appear = False
-        self.sword_appear = True
+        self.sword_appear = False
+        self.beam_appear = True
 
     def update(self):
         if self.basic_appear:
@@ -54,12 +57,32 @@ class Monster:
                     self.dir_x = 1
                     self.dir_y = 1
 
+        if self.beam_appear:
+            self.x += self.dir_x * 10
+            self.frame = (self.frame + 1) % 4
+            self.cnt = (self.cnt + 1) % 9
+            delay(self.b_time)
+            if self.frame == 3:
+                self.b_time = 0.3
+            else:
+                self.b_time = 0.1
+            if self.cnt == 0:
+                if self.dir_x == 1 and self.dir_y == 1:
+                    self.dir_x = -1
+                    self.dir_y = 0
+                elif self.dir_x == -1 and self.dir_y == 0:
+                    self.dir_x = 1
+                    self.dir_y = 1
+
     def draw(self):
         if self.basic_appear:
             self.basic_monster_move.clip_draw(self.frame * self.kx, self.ky - self.dir_y * self.ky,
                                               self.kx, self.ky, self.x, self.y)
         if self.sword_appear:
             self.sword_monster_move.clip_draw(self.frame * self.kx, self.ky - self.dir_y * self.ky,
+                                              self.kx, self.ky, self.x, self.y)
+        if self.beam_appear:
+            self.beam_monster_move.clip_draw(self.frame * self.kx, self.ky - self.dir_y * self.ky,
                                               self.kx, self.ky, self.x, self.y)
 
 def handle_events():
