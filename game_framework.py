@@ -41,7 +41,11 @@ class TestGameState:
 running = None
 stack = None
 
-
+def get_prev_state():
+    try:
+        return stack[-2]
+    except:
+        return None
 def change_state(state):
     global stack
     if (len(stack) > 0):
@@ -80,7 +84,12 @@ def pop_state():
 def quit():
     global running
     running = False
+def fill_states(*states):
+    for state in states:
+        stack.append(state)
 
+import time
+frame_time = 0
 
 def run(start_state):
     global running, stack
