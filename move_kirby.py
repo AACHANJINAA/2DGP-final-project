@@ -19,7 +19,7 @@ class IDLE:
     def enter(self,event):
         print('ENTER IDLE')
         self.dir_x = 0
-        self.timer = 10
+        self.timer = 200
 
     @staticmethod
     def exit(self, event):
@@ -73,7 +73,7 @@ class SLEEP:
         print('ENTER SLEEP')
         self.frame = 0
     def exit(self, event):
-        pass
+        print('EXIT SLEEP')
     def do(self):
         self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
 
