@@ -18,7 +18,7 @@ class IDLE:
     @staticmethod
     def enter(self,event):
         print('ENTER IDLE')
-        #self.dir_x = 1
+        self.dir_x = 0
 
     @staticmethod
     def exit(self, event):
@@ -30,10 +30,10 @@ class IDLE:
     @staticmethod
     def draw(self):
         if self.face_dir_x == 1:
-            self.Run.clip_draw(self.frame * self.kx, self.ky - self.dir_y * self.ky,
+            self.Run.clip_draw(int(self.frame) * self.kx, self.ky - self.dir_y * self.ky,
                                self.kx, self.ky, self.x, self.y)
         else:
-            self.Run.clip_draw(self.frame * self.kx, self.ky - self.dir_y * self.ky,
+            self.Run.clip_draw(int(self.frame) * self.kx, self.ky,
                                self.kx, self.ky, self.x, self.y)
 class RUN:
     def enter(self, event):
@@ -51,54 +51,33 @@ class RUN:
         print('EXIT RUN')
         self.face_dir_x = self.dir_x
     def do(self):
-        self.frame = (self.frame + 1) % 8
-        self.x += self.dir_x
+        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
+        self.x += self.dir_x * RUN_SPEED_PPS * game_framework.frame_time
+        #print(RUN_SPEED_MPM)
+        print(game_framework.frame_time)
         self.x = clamp(0, self.x, 800)
 
     def draw(self):
         if self.dir_x == 1:
-            self.Run.clip_draw(self.frame * self.kx, self.ky - self.dir_y * self.ky,
+            self.Run.clip_draw(int(self.frame) * self.kx, self.ky - self.dir_y * self.ky,
                                self.kx, self.ky, self.x, self.y)
         else:
-            self.Run.clip_draw(self.frame * self.kx, self.ky - self.dir_y * self.ky,
+            self.Run.clip_draw(int(self.frame) * self.kx, self.ky,
                                self.kx, self.ky, self.x, self.y)
-
-# def handle_events():
-#     global running, kirby
-#     events = get_events()
-#     for event in events:
-#         #keydown
-#         if kirby.run_appear and not kirby.jump_appear and not kirby.absorb_appear:
-#             if event.type == SDL_QUIT:
-#                 running = False
-#             elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
-#                 running = False
-#             elif event.type == SDL_KEYDOWN and event.key == SDLK_RIGHT:
-#                 kirby.R_move = True
-#             elif event.type == SDL_KEYDOWN and event.key == SDLK_LEFT:
-#                 kirby.L_move = True
-#             elif event.type == SDL_KEYDOWN and event.key == SDLK_UP:
-#                 kirby.frame = 0
-#                 kirby.run_appear = False
-#                 kirby.jump_appear = True
-#                 kirby.jump_move = True
-#             elif event.type == SDL_KEYDOWN and event.key == SDLK_a:
-#                 kirby.frame = 0
-#                 kirby.run_appear = False
-#                 kirby.absorb_appear = True
-#                 kirby.absorb_move = True
-#         #keyup
-#         if event.type == SDL_KEYUP and event.key == SDLK_RIGHT:
-#             kirby.R_move = False
-#             kirby.frame = 7
-#         elif event.type == SDL_KEYUP and event.key == SDLK_LEFT:
-#             kirby.L_move = False
-#             kirby.frame = 7
 
 next_state = {
     IDLE:  {RU: RUN,  LU: RUN,  RD: RUN,  LD: RUN},
     RUN:   {RU: IDLE, LU: IDLE, RD: IDLE, LD: IDLE},
 }
+PIXEL_PER_METER = (10.0 / 0.3) # 10 pixel 30 cm
+RUN_SPEED_KMPH = 20.0 # Km / Hour
+RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
+RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
+RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
+
+TIME_PER_ACTION = 0.5
+ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
+FRAMES_PER_ACTION = 8
 class Kirby:
     def __init__(self):
         self.x, self.y = 30, 100
@@ -116,6 +95,7 @@ class Kirby:
         self.Jump = load_image('kirby_jump.png')
         self.absorb = load_image('kirby_absorb.png')
 
+        self.font = load_font('ENCR10B.TTF', 16)
     def update(self):
         self.cur_state.do(self)
 
@@ -128,46 +108,12 @@ class Kirby:
                 print('ERROR', self.cur_state.__name__, ' ', event_name[event])
 
             self.cur_state.enter(self, event)
-        # if self.run_appear:
-        #     if self.R_move:
-        #         self.dir_x = +1
-        #         self.dir_y = 1
-        #         self.x += self.dir_x * 10
-        #         self.frame = (self.frame - 1) % 7
-        #
-        #     elif self.L_move:
-        #         self.dir_x = -1
-        #         self.dir_y = 0
-        #         self.x += self.dir_x * 10
-        #         self.frame = (self.frame - 1) % 7
-
-        # if self.jump_appear:
-        #     if self.jump_move:
-        #         self.y += self.jump_y * 25
-        #         self.frame = (self.frame + 1) % 8
-        #         delay(0.01)
-        #         if self.frame > 3:
-        #             self.jump_y = -1
-        #         else:
-        #             self.jump_y = +1
-        #         if self.frame == 0:
-        #             self.jump_move = False
-        #             self.jump_appear = False
-        #             self.frame = 7
-
-        # if self.absorb_appear:
-        #     if self.absorb_move:
-        #         self.frame = (self.frame + 1) % 8
-        #         delay(0.05)
-        #         if self.frame == 0:
-        #             self.absorb_move = False
-        #             self.absorb_appear = False
-        #             self.frame = 7
 
     def draw(self):
         self.cur_state.draw(self)
         debug_print('PPPP')
         debug_print(f'Face Dir: {self.face_dir_x}, Dir: {self.dir_x}')
+        self.font.draw(self.x - 60, self.y + 50, f'(Time: {get_time():.2f})', (255, 255, 0))
 
     def add_event(self, event):
         self.event_que.insert(0, event)
@@ -175,14 +121,3 @@ class Kirby:
         if (event.type, event.key) in key_event_table:
             key_event = key_event_table[(event.type, event.key)]
             self.add_event(key_event)
-        # if self.run_appear:
-        #     if self.y != 100 and not self.jump_appear:
-        #         self.y = 100
-        #     self.Run.clip_draw(self.frame * self.kx, self.ky - self.dir_y * self.ky,
-        #                        self.kx, self.ky, self.x, self.y)
-        # elif self.jump_appear:
-        #     self.Jump.clip_draw(self.frame * self.kx, self.ky - self.dir_y * self.ky,
-        #                         self.kx, self.ky, self.x, self.y)
-        # elif self.absorb_appear:
-        #     self.absorb.clip_draw(self.frame * self.kx + 3, self.ky - self.dir_y * self.ky,
-        #                           self.kx, self.ky, self.x, self.y)

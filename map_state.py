@@ -31,6 +31,7 @@ def exit():
 def update():
     for game_object in game_world.all_objects():
         game_object.update()
+    delay(0.01)
     # global kirby
     # delay(0.05)
     # kirby.update()
@@ -62,34 +63,3 @@ def test_self():
 
 if __name__ == '__main__':
     test_self()
-# def handle_events():
-#     global kirby
-#     events = get_events()
-#     for event in events:
-#         #keydown
-#         if kirby.run_appear and not kirby.jump_appear and not kirby.absorb_appear:
-#             if event.type == SDL_QUIT:
-#                 game_framework.quit()
-#             elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
-#                 game_framework.quit()
-#             elif event.type == SDL_KEYDOWN and event.key == SDLK_RIGHT:
-#                 kirby.R_move = True
-#             elif event.type == SDL_KEYDOWN and event.key == SDLK_LEFT:
-#                 kirby.L_move = True
-#             elif event.type == SDL_KEYDOWN and event.key == SDLK_UP:
-#                 kirby.frame = 0
-#                 kirby.run_appear = False
-#                 kirby.jump_appear = True
-#                 kirby.jump_move = True
-#             elif event.type == SDL_KEYDOWN and event.key == SDLK_a:
-#                 kirby.frame = 0
-#                 kirby.run_appear = False
-#                 kirby.absorb_appear = True
-#                 kirby.absorb_move = True
-#         #keyup
-#         if event.type == SDL_KEYUP and event.key == SDLK_RIGHT:
-#             kirby.R_move = False
-#             kirby.frame = 7
-#         elif event.type == SDL_KEYUP and event.key == SDLK_LEFT:
-#             kirby.L_move = False
-#             kirby.frame = 7
