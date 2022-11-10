@@ -16,7 +16,7 @@ key_event_table = {
 
 class IDLE:
     @staticmethod
-    def enter(self,event):
+    def enter(self, event):
         print('ENTER IDLE')
         self.dir_x = 0
         self.timer = 200
@@ -26,19 +26,19 @@ class IDLE:
         print('EXIT IDLE')
     @staticmethod
     def do(self):
-        self.frame = 7
+        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 2
         self.timer -= 1
         if self.timer == 0:
             self.add_event(TIMER)
 
     @staticmethod
     def draw(self):
-        if self.face_dir_x == 1:
-            self.Run.clip_draw(int(self.frame) * self.kx, self.ky - self.dir_y * self.ky,
-                               self.kx, self.ky, self.x, self.y)
+        if self.face_dir_x == -1:
+            self.Idle.clip_composite_draw(int(self.frame) * 23, 0, 22, 18,
+                                           0.0, '', self.x, self.y, self.kx, self.ky)
         else:
-            self.Run.clip_draw(int(self.frame) * self.kx, self.ky,
-                               self.kx, self.ky, self.x, self.y)
+            self.Idle.clip_composite_draw(int(self.frame) * 23, 0, 22, 18,
+                                           0.0, 'h', self.x, self.y, self.kx, self.ky)
 class RUN:
     def enter(self, event):
         print('ENTER RUN')
@@ -79,11 +79,11 @@ class SLEEP:
 
     def draw(self):
         if self.face_dir_x == -1:
-            self.Sleep.clip_composite_draw(int(self.frame) * 27, 0, 27, 19,
+            self.Sleep.clip_composite_draw(int(self.frame) * 30, 0, 30, 18,
                                            0.0, '', self.x, self.y, self.kx, self.ky)
         else:
-            self.Sleep.clip_composite_draw(int(self.frame) * 27, 0, 27, 19,
-                                           0.0, '', self.x, self.y, self.kx, self.ky)
+            self.Sleep.clip_composite_draw(int(self.frame) * 30, 0, 30, 18,
+                                           0.0, 'h', self.x, self.y, self.kx, self.ky)
 
 next_state = {
     IDLE:  {RU: RUN,  LU: RUN,  RD: RUN,  LD: RUN, TIMER: SLEEP},
@@ -96,7 +96,7 @@ RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
-TIME_PER_ACTION = 1.5
+TIME_PER_ACTION = 2.0
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 8
 class Kirby:
@@ -113,6 +113,7 @@ class Kirby:
         self.cur_state = IDLE
         self.cur_state.enter(self, None)
 
+        self.Idle = load_image('kirby_idle.png')
         self.Run = load_image('kirby_move.png')
         self.Jump = load_image('kirby_jump.png')
         self.absorb = load_image('kirby_absorb.png')
