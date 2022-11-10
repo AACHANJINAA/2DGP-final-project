@@ -2,8 +2,8 @@ from pico2d import*
 import game_framework
 import game_world
 
-RD, LD, RU, LU, JD, AD = range(6)
-event_name = ['RD', 'LD', 'RU', 'LU', 'JD', 'AD']
+RD, LD, RU, LU, JD, AD, TIMER = range(7)
+event_name = ['RD', 'LD', 'RU', 'LU', 'JD', 'AD', 'TIMER']
 
 key_event_table = {
     (SDL_KEYDOWN, SDLK_a): AD,
@@ -19,6 +19,7 @@ class IDLE:
     def enter(self,event):
         print('ENTER IDLE')
         self.dir_x = 0
+        self.timer = 10
 
     @staticmethod
     def exit(self, event):
@@ -26,6 +27,9 @@ class IDLE:
     @staticmethod
     def do(self):
         self.frame = 7
+        self.timer -= 1
+        if self.timer == 0:
+            self.add_event(TIMER)
 
     @staticmethod
     def draw(self):
@@ -64,10 +68,27 @@ class RUN:
         else:
             self.Run.clip_draw(int(self.frame) * self.kx, self.ky,
                                self.kx, self.ky, self.x, self.y)
+class SLEEP:
+    def enter(self, event):
+        print('ENTER SLEEP')
+        self.frame = 0
+    def exit(self, event):
+        pass
+    def do(self):
+        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
+
+    def draw(self):
+        if self.face_dir_x == -1:
+            self.Sleep.clip_composite_draw(int(self.frame) * 27, 0, 27, 19,
+                                           0.0, '', self.x, self.y, self.kx, self.ky)
+        else:
+            self.Sleep.clip_composite_draw(int(self.frame) * 27, 0, 27, 19,
+                                           0.0, '', self.x, self.y, self.kx, self.ky)
 
 next_state = {
-    IDLE:  {RU: RUN,  LU: RUN,  RD: RUN,  LD: RUN},
+    IDLE:  {RU: RUN,  LU: RUN,  RD: RUN,  LD: RUN, TIMER: SLEEP},
     RUN:   {RU: IDLE, LU: IDLE, RD: IDLE, LD: IDLE},
+    SLEEP: {RU: RUN, LU: RUN, RD: RUN, LD: RUN}
 }
 PIXEL_PER_METER = (10.0 / 0.3) # 10 pixel 30 cm
 RUN_SPEED_KMPH = 20.0 # Km / Hour
@@ -75,7 +96,7 @@ RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
-TIME_PER_ACTION = 0.5
+TIME_PER_ACTION = 1.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 8
 class Kirby:
@@ -86,6 +107,7 @@ class Kirby:
         self.dir_y = 1
         self.jump_y = 1
         self.frame = 7
+        self.timer = 0
 
         self.event_que = []
         self.cur_state = IDLE
@@ -94,6 +116,7 @@ class Kirby:
         self.Run = load_image('kirby_move.png')
         self.Jump = load_image('kirby_jump.png')
         self.absorb = load_image('kirby_absorb.png')
+        self.Sleep = load_image('kirby_sleep.png')
 
         self.font = load_font('ENCR10B.TTF', 16)
     def update(self):
