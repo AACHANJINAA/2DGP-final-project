@@ -89,7 +89,7 @@ class JUMP:
 class SWAL:
     def enter(self, event):
         if event == AD:
-            self.timer = 70
+            self.timer = 140
     def exit(self, event):
         pass
     def do(self):
@@ -152,11 +152,11 @@ class Kirby:
         self.cur_state = IDLE
         self.cur_state.enter(self, None)
 
-        self.Idle = load_image('kirby_idle.png')
-        self.Run = load_image('kirby_move.png')
-        self.Jump = load_image('kirby_jump.png')
-        self.Swallow = load_image('kirby_swallow.png')
-        self.Sleep = load_image('kirby_sleep.png')
+        self.Idle = load_image('kirby/kirby_idle.png')
+        self.Run = load_image('kirby/kirby_move.png')
+        self.Jump = load_image('kirby/kirby_jump.png')
+        self.Swallow = load_image('kirby/kirby_swallow.png')
+        self.Sleep = load_image('kirby/kirby_sleep.png')
 
     def update(self):
         self.cur_state.do(self)
