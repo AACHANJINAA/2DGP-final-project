@@ -24,17 +24,11 @@ def enter():
 
 def exit():
     game_world.clear()
-    # global image, kirby
-    # del image
-    # del kirby
 
 def update():
     for game_object in game_world.all_objects():
         game_object.update()
     delay(0.01)
-    # global kirby
-    # delay(0.05)
-    # kirby.update()
 
 def draw_world():
     for game_object in game_world.all_objects():
@@ -44,10 +38,6 @@ def draw():
     clear_canvas()
     draw_world()
     update_canvas()
-    # global image, kirby
-    # image.draw(800 // 2, 400 // 2)
-    # kirby.draw()
-    # update_canvas()
 
 def pause():
     pass
@@ -55,10 +45,10 @@ def pause():
 def resume():
     pass
 def test_self():
-    import map_state
+    import play_state
 
     pico2d.open_canvas()
-    game_framework.run(map_state)
+    game_framework.run(play_state)
     pico2d.clear_canvas()
 
 if __name__ == '__main__':

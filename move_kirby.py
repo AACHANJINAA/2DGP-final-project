@@ -19,7 +19,7 @@ class IDLE:
     def enter(self, event):
         print('ENTER IDLE')
         self.dir_x = 0
-        self.timer = 200
+        self.timer = 70
 
     @staticmethod
     def exit(self, event):
@@ -95,6 +95,8 @@ class JUMP:
         else:
             self.Jump.clip_composite_draw(int(self.frame) * 25, 0, 25, 22,
                                            0.0, 'h', self.x, self.y, self.kx, self.ky)
+
+
 class SLEEP:
     def enter(self, event):
         print('ENTER SLEEP')

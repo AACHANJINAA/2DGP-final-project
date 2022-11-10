@@ -1,6 +1,6 @@
 from pico2d import*
 import game_framework
-import map_state
+import play_state
 
 image = None
 stop = False
@@ -21,7 +21,7 @@ def update():
     if not stop:
         logo_time += 0.05
     if logo_time > 3.0:
-        game_framework.change_state(map_state)
+        game_framework.change_state(play_state)
 
 def draw():
     global image
@@ -33,7 +33,7 @@ def handle_events():
     events = get_events()
     for event in events:
         if event.type == SDL_KEYDOWN and event.key == SDLK_SPACE:
-            game_framework.change_state(map_state)
+            game_framework.change_state(play_state)
         elif event.type == SDL_KEYDOWN and event.key == SDLK_p:
             stop = True
         elif event.type == SDL_KEYDOWN and event.key == SDLK_s:
