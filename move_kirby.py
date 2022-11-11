@@ -18,7 +18,7 @@ class IDLE:
     @staticmethod
     def enter(self, event):
         self.dir_x = 0
-        self.timer = 70
+        self.timer = 140
 
     @staticmethod
     def exit(self, event):
@@ -142,9 +142,8 @@ class Kirby:
         self.x, self.y = 30, 100
         self.kx, self.ky = 70, 55
         self.face_dir_x, self.dir_x = 1, 0
-        self.dis_y = self.y
         self.dir_y = 1
-        self.frame = 7
+        self.frame = 0
         self.timer = 0
         self.s_timer = 0
 
@@ -178,6 +177,7 @@ class Kirby:
 
     def add_event(self, event):
         self.event_que.insert(0, event)
+
     def handle_event(self, event):
         if (event.type, event.key) in key_event_table:
             key_event = key_event_table[(event.type, event.key)]
