@@ -114,7 +114,7 @@ class SKILL:
             self.Effect.clip_composite_draw(0, 0, 64, 64,
                                             0.0, 'h', self.x, self.y, self.kx * 2, self.ky * 2)
             self.Skill.clip_composite_draw(int(self.frame) * 22, 0, 22, 34,
-                                             0.0, 'h', self.x, self.y, self.kx, self.ky)
+                                           0.0, 'h', self.x, self.y, self.kx, self.ky)
         else:
             self.Effect.clip_composite_draw(0, 0, 64, 64,
                                             0.0, '', self.x, self.y, self.kx * 2, self.ky * 2)
