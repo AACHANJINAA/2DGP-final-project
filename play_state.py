@@ -3,9 +3,11 @@ import game_framework
 import game_world
 
 from move_kirby import Kirby
+from move_sword import Sword_Kirby
 
-image = None
+stage = None
 kirby = None
+sword_kirby = None
 
 def handle_events():
     events = get_events()
@@ -18,9 +20,10 @@ def handle_events():
             kirby.handle_event(event)
 
 def enter():
-    global kirby
+    global kirby, sword_kirby
     kirby = Kirby()
-    game_world.add_object(kirby, 0)
+    sword_kirby = Sword_Kirby()
+    game_world.add_object(sword_kirby, 0)
 
 def exit():
     game_world.clear()
