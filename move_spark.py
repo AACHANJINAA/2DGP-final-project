@@ -2,13 +2,15 @@ from pico2d import*
 import game_framework
 from move_kirby import SLEEP
 
-RD, LD, RU, LU, JD, TIMER = range(6)
-event_name = ['RD', 'LD', 'RU', 'LU', 'JD', 'TIMER']
+RD, LD, RU, LU, JD, AD, AU, TIMER = range(8)
+event_name = ['RD', 'LD', 'RU', 'LU', 'JD', 'AD', 'AU', 'TIMER']
 
 key_event_table = {
+    (SDL_KEYDOWN, SDLK_a): AD,
     (SDL_KEYDOWN, SDLK_UP): JD,
     (SDL_KEYDOWN, SDLK_RIGHT): RD,
     (SDL_KEYDOWN, SDLK_LEFT): LD,
+    (SDL_KEYUP, SDLK_a): AU,
     (SDL_KEYUP, SDLK_RIGHT): RU,
     (SDL_KEYUP, SDLK_LEFT): LU
 }
@@ -91,11 +93,40 @@ class JUMP:
             self.Jump.clip_composite_draw(int(self.frame) * 24, 0, 24, 34,
                                            0.0, '', self.x, self.y, self.kx, self.ky)
 
+class SKILL:
+    def enter(self, event):
+        if event == AD:
+            self.timer = 200
+        elif event == AU:
+            self.add_event(TIMER)
+    def exit(self, event):
+        pass
+
+    def do(self):
+        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 2
+        self.timer -= 1
+        if self.timer == 0:
+            self.add_event(TIMER)
+
+
+    def draw(self):
+        if self.face_dir_x == -1:
+            self.Effect.clip_composite_draw(0, 0, 64, 64,
+                                            0.0, 'h', self.x, self.y, self.kx * 2, self.ky * 2)
+            self.Skill.clip_composite_draw(int(self.frame) * 22, 0, 22, 34,
+                                             0.0, 'h', self.x, self.y, self.kx, self.ky)
+        else:
+            self.Effect.clip_composite_draw(0, 0, 64, 64,
+                                            0.0, '', self.x, self.y, self.kx * 2, self.ky * 2)
+            self.Skill.clip_composite_draw(int(self.frame) * 22, 0, 22, 34,
+                                           0.0, '', self.x, self.y, self.kx, self.ky)
+
 next_state = {
-    IDLE:  {RU: RUN,  LU: RUN,  RD: RUN,  LD: RUN,  JD: JUMP, TIMER: SLEEP},
-    RUN:   {RU: IDLE, LU: IDLE, RD: IDLE, LD: IDLE, JD: JUMP, TIMER: IDLE},
-    SLEEP: {RU: RUN,  LU: RUN,  RD: RUN,  LD: RUN,  JD: IDLE, TIMER: IDLE},
-    JUMP:  {RU: JUMP, LU: JUMP, RD: JUMP, LD: JUMP, JD: JUMP, TIMER: IDLE}
+    IDLE:  {RU: RUN,   LU: RUN,   RD: RUN,   LD: RUN,   JD: JUMP,  TIMER: SLEEP, AD: SKILL},
+    RUN:   {RU: IDLE,  LU: IDLE,  RD: IDLE,  LD: IDLE,  JD: JUMP,  TIMER: IDLE,  AD: SKILL},
+    SLEEP: {RU: RUN,   LU: RUN,   RD: RUN,   LD: RUN,   JD: IDLE,  TIMER: IDLE,  AD: IDLE},
+    JUMP:  {RU: JUMP,  LU: JUMP,  RD: JUMP,  LD: JUMP,  JD: JUMP,  TIMER: IDLE,  AD: JUMP},
+    SKILL: {RU: SKILL, LU: SKILL, RD: SKILL, LD: SKILL, JD: SKILL, TIMER: IDLE,  AD: SKILL}
 }
 PIXEL_PER_METER = (10.0 / 0.3) # 10 pixel 30 cm
 RUN_SPEED_KMPH = 20.0 # Km / Hour
@@ -124,6 +155,8 @@ class Spark_Kirby:
         self.Run = load_image('kirby(spark)/kirby(spark)_run.png')
         self.Jump = load_image('kirby(spark)/kirby(spark)_jump.png')
         self.Sleep = load_image('kirby/kirby_sleep.png')
+        self.Skill = load_image('kirby(spark)/kirby(spark)_skill.png')
+        self.Effect = load_image('kirby(spark)/kirby(spark)_skill_effect.png')
 
     def update(self):
         self.cur_state.do(self)
