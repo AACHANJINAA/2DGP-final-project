@@ -39,8 +39,7 @@ class TestGameState:
 
 
 running = None
-stack = None
-
+stack = []
 def get_prev_state():
     try:
         return stack[-2]
@@ -94,8 +93,14 @@ frame_time = 0
 def run(start_state):
     global running, stack
     running = True
-    stack = [start_state]
-    start_state.enter()
+    # stack = [start_state]
+    # start_state.enter()
+    for state in stack:
+        state.enter()
+        state.pause()
+
+    stack.append(start_state)
+    stack[-1].enter()
     current_time = time.time()
 
     while (running):
