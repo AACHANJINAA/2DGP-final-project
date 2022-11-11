@@ -69,7 +69,7 @@ class JUMP:
     def enter(self, event):
         if event == JD:
             self.dir_y = 1
-            self.timer = 70
+            self.timer = 90
             self.s_timer = self.timer // 2
     def exit(self, event):
         pass
