@@ -6,6 +6,7 @@ RD, LD, RU, LU, JD, TIMER = range(6)
 event_name = ['RD', 'LD', 'RU', 'LU', 'JD', 'TIMER']
 
 key_event_table = {
+    (SDL_KEYDOWN, SDLK_UP): JD,
     (SDL_KEYDOWN, SDLK_RIGHT): RD,
     (SDL_KEYDOWN, SDLK_LEFT): LD,
     (SDL_KEYUP, SDLK_RIGHT): RU,
@@ -65,7 +66,30 @@ class RUN:
                                0.0, '', self.x, self.y, self.kx, self.ky)
 
 class JUMP:
-    pass
+    def enter(self, event):
+        if event == JD:
+            self.dir_y = 1
+            self.timer = 70
+            self.s_timer = self.timer // 2
+    def exit(self, event):
+        pass
+    def do(self):
+        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 5
+        jump_dis = self.dir_y * RUN_SPEED_PPS * game_framework.frame_time
+        self.y += jump_dis
+        self.timer -= 1
+        if self.timer == self.s_timer:
+            self.dir_y *= -1
+        elif self.timer == 0:
+            self.dir_y *= -1
+            self.add_event(TIMER)
+    def draw(self):
+        if self.face_dir_x == -1:
+            self.Jump.clip_composite_draw(int(self.frame) * 28, 0, 28, 34,
+                                           0.0, 'h', self.x, self.y, self.kx, self.ky)
+        else:
+            self.Jump.clip_composite_draw(int(self.frame) * 28, 0, 28, 34,
+                                           0.0, '', self.x, self.y, self.kx, self.ky)
 
 next_state = {
     IDLE:  {RU: RUN,  LU: RUN,  RD: RUN,  LD: RUN,  JD: JUMP, TIMER: SLEEP},
@@ -98,6 +122,7 @@ class Sword_Kirby:
 
         self.Idle = load_image('kirby(sword)/kirby(sword)_idle.png')
         self.Run = load_image('kirby(sword)/kirby(sword)_run.png')
+        self.Jump = load_image('kirby(sword)/kirby(sword)_jump.png')
         self.Sleep = load_image('kirby/kirby_sleep.png')
 
     def update(self):
