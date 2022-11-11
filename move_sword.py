@@ -2,12 +2,10 @@ from pico2d import*
 import game_framework
 from move_kirby import SLEEP
 
-RD, LD, RU, LU, JD, AD, TIMER = range(7)
-event_name = ['RD', 'LD', 'RU', 'LU', 'JD', 'AD', 'TIMER']
+RD, LD, RU, LU, JD, TIMER = range(6)
+event_name = ['RD', 'LD', 'RU', 'LU', 'JD', 'TIMER']
 
 key_event_table = {
-    (SDL_KEYDOWN, SDLK_a): AD,
-    (SDL_KEYDOWN, SDLK_UP): JD,
     (SDL_KEYDOWN, SDLK_RIGHT): RD,
     (SDL_KEYDOWN, SDLK_LEFT): LD,
     (SDL_KEYUP, SDLK_RIGHT): RU,
@@ -54,7 +52,7 @@ class RUN:
         self.face_dir_x = self.dir_x
 
     def do(self):
-        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 6
+        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time * 2) % 6
         self.x += self.dir_x * RUN_SPEED_PPS * game_framework.frame_time
         self.x = clamp(0, self.x, 800)
 
@@ -67,35 +65,13 @@ class RUN:
                                0.0, '', self.x, self.y, self.kx, self.ky)
 
 class JUMP:
-    def enter(self, event):
-        if event == JD:
-            self.dir_y = 1
-            self.timer = 70
-            self.s_timer = self.timer // 2
-    def exit(self, event):
-        pass
-    def do(self):
-        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
-        jump_dis = self.dir_y * RUN_SPEED_PPS * game_framework.frame_time
-        self.y += jump_dis
-        self.timer -= 1
-        if self.timer == self.s_timer:
-            self.dir_y *= -1
-        elif self.timer == 0:
-            self.dir_y *= -1
-            self.add_event(TIMER)
-    def draw(self):
-        if self.face_dir_x == -1:
-            self.Jump.clip_composite_draw(int(self.frame) * 25, 0, 25, 22,
-                                           0.0, '', self.x, self.y, self.kx, self.ky)
-        else:
-            self.Jump.clip_composite_draw(int(self.frame) * 25, 0, 25, 22,
-                                           0.0, 'h', self.x, self.y, self.kx, self.ky)
+    pass
 
 next_state = {
-    IDLE:  {RU: RUN, LU: RUN, RD: RUN, LD: RUN, JD: JUMP, TIMER: SLEEP},
+    IDLE:  {RU: RUN,  LU: RUN,  RD: RUN,  LD: RUN,  JD: JUMP, TIMER: SLEEP},
     RUN:   {RU: IDLE, LU: IDLE, RD: IDLE, LD: IDLE, JD: JUMP, TIMER: IDLE},
-    SLEEP: {RU: RUN, LU: RUN, RD: RUN, LD: RUN, JD: IDLE, TIMER: IDLE, AD: IDLE},
+    SLEEP: {RU: RUN,  LU: RUN,  RD: RUN,  LD: RUN,  JD: IDLE, TIMER: IDLE},
+    JUMP:  {RU: JUMP, LU: JUMP, RD: JUMP, LD: JUMP, JD: JUMP, TIMER: IDLE}
 }
 PIXEL_PER_METER = (10.0 / 0.3) # 10 pixel 30 cm
 RUN_SPEED_KMPH = 20.0 # Km / Hour
