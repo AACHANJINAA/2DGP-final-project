@@ -32,7 +32,7 @@ def enter():
     sword_kirby = Sword_Kirby()
     spark_kirby = Spark_Kirby()
     bomber_kirby = Bomber_Kirby()
-    game_world.add_object(bomber_kirby, 0)
+    game_world.add_object(sword_kirby, 0)
 
 def exit():
     game_world.clear()
