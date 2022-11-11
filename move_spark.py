@@ -59,11 +59,11 @@ class RUN:
 
     def draw(self):
         if self.dir_x == -1:
-            self.Run.clip_composite_draw(int(self.frame) * 30, 0, 30, 30,
-                               0.0, 'h', self.x, self.y, self.kx, self.ky)
+            self.Run.clip_composite_draw(int(self.frame) * 29, 0, 29, 30,
+                               0.0, 'h', self.x, self.y, self.kx, self.ky + 11)
         else:
-            self.Run.clip_composite_draw(int(self.frame) * 30, 0, 30, 30,
-                               0.0, '', self.x, self.y, self.kx, self.ky)
+            self.Run.clip_composite_draw(int(self.frame) * 29, 0, 29, 30,
+                               0.0, '', self.x, self.y, self.kx, self.ky + 11)
 
 class JUMP:
     def enter(self, event):
@@ -121,7 +121,7 @@ class Spark_Kirby:
         self.cur_state.enter(self, None)
 
         self.Idle = load_image('kirby(spark)/kirby(spark)_idle.png')
-        self.Run = load_image('kirby(sword)/kirby(sword)_run.png')
+        self.Run = load_image('kirby(spark)/kirby(spark)_run.png')
         self.Jump = load_image('kirby(sword)/kirby(sword)_jump.png')
         self.Sleep = load_image('kirby/kirby_sleep.png')
 
