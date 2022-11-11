@@ -18,6 +18,7 @@ def handle_events():
             game_framework.quit()
         else:
             kirby.handle_event(event)
+            sword_kirby.handle_event(event)
 
 def enter():
     global kirby, sword_kirby
