@@ -34,8 +34,4 @@ def handle_events():
     for event in events:
         if event.type == SDL_KEYDOWN and event.key == SDLK_SPACE:
             game_framework.change_state(play_state)
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_p:
-            stop = True
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_s:
-            stop = False
 
