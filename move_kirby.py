@@ -1,6 +1,5 @@
 from pico2d import*
 import game_framework
-import game_world
 
 RD, LD, RU, LU, JD, AD, TIMER = range(7)
 event_name = ['RD', 'LD', 'RU', 'LU', 'JD', 'AD', 'TIMER']
