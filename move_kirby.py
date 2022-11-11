@@ -49,10 +49,12 @@ class RUN:
             self.dir_x += 1
     def exit(self, event):
         self.face_dir_x = self.dir_x
+
     def do(self):
         self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 6
         self.x += self.dir_x * RUN_SPEED_PPS * game_framework.frame_time
         self.x = clamp(0, self.x, 800)
+
     def draw(self):
         if self.dir_x == -1:
             self.Run.clip_composite_draw(int(self.frame) * 22, 0, 22, 20,
@@ -69,7 +71,7 @@ class JUMP:
     def exit(self, event):
         pass
     def do(self):
-        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
+        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 6
         jump_dis = self.dir_y * RUN_SPEED_PPS * game_framework.frame_time
         self.y += jump_dis
         self.timer -= 1

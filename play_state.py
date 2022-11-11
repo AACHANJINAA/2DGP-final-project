@@ -6,6 +6,7 @@ from move_kirby import Kirby
 from move_sword import Sword_Kirby
 from move_spark import Spark_Kirby
 from move_bomber import Bomber_Kirby
+from Background import SWORD_BACK, SPARK_BACK, BOMBER_BACK
 
 stage = None
 kirby = None
@@ -28,11 +29,19 @@ def handle_events():
 
 def enter():
     global kirby, sword_kirby, spark_kirby, bomber_kirby
+    global stage1, stage2, stage3
+
     kirby = Kirby()
     sword_kirby = Sword_Kirby()
     spark_kirby = Spark_Kirby()
     bomber_kirby = Bomber_Kirby()
-    game_world.add_object(spark_kirby, 0)
+
+    stage1 = SWORD_BACK(0)
+    stage2 = SPARK_BACK(0)
+    stage3 = BOMBER_BACK(0)
+
+    game_world.add_object(stage2, 0)
+    game_world.add_object(kirby, 1)
 
 def exit():
     game_world.clear()
