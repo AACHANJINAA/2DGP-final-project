@@ -1,116 +1,239 @@
-from pico2d import *
+from pico2d import*
+import game_framework
 
-class Monster:
-    def __init__(self):
-        self.x, self.y = 400, 100
-        self.kx, self.ky = 70, 55
-        self.dir_x = 1
-        self.dir_y = 1
+class IDLE1:
+    @staticmethod
+    def enter(self, event):
         self.frame = 0
-        self.cnt = 0
-        self.s_time = 0.1
-        self.b_time = 0.1
-        self.s_dis = 3
+        self.dir = -1
 
-        self.basic_monster_move = load_image('basic_monster.png')
-        self.sword_monster_move = load_image('sword_monster.png')
-        self.beam_monster_move = load_image('beam_monster.png')
+    @staticmethod
+    def exit(self, event):
+        pass
+    @staticmethod
+    def do(self):
+        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
+        self.x += self.dir * RUN_SPEED_PPS * game_framework.frame_time / 2
+        if self.x < 100 or self.x > 700:
+            self.dir *= -1
 
-        self.basic_appear = False
-        self.sword_appear = False
-        self.beam_appear = True
+    @staticmethod
+    def draw(self):
+        if self.dir == -1:
+            self.Idle.clip_composite_draw(int(self.frame) * 22, 0, 22, 19,
+                                          0.0, '', self.x, self.y, self.kx, self.ky)
+        else:
+            self.Idle.clip_composite_draw(int(self.frame) * 22, 0, 22, 19,
+                                          0.0, 'h', self.x, self.y, self.kx, self.ky)
+
+class IDLE2:
+    @staticmethod
+    def enter(self, event):
+        self.frame = 0
+        self.dir = -1
+
+    @staticmethod
+    def exit(self, event):
+        pass
+    @staticmethod
+    def do(self):
+        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 3
+        self.x += self.dir * RUN_SPEED_PPS * game_framework.frame_time / 2
+        if self.x < 100 or self.x > 700:
+            self.dir *= -1
+
+    @staticmethod
+    def draw(self):
+        if self.dir == -1:
+            self.Idle.clip_composite_draw(int(self.frame) * 27, 0, 27, 23,
+                                          0.0, 'h', self.x, self.y, self.kx, self.ky)
+        else:
+            self.Idle.clip_composite_draw(int(self.frame) * 27, 0, 27, 23,
+                                          0.0, '', self.x, self.y, self.kx, self.ky)
+
+class IDLE3:
+    @staticmethod
+    def enter(self, event):
+        self.frame = 0
+        self.dir = -1
+
+    @staticmethod
+    def exit(self, event):
+        pass
+    @staticmethod
+    def do(self):
+        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 2
+        self.x += self.dir * RUN_SPEED_PPS * game_framework.frame_time / 2
+        if self.x < 100 or self.x > 700:
+            self.dir *= -1
+
+    @staticmethod
+    def draw(self):
+        if self.dir == -1:
+            self.Idle.clip_composite_draw(int(self.frame) * 22, 0, 22, 19,
+                                          0.0, 'h', self.x, self.y, self.kx, self.ky)
+        else:
+            self.Idle.clip_composite_draw(int(self.frame) * 22, 0, 22, 19,
+                                          0.0, '', self.x, self.y, self.kx, self.ky)
+
+class IDLE4:
+    @staticmethod
+    def enter(self, event):
+        self.frame = 0
+        self.dir = -1
+
+    @staticmethod
+    def exit(self, event):
+        pass
+    @staticmethod
+    def do(self):
+        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 3
+        self.x += self.dir * RUN_SPEED_PPS * game_framework.frame_time / 2
+        if self.x < 100 or self.x > 700:
+            self.dir *= -1
+
+    @staticmethod
+    def draw(self):
+        if self.dir == -1:
+            self.Idle.clip_composite_draw(int(self.frame) * 22, 0, 22, 26,
+                                          0.0, 'h', self.x, self.y, self.kx, self.ky)
+        else:
+            self.Idle.clip_composite_draw(int(self.frame) * 22, 0, 22, 26,
+                                          0.0, '', self.x, self.y, self.kx, self.ky)
+
+PIXEL_PER_METER = (10.0 / 0.3) # 10 pixel 30 cm
+RUN_SPEED_KMPH = 20.0 # Km / Hour
+RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
+RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
+RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
+
+TIME_PER_ACTION = 2.0
+ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
+FRAMES_PER_ACTION = 8
+
+class BASIC_MONSTER:
+    def __init__(self):
+        self.x, self.y = 700, 100
+        self.kx, self.ky = 70, 55
+        self.frame = 0
+        self.dir = -1
+
+        self.event_que = []
+        self.cur_state = IDLE1
+        self.cur_state.enter(self, None)
+
+        self.Idle = load_image('basic_monster/basic_monster.png')
 
     def update(self):
-        if self.basic_appear:
-            self.x += self.dir_x * 5
-            self.frame = (self.frame + 1) % 4
-            self.cnt = (self.cnt + 1) % 64
-            delay(0.1)
-            if self.cnt == 0:
-                if self.dir_x == 1 and self.dir_y == 1:
-                    self.dir_x = -1
-                    self.dir_y = 0
-                elif self.dir_x == -1 and self.dir_y == 0:
-                    self.dir_x = 1
-                    self.dir_y = 1
+        self.cur_state.do(self)
 
-        if self.sword_appear:
-            self.x += self.dir_x * self.s_dis
-            self.frame = (self.frame + 1) % 3
-            self.cnt = (self.cnt + 1) % 9
-            delay(self.s_time)
-            if self.frame == 0:
-                self.s_time = 0.2
-                self.s_dis = 3
-            elif self.frame == 1:
-                self.s_time = 0.1
-                self.s_dis = 20
-            elif self.frame == 2:
-                self.s_time = 0.4
-                self.s_dis = 10
+        if self.event_que:
+            event = self.event_que.pop()
+            self.cur_state.exit(self, event)
 
-            if self.cnt == 0:
-                if self.dir_x == 1 and self.dir_y == 1:
-                    self.dir_x = -1
-                    self.dir_y = 0
-                elif self.dir_x == -1 and self.dir_y == 0:
-                    self.dir_x = 1
-                    self.dir_y = 1
-
-        if self.beam_appear:
-            self.x += self.dir_x * 10
-            self.frame = (self.frame + 1) % 4
-            self.cnt = (self.cnt + 1) % 9
-            delay(self.b_time)
-            if self.frame == 3:
-                self.b_time = 0.3
-            else:
-                self.b_time = 0.1
-            if self.cnt == 0:
-                if self.dir_x == 1 and self.dir_y == 1:
-                    self.dir_x = -1
-                    self.dir_y = 0
-                elif self.dir_x == -1 and self.dir_y == 0:
-                    self.dir_x = 1
-                    self.dir_y = 1
+            self.cur_state.enter(self, event)
 
     def draw(self):
-        if self.basic_appear:
-            self.basic_monster_move.clip_draw(self.frame * self.kx, self.ky - self.dir_y * self.ky,
-                                              self.kx, self.ky, self.x, self.y)
-        if self.sword_appear:
-            self.sword_monster_move.clip_draw(self.frame * self.kx, self.ky - self.dir_y * self.ky,
-                                              self.kx, self.ky, self.x, self.y)
-        if self.beam_appear:
-            self.beam_monster_move.clip_draw(self.frame * self.kx, self.ky - self.dir_y * self.ky,
-                                              self.kx, self.ky, self.x, self.y)
+        self.cur_state.draw(self)
 
-def handle_events():
-    global running
-    events = get_events()
-    for event in events:
-        if event.type == SDL_QUIT:
-            running = False
-            close_canvas()
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
-            running = False
-            close_canvas()
+    def add_event(self, event):
+        self.event_que.insert(0, event)
 
-open_canvas(800, 400)
+    def handle_event(self, event):
+        pass
 
-monster = Monster()
-running = True
+class SWORD_MONSTER:
+    def __init__(self):
+        self.x, self.y = 700, 100
+        self.kx, self.ky = 70, 55
+        self.frame = 0
+        self.dir = -1
 
-while running:
-    clear_canvas()
-    handle_events()
+        self.event_que = []
+        self.cur_state = IDLE2
+        self.cur_state.enter(self, None)
 
-    monster.update()
+        self.Idle = load_image('basic_monster/sword_monster.png')
 
-    monster.draw()
+    def update(self):
+        self.cur_state.do(self)
 
-    update_canvas()
+        if self.event_que:
+            event = self.event_que.pop()
+            self.cur_state.exit(self, event)
 
-    delay(0.05)
+            self.cur_state.enter(self, event)
 
-close_canvas()
+    def draw(self):
+        self.cur_state.draw(self)
+
+    def add_event(self, event):
+        self.event_que.insert(0, event)
+
+    def handle_event(self, event):
+        pass
+
+class SPARK_MONSTER:
+    def __init__(self):
+        self.x, self.y = 700, 100
+        self.kx, self.ky = 70, 55
+        self.frame = 0
+        self.dir = -1
+
+        self.event_que = []
+        self.cur_state = IDLE3
+        self.cur_state.enter(self, None)
+
+        self.Idle = load_image('basic_monster/spark_monster.png')
+
+    def update(self):
+        self.cur_state.do(self)
+
+        if self.event_que:
+            event = self.event_que.pop()
+            self.cur_state.exit(self, event)
+
+            self.cur_state.enter(self, event)
+
+    def draw(self):
+        self.cur_state.draw(self)
+
+    def add_event(self, event):
+        self.event_que.insert(0, event)
+
+    def handle_event(self, event):
+        pass
+
+class BOMBER_MONSTER:
+    def __init__(self):
+        self.x, self.y = 700, 100
+        self.kx, self.ky = 70, 55
+        self.frame = 0
+        self.dir = -1
+
+        self.event_que = []
+        self.cur_state = IDLE4
+        self.cur_state.enter(self, None)
+
+        self.Idle = load_image('basic_monster/bomber_monster.png')
+
+    def update(self):
+        self.cur_state.do(self)
+
+        if self.event_que:
+            event = self.event_que.pop()
+            self.cur_state.exit(self, event)
+
+            self.cur_state.enter(self, event)
+
+    def draw(self):
+        self.cur_state.draw(self)
+
+    def add_event(self, event):
+        self.event_que.insert(0, event)
+
+    def handle_event(self, event):
+        pass
+
+
+
