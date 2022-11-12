@@ -99,9 +99,6 @@ class SKILL:
             self.mp = 0
             self.pos_boom = self.x
             self.move_boom = 0
-        elif event == QD:
-            if int(self.frame) == 0:
-                self.add_event(TIMER)
 
     def exit(self, event):
         pass
