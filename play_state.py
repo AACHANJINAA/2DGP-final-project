@@ -8,12 +8,12 @@ from move_spark import Spark_Kirby
 from move_bomber import Bomber_Kirby
 from Background import SWORD_BACK, SPARK_BACK, BOMBER_BACK
 from Background import SWORD_BOSS, SPARK_BOSS, BOMBER_BOSS, LAST_BOSS
+from boss import BOSS1
 
-stage = None
-kirby = None
-sword_kirby = None
-spark_kirby = None
-bomber_kirby = None
+kirby, sword_kirby, spark_kirby, bomber_kirby = None, None, None, None
+stage1, stage2, stage3 = None, None, None
+stage4, stage5, stage6, stage7 = None, None, None, None
+boss1, boss2, boss3, boss4 = None, None, None, None
 
 def handle_events():
     events = get_events()
@@ -32,16 +32,15 @@ def enter():
     global kirby, sword_kirby, spark_kirby, bomber_kirby
     global stage1, stage2, stage3
     global stage4, stage5, stage6, stage7
+    global boss1
     
-    a, b = None, None
-    
-    name = 'sword'
-    
+    a, b, c = None, None, None
+
     kirby = Kirby()
     sword_kirby = Sword_Kirby()
     spark_kirby = Spark_Kirby()
     bomber_kirby = Bomber_Kirby()
-    
+
     stage1 = SWORD_BACK(0)
     stage2 = SPARK_BACK(0)
     stage3 = BOMBER_BACK(0)
@@ -51,6 +50,10 @@ def enter():
     stage6 = BOMBER_BOSS(0)
     stage7 = LAST_BOSS(0)
 
+    boss1 = BOSS1()
+
+    name = 'bomber'
+
     if name == 'sword':
         b = sword_kirby
         a = stage4
@@ -58,6 +61,7 @@ def enter():
         b = spark_kirby
         a = stage5
     elif name == 'bomber':
+        c = boss1
         b = bomber_kirby
         a = stage6
     elif name == 'last':
@@ -65,6 +69,7 @@ def enter():
         a = stage7
     
     game_world.add_object(a, 0)
+    game_world.add_object(c, 1)
     game_world.add_object(b, 1)
 
 def exit():

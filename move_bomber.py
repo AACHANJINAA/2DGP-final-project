@@ -99,6 +99,10 @@ class SKILL:
             self.mp = 0
             self.pos_boom = self.x
             self.move_boom = 0
+        elif event == QD:
+            if int(self.frame) == 0:
+                self.add_event(TIMER)
+
     def exit(self, event):
         pass
 
@@ -114,9 +118,6 @@ class SKILL:
         else:
             self.move_pos = 24
             self.mp = 0
-        # if int(self.frame) == 0:
-        #     self.add_event(TIMER)
-
 
     def draw(self):
         if self.face_dir_x == -1:
@@ -135,7 +136,7 @@ next_state = {
     RUN:   {RU: IDLE, LU: IDLE, RD: IDLE, LD: IDLE, JD: JUMP, TIMER: IDLE,  AD: SKILL},
     SLEEP: {RU: RUN,  LU: RUN,  RD: RUN,  LD: RUN,  JD: IDLE, TIMER: IDLE,  AD: IDLE},
     JUMP:  {RU: JUMP, LU: JUMP, RD: JUMP, LD: JUMP, JD: JUMP, TIMER: IDLE,  AD: JUMP},
-    SKILL: {RU: SKILL, LU: SKILL, RD: SKILL, LD: SKILL, JD: SKILL, TIMER: IDLE,  AD: SKILL}
+    SKILL: {RU: RUN, LU: RUN, RD: RUN, LD: RUN, JD: JUMP, TIMER: IDLE,  AD: SKILL}
 }
 PIXEL_PER_METER = (10.0 / 0.3) # 10 pixel 30 cm
 RUN_SPEED_KMPH = 20.0 # Km / Hour
