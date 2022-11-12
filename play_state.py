@@ -32,12 +32,16 @@ def enter():
     global kirby, sword_kirby, spark_kirby, bomber_kirby
     global stage1, stage2, stage3
     global stage4, stage5, stage6, stage7
-
+    
+    a, b = None, None
+    
+    name = 'sword'
+    
     kirby = Kirby()
     sword_kirby = Sword_Kirby()
     spark_kirby = Spark_Kirby()
     bomber_kirby = Bomber_Kirby()
-
+    
     stage1 = SWORD_BACK(0)
     stage2 = SPARK_BACK(0)
     stage3 = BOMBER_BACK(0)
@@ -47,8 +51,21 @@ def enter():
     stage6 = BOMBER_BOSS(0)
     stage7 = LAST_BOSS(0)
 
-    game_world.add_object(stage2, 0)
-    game_world.add_object(sword_kirby, 1)
+    if name == 'sword':
+        b = sword_kirby
+        a = stage4
+    elif name == 'spark':
+        b = spark_kirby
+        a = stage5
+    elif name == 'bomber':
+        b = bomber_kirby
+        a = stage6
+    elif name == 'last':
+        b = kirby
+        a = stage7
+    
+    game_world.add_object(a, 0)
+    game_world.add_object(b, 1)
 
 def exit():
     game_world.clear()
