@@ -43,6 +43,31 @@ class IDLE2:
             self.Idle.clip_composite_draw(int(self.frame) * 80, 0, 80, 64,
                                           0.0, '', self.x, self.y, self.kx, self.ky)
 
+class IDLE3:
+    @staticmethod
+    def enter(self, event):
+        self.frame = 0
+        self.dir = -1
+
+    @staticmethod
+    def exit(self, event):
+        pass
+    @staticmethod
+    def do(self):
+        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 3
+        self.x += self.dir * RUN_SPEED_PPS * game_framework.frame_time
+        if self.x < 100 or self.x > 700:
+            self.dir *= -1
+
+    @staticmethod
+    def draw(self):
+        if self.dir == -1:
+            self.Idle.clip_composite_draw(int(self.frame) * 48, 0, 48, 56,
+                                          0.0, 'h', self.x, self.y, self.kx, self.ky)
+        else:
+            self.Idle.clip_composite_draw(int(self.frame) * 48, 0, 48, 56,
+                                          0.0, '', self.x, self.y, self.kx, self.ky)
+
 PIXEL_PER_METER = (10.0 / 0.3) # 10 pixel 30 cm
 RUN_SPEED_KMPH = 20.0 # Km / Hour
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
@@ -113,4 +138,36 @@ class BOSS2:
 
     def handle_event(self, event):
         pass
+
+class BOSS3:
+    def __init__(self):
+        self.x, self.y = 700, 100
+        self.kx, self.ky = 96, 112
+        self.frame = 0
+        self.dir = -1
+
+        self.event_que = []
+        self.cur_state = IDLE3
+        self.cur_state.enter(self, None)
+
+        self.Idle = load_image('boss/sword_boss.png')
+
+    def update(self):
+        self.cur_state.do(self)
+
+        if self.event_que:
+            event = self.event_que.pop()
+            self.cur_state.exit(self, event)
+
+            self.cur_state.enter(self, event)
+
+    def draw(self):
+        self.cur_state.draw(self)
+
+    def add_event(self, event):
+        self.event_que.insert(0, event)
+
+    def handle_event(self, event):
+        pass
+
 

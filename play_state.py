@@ -8,7 +8,7 @@ from move_spark import Spark_Kirby
 from move_bomber import Bomber_Kirby
 from Background import SWORD_BACK, SPARK_BACK, BOMBER_BACK
 from Background import SWORD_BOSS, SPARK_BOSS, BOMBER_BOSS, LAST_BOSS
-from boss import BOSS1, BOSS2
+from boss import BOSS1, BOSS2, BOSS3
 
 kirby, sword_kirby, spark_kirby, bomber_kirby = None, None, None, None
 stage1, stage2, stage3 = None, None, None
@@ -52,10 +52,12 @@ def enter():
 
     boss1 = BOSS1()
     boss2 = BOSS2()
+    boss3 = BOSS3()
 
-    name = 'spark'
+    name = 'sword'
 
     if name == 'sword':
+        c = boss3
         b = sword_kirby
         a = stage4
     elif name == 'spark':
