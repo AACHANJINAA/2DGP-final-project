@@ -57,14 +57,23 @@ def enter():
     name = 'sword'
 
     if name == 'sword':
+        b = sword_kirby
+        a = stage1
+    elif name == 'spark':
+        b = spark_kirby
+        a = stage2
+    elif name == 'bomber':
+        b = bomber_kirby
+        a = stage5
+    elif name == 'sword_boss':
         c = boss3
         b = sword_kirby
         a = stage4
-    elif name == 'spark':
+    elif name == 'spark_boss':
         c = boss2
         b = spark_kirby
         a = stage5
-    elif name == 'bomber':
+    elif name == 'bomber_boss':
         c = boss1
         b = bomber_kirby
         a = stage6
