@@ -2,10 +2,11 @@ from pico2d import*
 import game_framework
 from move_kirby import SLEEP
 
-RD, LD, RU, LU, JD, TIMER = range(6)
-event_name = ['RD', 'LD', 'RU', 'LU', 'JD', 'TIMER']
+RD, LD, RU, LU, JD, AD, TIMER = range(7)
+event_name = ['RD', 'LD', 'RU', 'LU', 'JD', 'AD', 'TIMER']
 
 key_event_table = {
+    (SDL_KEYDOWN, SDLK_a): AD,
     (SDL_KEYDOWN, SDLK_UP): JD,
     (SDL_KEYDOWN, SDLK_RIGHT): RD,
     (SDL_KEYDOWN, SDLK_LEFT): LD,
@@ -91,11 +92,50 @@ class JUMP:
             self.Jump.clip_composite_draw(int(self.frame) * 28, 0, 28, 34,
                                            0.0, '', self.x, self.y, self.kx, self.ky)
 
+class SKILL:
+    def enter(self, event):
+        if event == AD:
+            self.move_pos = 24
+            self.mp = 0
+            self.pos_boom = self.x
+            self.move_boom = 0
+    def exit(self, event):
+        pass
+
+    def do(self):
+        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 3
+        self.move_boom += 2 * RUN_SPEED_PPS * game_framework.frame_time
+        if int(self.frame) == 1:
+            self.move_pos = 33
+            self.mp = 24
+        elif int(self.frame) == 2:
+            self.move_pos = 38
+            self.mp = 24 + 33
+        else:
+            self.move_pos = 24
+            self.mp = 0
+        # if int(self.frame) == 0:
+        #     self.add_event(TIMER)
+
+
+    def draw(self):
+        if self.face_dir_x == -1:
+            self.Effect1.clip_composite_draw(int(self.frame + 1) * 23, 0, 23, 29,
+                                             0.0, 'h', self.pos_boom - self.move_boom, self.y, self.kx, self.ky)
+            self.Skill.clip_composite_draw(self.mp, 0, self.move_pos, 34,
+                                           0.0, 'h', self.x, self.y, self.kx, self.ky)
+        else:
+            self.Effect1.clip_composite_draw(int(self.frame + 1) * 23, 0, 23, 29,
+                                             0.0, '', self.pos_boom + self.move_boom, self.y, self.kx, self.ky)
+            self.Skill.clip_composite_draw(self.mp, 0, self.move_pos, 34,
+                                           0.0, '', self.x, self.y, self.kx, self.ky)
+
 next_state = {
-    IDLE:  {RU: RUN,  LU: RUN,  RD: RUN,  LD: RUN,  JD: JUMP, TIMER: SLEEP},
-    RUN:   {RU: IDLE, LU: IDLE, RD: IDLE, LD: IDLE, JD: JUMP, TIMER: IDLE},
-    SLEEP: {RU: RUN,  LU: RUN,  RD: RUN,  LD: RUN,  JD: IDLE, TIMER: IDLE},
-    JUMP:  {RU: JUMP, LU: JUMP, RD: JUMP, LD: JUMP, JD: JUMP, TIMER: IDLE}
+    IDLE:  {RU: RUN,  LU: RUN,  RD: RUN,  LD: RUN,  JD: JUMP, TIMER: SLEEP,  AD: SKILL},
+    RUN:   {RU: IDLE, LU: IDLE, RD: IDLE, LD: IDLE, JD: JUMP, TIMER: IDLE,  AD: SKILL},
+    SLEEP: {RU: RUN,  LU: RUN,  RD: RUN,  LD: RUN,  JD: IDLE, TIMER: IDLE,  AD: IDLE},
+    JUMP:  {RU: JUMP, LU: JUMP, RD: JUMP, LD: JUMP, JD: JUMP, TIMER: IDLE,  AD: JUMP},
+    SKILL: {RU: SKILL, LU: SKILL, RD: SKILL, LD: SKILL, JD: SKILL, TIMER: IDLE,  AD: SKILL}
 }
 PIXEL_PER_METER = (10.0 / 0.3) # 10 pixel 30 cm
 RUN_SPEED_KMPH = 20.0 # Km / Hour
@@ -115,6 +155,10 @@ class Bomber_Kirby:
         self.frame = 0
         self.timer = 0
         self.s_timer = 0
+        self.move_pos = 0
+        self.mp = 0
+        self.pos_boom = 0
+        self.move_boom = 0
 
         self.event_que = []
         self.cur_state = IDLE
@@ -124,6 +168,8 @@ class Bomber_Kirby:
         self.Run = load_image('kirby(bomber)/kirby(bomber)_run.png')
         self.Jump = load_image('kirby(bomber)/kirby(bomber)_jump.png')
         self.Sleep = load_image('kirby/kirby_sleep.png')
+        self.Skill = load_image('kirby(bomber)/kirby(bomber)_skill.png')
+        self.Effect1 = load_image('kirby(bomber)/kirby(bomber)_skill_effect1.png')
 
     def update(self):
         self.cur_state.do(self)

@@ -41,7 +41,7 @@ def enter():
     stage3 = BOMBER_BACK(0)
 
     game_world.add_object(stage2, 0)
-    game_world.add_object(kirby, 1)
+    game_world.add_object(bomber_kirby, 1)
 
 def exit():
     game_world.clear()
