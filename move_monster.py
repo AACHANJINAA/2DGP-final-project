@@ -155,7 +155,8 @@ class SWORD_MONSTER:
         self.cur_state = IDLE2
         self.cur_state.enter(self, None)
 
-        self.Idle = load_image('basic_monster/sword_monster.png')
+        self.Idle = load_image('basic_monster/sword/sword_monster.png')
+        self.Hit = load_image('basic_monster/sword/sword_monster_hit.png')
 
     def update(self):
         self.cur_state.do(self)
