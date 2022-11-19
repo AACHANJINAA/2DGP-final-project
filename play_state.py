@@ -11,12 +11,12 @@ from Background import SWORD_BOSS, SPARK_BOSS, BOMBER_BOSS, LAST_BOSS
 from boss import BOSS1, BOSS2, BOSS3, BOSS4
 from move_monster import BASIC_MONSTER, SWORD_MONSTER, SPARK_MONSTER, BOMBER_MONSTER
 
-kirby, sword_kirby, spark_kirby, bomber_kirby = None, None, None, None
+kirby1, kirby2, kirby3, kirby4 = None, None, None, None
 stage1, stage2, stage3 = None, None, None
 stage4, stage5, stage6, stage7 = None, None, None, None
 monster1, monster2, monster3, monster4 = None, None, None, None
 boss1, boss2, boss3, boss4 = None, None, None, None
-
+a, b, c = None, None, None
 
 def handle_events():
     events = get_events()
@@ -26,24 +26,23 @@ def handle_events():
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
             game_framework.quit()
         else:
-            kirby.handle_event(event)
-            sword_kirby.handle_event(event)
-            spark_kirby.handle_event(event)
-            bomber_kirby.handle_event(event)
+            kirby1.handle_event(event)
+            kirby2.handle_event(event)
+            kirby3.handle_event(event)
+            kirby4.handle_event(event)
 
 def enter():
-    global kirby, sword_kirby, spark_kirby, bomber_kirby
+    global kirby1, kirby2, kirby3, kirby4
     global stage1, stage2, stage3
     global stage4, stage5, stage6, stage7
     global boss1, boss2, boss3, boss4
     global monster1, monster2, monster3, monster4
-    
-    a, b, c = None, None, None
+    global a, b, c
 
-    kirby = Kirby()
-    sword_kirby = Sword_Kirby()
-    spark_kirby = Spark_Kirby()
-    bomber_kirby = Bomber_Kirby()
+    kirby1 = Kirby()
+    kirby2 = Sword_Kirby()
+    kirby3 = Spark_Kirby()
+    kirby4 = Bomber_Kirby()
 
     stage1 = SWORD_BACK(0)
     stage2 = SPARK_BACK(0)
@@ -65,61 +64,28 @@ def enter():
     boss3 = BOSS3()
     boss4 = BOSS4()
 
-    name = 'bomber'
+    a = stage1
+    b = monster1
+    c = kirby4
 
-    if name == 'sword':
-        c = monster2
-        b = sword_kirby
-        a = stage1
-    elif name == 'spark':
-        c = monster3
-        b = spark_kirby
-        a = stage2
-    elif name == 'bomber':
-        c = monster4
-        b = bomber_kirby
-        a = stage5
-    elif name == 'sword_boss':
-        c = boss3
-        b = sword_kirby
-        a = stage4
-    elif name == 'spark_boss':
-        c = boss2
-        b = spark_kirby
-        a = stage5
-    elif name == 'bomber_boss':
-        c = boss1
-        b = bomber_kirby
-        a = stage6
-    elif name == 'last':
-        c = boss4
-        b = kirby
-        a = stage7
-    
     game_world.add_object(a, 0)
-    game_world.add_object(c, 1)
-    game_world.add_object(b, 2)
-
+    game_world.add_object(b, 1)
+    game_world.add_object(c, 2)
 def exit():
     game_world.clear()
-
 def update():
     for game_object in game_world.all_objects():
         game_object.update()
     delay(0.01)
-
 def draw_world():
     for game_object in game_world.all_objects():
         game_object.draw()
-
 def draw():
     clear_canvas()
     draw_world()
     update_canvas()
-
 def pause():
     pass
-
 def resume():
     pass
 def test_self():

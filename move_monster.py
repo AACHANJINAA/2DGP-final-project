@@ -112,6 +112,7 @@ ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 8
 
 class BASIC_MONSTER:
+
     def __init__(self):
         self.x, self.y = 700, 100
         self.kx, self.ky = 70, 55
