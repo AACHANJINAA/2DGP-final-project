@@ -187,7 +187,8 @@ class SPARK_MONSTER:
         self.cur_state = IDLE3
         self.cur_state.enter(self, None)
 
-        self.Idle = load_image('basic_monster/spark_monster.png')
+        self.Idle = load_image('basic_monster/spark/spark_monster.png')
+        self.Hit = load_image('basic_monster/spark/spark_monster_hit.png')
 
     def update(self):
         self.cur_state.do(self)
