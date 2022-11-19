@@ -58,7 +58,7 @@ def enter():
     monster3 = SPARK_MONSTER()
     monster4 = BOMBER_MONSTER()
 
-    # 봄버 스파크 칼 디디디마왕순
+    # 소드 스파크 봄버 디디디마왕순
     boss1 = BOSS1()
     boss2 = BOSS2()
     boss3 = BOSS3()
