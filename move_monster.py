@@ -219,7 +219,6 @@ class BOMBER_MONSTER:
         self.cur_state = IDLE4
         self.cur_state.enter(self, None)
 
-        self.Idle = load_image('basic_monster/bomber_monster.png')
         self.Idle = load_image('basic_monster/bomber/bomber_monster.png')
         self.Hit = load_image('basic_monster/bomber/bomber_monster_hit.png')
 
