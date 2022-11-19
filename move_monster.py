@@ -123,7 +123,8 @@ class BASIC_MONSTER:
         self.cur_state = IDLE1
         self.cur_state.enter(self, None)
 
-        self.Idle = load_image('basic_monster/basic_monster.png')
+        self.Idle = load_image('basic_monster/basic/basic_monster.png')
+        self.Hit = load_image('basic_monster/basic/basic_monster_hit.png')
 
     def update(self):
         self.cur_state.do(self)
@@ -217,6 +218,8 @@ class BOMBER_MONSTER:
         self.cur_state.enter(self, None)
 
         self.Idle = load_image('basic_monster/bomber_monster.png')
+        self.Idle = load_image('basic_monster/bomber/bomber_monster.png')
+        self.Hit = load_image('basic_monster/bomber/bomber_monster_hit.png')
 
     def update(self):
         self.cur_state.do(self)
