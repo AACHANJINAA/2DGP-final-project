@@ -15,7 +15,6 @@ class SWORD_BACK:
 
     def update(self):
         pass
-
 class SPARK_BACK:
     def __init__(self, x=0):
         self.image = load_image('basic_stage/spark_basic_stage.png')
@@ -27,7 +26,6 @@ class SPARK_BACK:
 
     def update(self):
         pass
-
 class BOMBER_BACK:
     def __init__(self, x=0):
         self.image = load_image('basic_stage/bomber_basic_stage.png')
@@ -39,8 +37,7 @@ class BOMBER_BACK:
 
     def update(self):
         pass
-
-class SWORD_BOSS:
+class SWORD_BOSS_BACK:
     def __init__(self, x=0):
         self.image = load_image('boss_stage/sword_boss_stage.png')
         self.x = x
@@ -51,8 +48,7 @@ class SWORD_BOSS:
 
     def update(self):
         pass
-
-class SPARK_BOSS:
+class SPARK_BOSS_BACK:
     def __init__(self, x=0):
         self.image = load_image('boss_stage/spark_boss_stage.png')
         self.x = x
@@ -63,8 +59,7 @@ class SPARK_BOSS:
 
     def update(self):
         pass
-
-class BOMBER_BOSS:
+class BOMBER_BOSS_BACK:
     def __init__(self, x=0):
         self.image = load_image('boss_stage/bomber_boss_stage.png')
         self.x = x
@@ -75,8 +70,7 @@ class BOMBER_BOSS:
 
     def update(self):
         pass
-
-class LAST_BOSS:
+class LAST_BOSS_BACK:
     def __init__(self, x=0):
         self.image = load_image('boss_stage/last_boss_stage.png')
         self.x = x

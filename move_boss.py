@@ -101,7 +101,7 @@ RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 TIME_PER_ACTION = 2.0
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 8
-class BOSS1:
+class SWORD_BOSS:
     def __init__(self):
         self.x, self.y = 700, 100
         self.kx, self.ky = 96, 112
@@ -131,7 +131,7 @@ class BOSS1:
 
     def handle_event(self, event):
         pass
-class BOSS2:
+class SPARK_BOSS:
     def __init__(self):
         self.x, self.y = 700, 100
         self.kx, self.ky = 150, 120
@@ -161,7 +161,7 @@ class BOSS2:
 
     def handle_event(self, event):
         pass
-class BOSS3:
+class BOMBER_BOSS:
     def __init__(self):
         self.x, self.y = 710, 400 // 2
         self.kx, self.ky = 200, 400
@@ -190,7 +190,7 @@ class BOSS3:
 
     def handle_event(self, event):
         pass
-class BOSS4:
+class LAST_BOSS:
     def __init__(self):
         self.x, self.y = 700, 130
         self.kx, self.ky = 96, 112

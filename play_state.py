@@ -7,8 +7,8 @@ from move_sword import Sword_Kirby
 from move_spark import Spark_Kirby
 from move_bomber import Bomber_Kirby
 from Background import SWORD_BACK, SPARK_BACK, BOMBER_BACK
-from Background import SWORD_BOSS, SPARK_BOSS, BOMBER_BOSS, LAST_BOSS
-from boss import BOSS1, BOSS2, BOSS3, BOSS4
+from Background import SWORD_BOSS_BACK, SPARK_BOSS_BACK, BOMBER_BOSS_BACK, LAST_BOSS_BACK
+from move_boss import SWORD_BOSS, SPARK_BOSS, BOMBER_BOSS, LAST_BOSS
 from move_monster import BASIC_MONSTER, SWORD_MONSTER, SPARK_MONSTER, BOMBER_MONSTER
 
 kirby1, kirby2, kirby3, kirby4 = None, None, None, None
@@ -48,10 +48,10 @@ def enter():
     stage2 = SPARK_BACK(0)
     stage3 = BOMBER_BACK(0)
 
-    stage4 = SWORD_BOSS(0)
-    stage5 = SPARK_BOSS(0)
-    stage6 = BOMBER_BOSS(0)
-    stage7 = LAST_BOSS(0)
+    stage4 = SWORD_BOSS_BACK(0)
+    stage5 = SPARK_BOSS_BACK(0)
+    stage6 = BOMBER_BOSS_BACK(0)
+    stage7 = LAST_BOSS_BACK(0)
 
     monster1 = BASIC_MONSTER()
     monster2 = SWORD_MONSTER()
@@ -59,14 +59,14 @@ def enter():
     monster4 = BOMBER_MONSTER()
 
     # 소드 스파크 봄버 디디디마왕순
-    boss1 = BOSS1()
-    boss2 = BOSS2()
-    boss3 = BOSS3()
-    boss4 = BOSS4()
+    boss1 = SWORD_BOSS()
+    boss2 = SPARK_BOSS()
+    boss3 = BOMBER_BOSS()
+    boss4 = LAST_BOSS()
 
-    a = stage1
+    a = stage2
     b = monster1
-    c = kirby4
+    c = kirby3
 
     game_world.add_object(a, 0)
     game_world.add_object(b, 1)
