@@ -52,6 +52,7 @@ class Spark_Kirby:
         self.cur_state.draw(self)
         debug_print('PPPP')
         debug_print(f'Face Dir: {self.face_dir_x}, Dir: {self.dir_x}')
+        draw_rectangle(*self.get_bb())
 
     def add_event(self, event):
         self.event_que.insert(0, event)
@@ -60,11 +61,13 @@ class Spark_Kirby:
         if (event.type, event.key) in key_event_table:
             key_event = key_event_table[(event.type, event.key)]
             self.add_event(key_event)
+    def get_bb(self):
+        return self.x - 25, self.y - 25, self.x + 25, self.y + 25
 class IDLE(Spark_Kirby):
     @staticmethod
     def enter(self, event):
         self.dir_x = 0
-        self.timer = 140
+        self.timer = 310
 
     @staticmethod
     def exit(self, event):
@@ -87,19 +90,19 @@ class IDLE(Spark_Kirby):
 class RUN(Spark_Kirby):
     def enter(self, event):
         if event == RD:
-            self.dir_x += 1
+            self.dir_x = 1
         elif event == LD:
-            self.dir_x -= 1
+            self.dir_x = -1
         elif event == RU:
-            self.dir_x -= 1
+            self.dir_x = 0
         elif event == LU:
-            self.dir_x += 1
+            self.dir_x = 0
 
     def exit(self, event):
         self.face_dir_x = self.dir_x
 
     def do(self):
-        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time * 2) % 6
+        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 6
         self.x += self.dir_x * RUN_SPEED_PPS * game_framework.frame_time
         self.x = clamp(0, self.x, 800)
 
@@ -113,8 +116,7 @@ class RUN(Spark_Kirby):
 class JUMP(Spark_Kirby):
     def enter(self, event):
         if event == JD:
-            self.dir_y = 1
-            self.timer = 90
+            self.timer = 310
             self.s_timer = self.timer // 2
     def exit(self, event):
         pass
@@ -122,11 +124,13 @@ class JUMP(Spark_Kirby):
         self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         jump_dis = self.dir_y * RUN_SPEED_PPS * game_framework.frame_time
         self.y += jump_dis
+        self.x += self.face_dir_x / 2
+        self.x = clamp(0, self.x, 800)
         self.timer -= 1
         if self.timer == self.s_timer:
-            self.dir_y *= -1
+            self.dir_y = -1
         elif self.timer == 0:
-            self.dir_y *= -1
+            self.dir_y = 1
             self.add_event(TIMER)
     def draw(self):
         if self.face_dir_x == -1:

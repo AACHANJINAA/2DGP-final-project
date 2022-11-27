@@ -75,7 +75,7 @@ def enter():
 
     a = stage2
     b = monster1
-    c = kirby1
+    c = kirby3
 
     game_world.add_object(a, 0)
     game_world.add_object(b, 1)

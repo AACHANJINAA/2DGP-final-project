@@ -62,7 +62,7 @@ class IDLE(Kirby):
     @staticmethod
     def enter(self, event):
         self.dir_x = 0
-        self.timer = 320
+        self.timer = 310
 
     @staticmethod
     def exit(self, event):
@@ -85,13 +85,13 @@ class IDLE(Kirby):
 class RUN(Kirby):
     def enter(self, event):
         if event == RD:
-            self.dir_x += 1
+            self.dir_x = 1
         elif event == LD:
-            self.dir_x -= 1
+            self.dir_x = -1
         elif event == RU:
-            self.dir_x -= 1
+            self.dir_x = 0
         elif event == LU:
-            self.dir_x += 1
+            self.dir_x = 0
     def exit(self, event):
         self.face_dir_x = self.dir_x
 
@@ -119,6 +119,7 @@ class JUMP(Kirby):
         jump_dis = self.dir_y * RUN_SPEED_PPS * game_framework.frame_time
         self.y += jump_dis
         self.x += self.face_dir_x / 2
+        self.x = clamp(0, self.x, 800)
         self.timer -= 1
         if self.timer == self.s_timer:
             self.dir_y = -1
@@ -135,7 +136,7 @@ class JUMP(Kirby):
 class SKILL(Kirby):
     def enter(self, event):
         if event == AD:
-            self.timer = 320
+            self.timer = 310
     def exit(self, event):
         pass
     def do(self):
@@ -179,7 +180,6 @@ RUN_SPEED_KMPH = 20.0 # Km / Hour
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
-JUMP_SPEED_PPS = RUN_SPEED_PPS * 2.0
 
 TIME_PER_ACTION = 2.0
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
