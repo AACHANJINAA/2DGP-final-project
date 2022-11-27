@@ -18,7 +18,7 @@ class Kirby:
         self.x, self.y = 30, 100
         self.kx, self.ky = 70, 55
         self.face_dir_x, self.dir_x = 1, 0
-        self.dir_y, self.jump_dir_x = 1, 0
+        self.dir_y = 1
         self.frame = 0
         self.timer = 0
         self.s_timer = 0
@@ -110,8 +110,7 @@ class RUN(Kirby):
 class JUMP(Kirby):
     def enter(self, event):
         if event == JD:
-            self.dir_y = 1
-            self.timer = 320
+            self.timer = 310
             self.s_timer = self.timer // 2
     def exit(self, event):
         pass
