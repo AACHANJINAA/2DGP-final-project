@@ -18,7 +18,7 @@ class Kirby:
         self.x, self.y = 30, 100
         self.kx, self.ky = 70, 55
         self.face_dir_x, self.dir_x = 1, 0
-        self.dir_y = 1
+        self.dir_y, self.jump_dir_x = 1, 0
         self.frame = 0
         self.timer = 0
         self.s_timer = 0
@@ -32,10 +32,8 @@ class Kirby:
         self.Jump = load_image('kirby/kirby_jump.png')
         self.SKILL = load_image('kirby/kirby_swallow.png')
         self.Sleep = load_image('kirby/kirby_sleep.png')
-
     def update(self):
         self.cur_state.do(self)
-
         if self.event_que:
             event = self.event_que.pop()
             self.cur_state.exit(self, event)
@@ -45,11 +43,11 @@ class Kirby:
                 print('ERROR', self.cur_state.__name__, ' ', event_name[event])
 
             self.cur_state.enter(self, event)
-
     def draw(self):
         self.cur_state.draw(self)
         debug_print('PPPP')
         debug_print(f'Face Dir: {self.face_dir_x}, Dir: {self.dir_x}')
+        draw_rectangle(*self.get_bb())
 
     def add_event(self, event):
         self.event_que.insert(0, event)
@@ -58,11 +56,13 @@ class Kirby:
         if (event.type, event.key) in key_event_table:
             key_event = key_event_table[(event.type, event.key)]
             self.add_event(key_event)
+    def get_bb(self):
+        return self.x - 25, self.y - 25, self.x + 25, self.y + 25
 class IDLE(Kirby):
     @staticmethod
     def enter(self, event):
         self.dir_x = 0
-        self.timer = 140
+        self.timer = 320
 
     @staticmethod
     def exit(self, event):
@@ -111,7 +111,7 @@ class JUMP(Kirby):
     def enter(self, event):
         if event == JD:
             self.dir_y = 1
-            self.timer = 90
+            self.timer = 320
             self.s_timer = self.timer // 2
     def exit(self, event):
         pass
@@ -119,11 +119,12 @@ class JUMP(Kirby):
         self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 6
         jump_dis = self.dir_y * RUN_SPEED_PPS * game_framework.frame_time
         self.y += jump_dis
+        self.x += self.face_dir_x / 2
         self.timer -= 1
         if self.timer == self.s_timer:
-            self.dir_y *= -1
+            self.dir_y = -1
         elif self.timer == 0:
-            self.dir_y *= -1
+            self.dir_y = 1
             self.add_event(TIMER)
     def draw(self):
         if self.face_dir_x == -1:
@@ -135,7 +136,7 @@ class JUMP(Kirby):
 class SKILL(Kirby):
     def enter(self, event):
         if event == AD:
-            self.timer = 140
+            self.timer = 320
     def exit(self, event):
         pass
     def do(self):
@@ -179,6 +180,7 @@ RUN_SPEED_KMPH = 20.0 # Km / Hour
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
+JUMP_SPEED_PPS = RUN_SPEED_PPS * 2.0
 
 TIME_PER_ACTION = 2.0
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION

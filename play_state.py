@@ -18,6 +18,16 @@ monster1, monster2, monster3, monster4 = None, None, None, None
 boss1, boss2, boss3, boss4 = None, None, None, None
 a, b, c = None, None, None
 
+def collide(a, b):
+    left_a, bottom_a, right_a, top_a = a.get_bb()
+    left_b, bottom_b, right_b, top_b = b.get_bb()
+    if left_a > right_b: return False
+    if right_a < left_b: return False
+    if top_a < bottom_b: return False
+    if bottom_a > top_b: return False
+    return True
+
+
 def handle_events():
     events = get_events()
     for event in events:
@@ -30,7 +40,6 @@ def handle_events():
             kirby2.handle_event(event)
             kirby3.handle_event(event)
             kirby4.handle_event(event)
-
 def enter():
     global kirby1, kirby2, kirby3, kirby4
     global stage1, stage2, stage3
@@ -66,7 +75,7 @@ def enter():
 
     a = stage2
     b = monster1
-    c = kirby3
+    c = kirby1
 
     game_world.add_object(a, 0)
     game_world.add_object(b, 1)
@@ -76,7 +85,12 @@ def exit():
 def update():
     for game_object in game_world.all_objects():
         game_object.update()
-    delay(0.01)
+    if collide(c, b):
+        print("COLLISION boy:ball")
+        if c.x > b.x:
+            c.x += 50
+        else:
+            c.x -= 50
 def draw_world():
     for game_object in game_world.all_objects():
         game_object.draw()
