@@ -69,6 +69,8 @@ class SWORD_MONSTER:
 
     def handle_event(self, event):
         pass
+    def get_bb(self):
+        return self.x - 25, self.y - 25, self.x + 25, self.y + 25
 class SPARK_MONSTER:
     def __init__(self):
         self.x, self.y = 700, 100
@@ -100,6 +102,8 @@ class SPARK_MONSTER:
 
     def handle_event(self, event):
         pass
+    def get_bb(self):
+        return self.x - 25, self.y - 25, self.x + 25, self.y + 25
 class BOMBER_MONSTER:
     def __init__(self):
         self.x, self.y = 700, 100
@@ -131,6 +135,9 @@ class BOMBER_MONSTER:
 
     def handle_event(self, event):
         pass
+
+    def get_bb(self):
+        return self.x - 25, self.y - 25, self.x + 25, self.y + 25
 class IDLE_BASIC_MONSTER:
     @staticmethod
     def enter(self, event):

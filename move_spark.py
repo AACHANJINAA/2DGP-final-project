@@ -123,8 +123,8 @@ class JUMP(Spark_Kirby):
     def do(self):
         self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
         jump_dis = self.dir_y * RUN_SPEED_PPS * game_framework.frame_time
-        self.y += jump_dis
-        self.x += self.face_dir_x / 2
+        self.y += jump_dis * 1.5
+        self.x += self.face_dir_x / 1.5
         self.x = clamp(0, self.x, 800)
         self.timer -= 1
         if self.timer == self.s_timer:
@@ -142,7 +142,7 @@ class JUMP(Spark_Kirby):
 class SKILL(Spark_Kirby):
     def enter(self, event):
         if event == AD:
-            self.timer = 200
+            self.timer = 310
         elif event == AU:
             self.add_event(TIMER)
     def exit(self, event):

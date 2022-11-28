@@ -74,8 +74,8 @@ def enter():
     boss4 = LAST_BOSS()
 
     a = stage2
-    b = monster1
-    c = kirby3
+    b = monster3
+    c = kirby4
 
     game_world.add_object(a, 0)
     game_world.add_object(b, 1)
@@ -86,7 +86,7 @@ def update():
     for game_object in game_world.all_objects():
         game_object.update()
     if collide(c, b):
-        print("COLLISION boy:ball")
+        print("COLLISION kirby:monster")
         if c.x > b.x:
             c.x += 50
         else:
