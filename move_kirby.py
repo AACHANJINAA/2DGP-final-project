@@ -215,7 +215,7 @@ class SKILL:
 
     @staticmethod
     def exit(self, event):
-        self.mode = 3
+        self.mode = 0
 
     @staticmethod
     def do(self):
@@ -362,6 +362,7 @@ class Kirby:
                        load_image('kirby(spark)/kirby(spark)_skill_effect.png'),
                        load_image('kirby(bomber)/kirby(bomber)_skill_effect.png')]
         self.Sleep = load_image('kirby/kirby_sleep.png')
+
     def update(self):
         self.cur_state.do(self)
         if self.event_que:
@@ -373,6 +374,7 @@ class Kirby:
                 print('ERROR', self.cur_state.__name__, ' ', event_name[event])
 
             self.cur_state.enter(self, event)
+
     def draw(self):
         self.cur_state.draw(self)
         debug_print('PPPP')
@@ -386,5 +388,12 @@ class Kirby:
         if (event.type, event.key) in key_event_table:
             key_event = key_event_table[(event.type, event.key)]
             self.add_event(key_event)
+
     def get_bb(self):
-        return self.x - 25, self.y - 25, self.x + 25, self.y + 25
+        if self.cur_state == SKILL:
+            return self.x - 25, self.y - 25, self.x + 120, self.y + 25
+        else:
+            return self.x - 25, self.y - 25, self.x + 25, self.y + 25
+
+    def handle_collision(self, other, group):
+        pass

@@ -1,8 +1,11 @@
 from pico2d import*
 import game_framework
+import game_world
 
 # 이 리스트로 맞는 방향 저장 -> hit클래스에 넣어주기
 # hit_dir = [None, None, None, None]
+
+
 class BASIC_MONSTER:
 
     def __init__(self):
@@ -36,8 +39,15 @@ class BASIC_MONSTER:
 
     def handle_event(self, event):
         pass
+
     def get_bb(self):
         return self.x - 25, self.y - 25, self.x + 25, self.y + 25
+
+    def handle_collision(self, other, group):
+        if group == 'kirby:basic_monster':
+            game_world.remove_object(self)
+
+
 class SWORD_MONSTER:
     def __init__(self):
         self.x, self.y = 700, 100
@@ -71,6 +81,11 @@ class SWORD_MONSTER:
         pass
     def get_bb(self):
         return self.x - 25, self.y - 25, self.x + 25, self.y + 25
+
+    def handle_collision(self, other, group):
+        pass
+
+
 class SPARK_MONSTER:
     def __init__(self):
         self.x, self.y = 700, 100
@@ -104,6 +119,11 @@ class SPARK_MONSTER:
         pass
     def get_bb(self):
         return self.x - 25, self.y - 25, self.x + 25, self.y + 25
+
+    def handle_collision(self, other, group):
+        pass
+
+
 class BOMBER_MONSTER:
     def __init__(self):
         self.x, self.y = 700, 100
@@ -138,6 +158,11 @@ class BOMBER_MONSTER:
 
     def get_bb(self):
         return self.x - 25, self.y - 25, self.x + 25, self.y + 25
+
+    def handle_collision(self, other, group):
+        pass
+
+
 class IDLE_BASIC_MONSTER:
     @staticmethod
     def enter(self, event):
@@ -162,6 +187,8 @@ class IDLE_BASIC_MONSTER:
         else:
             self.Idle.clip_composite_draw(int(self.frame) * 22, 0, 22, 19,
                                           0.0, 'h', self.x, self.y, self.kx, self.ky)
+
+
 class IDLE_SWORD_MONSTER:
     @staticmethod
     def enter(self, event):
@@ -186,6 +213,8 @@ class IDLE_SWORD_MONSTER:
         else:
             self.Idle.clip_composite_draw(int(self.frame) * 27, 0, 27, 23,
                                           0.0, '', self.x, self.y, self.kx, self.ky)
+
+
 class IDLE_SPARK_MONSTER:
     @staticmethod
     def enter(self, event):
@@ -210,6 +239,8 @@ class IDLE_SPARK_MONSTER:
         else:
             self.Idle.clip_composite_draw(int(self.frame) * 22, 0, 22, 19,
                                           0.0, '', self.x, self.y, self.kx, self.ky)
+
+
 class IDLE_BOMBER_MONSTER:
     @staticmethod
     def enter(self, event):
@@ -234,6 +265,8 @@ class IDLE_BOMBER_MONSTER:
         else:
             self.Idle.clip_composite_draw(int(self.frame) * 22, 0, 22, 26,
                                           0.0, '', self.x, self.y, self.kx, self.ky)
+
+
 class HIT_BASIC_MONSTER:
     @staticmethod
     def enter(self, event):
@@ -255,6 +288,8 @@ class HIT_BASIC_MONSTER:
         else:
             self.Hit.clip_composite_draw(0, 0, 21, 18,
                                           0.0, 'h', self.x, self.y, self.kx, self.ky)
+
+
 class HIT_SWORD_MONSTER:
     @staticmethod
     def enter(self, event):
@@ -276,6 +311,8 @@ class HIT_SWORD_MONSTER:
         else:
             self.Hit.clip_composite_draw(0, 0, 18, 25,
                                           0.0, '', self.x, self.y, self.kx, self.ky)
+
+
 class HIT_SPARK_MONSTER:
     @staticmethod
     def enter(self, event):
@@ -297,6 +334,8 @@ class HIT_SPARK_MONSTER:
         else:
             self.Hit.clip_composite_draw(0, 0, 18, 17,
                                           0.0, '', self.x, self.y, self.kx, self.ky)
+
+
 class HIT_BOMBER_MONSTER:
     @staticmethod
     def enter(self, event):
@@ -318,6 +357,7 @@ class HIT_BOMBER_MONSTER:
         else:
             self.Hit.clip_composite_draw(0, 0, 19, 26,
                                           0.0, 'h', self.x, self.y, self.kx, self.ky)
+
 
 PIXEL_PER_METER = (10.0 / 0.3) # 10 pixel 30 cm
 RUN_SPEED_KMPH = 10.0 # Km / Hour

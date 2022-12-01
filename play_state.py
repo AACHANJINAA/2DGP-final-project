@@ -2,7 +2,7 @@ from pico2d import*
 import game_framework
 import game_world
 
-from move_kirby import Kirby
+from move_kirby import Kirby, SKILL
 from Background import SWORD_BACK, SPARK_BACK, BOMBER_BACK
 from Background import SWORD_BOSS_BACK, SPARK_BOSS_BACK, BOMBER_BOSS_BACK, LAST_BOSS_BACK
 from move_boss import SWORD_BOSS, SPARK_BOSS, BOMBER_BOSS, LAST_BOSS
@@ -11,9 +11,8 @@ from move_monster import BASIC_MONSTER, SWORD_MONSTER, SPARK_MONSTER, BOMBER_MON
 kirby = None
 stage1, stage2, stage3 = None, None, None
 stage4, stage5, stage6, stage7 = None, None, None, None
-monster1, monster2, monster3, monster4 = None, None, None, None
+monster = [None, None, None, None]
 boss1, boss2, boss3, boss4 = None, None, None, None
-a, b, c = None, None, None
 
 def collide(a, b):
     left_a, bottom_a, right_a, top_a = a.get_bb()
@@ -37,8 +36,7 @@ def enter():
     global stage1, stage2, stage3
     global stage4, stage5, stage6, stage7
     global boss1, boss2, boss3, boss4
-    global monster1, monster2, monster3, monster4
-    global a, b, c
+    global monster
 
     kirby = Kirby()
 
@@ -51,29 +49,37 @@ def enter():
     stage6 = BOMBER_BOSS_BACK(0)
     stage7 = LAST_BOSS_BACK(0)
 
-    monster1, monster2, monster3, monster4 = BASIC_MONSTER(), SWORD_MONSTER(), SPARK_MONSTER(), BOMBER_MONSTER()
+    for i in range(0, 4):
+        monster = [BASIC_MONSTER(), SWORD_MONSTER(), SPARK_MONSTER(), BOMBER_MONSTER()]
     # 소드 스파크 봄버 디디디마왕순
     boss1, boss2, boss3, boss4 = SWORD_BOSS(), SPARK_BOSS(), BOMBER_BOSS(), LAST_BOSS()
 
-    a = stage2
-    b = monster3
-    c = kirby
+    game_world.add_object(stage1, 0)
+    game_world.add_object(monster[0], 1)
+    game_world.add_object(kirby, 1)
 
-    game_world.add_object(a, 0)
-    game_world.add_object(b, 1)
-    game_world.add_object(c, 2)
+    game_world.add_collision_group(kirby, monster[0], 'kirby:basic_monster')
+
 def exit():
     game_world.clear()
 def update():
-    global b, c
     for game_object in game_world.all_objects():
         game_object.update()
-    if collide(c, b):
-        print("COLLISION kirby:monster")
-        if c.x > b.x:
-            c.x += 50
-        else:
-            c.x -= 50
+    # for i in range(0, 4):
+    #     if collide(kirby, monster[i]):
+    #         if kirby.cur_state == SKILL:
+    #             game_world.remove_object(monster[i])
+    #         else:
+    #             print("COLLISION kirby:monster")
+    #             if kirby.x > monster[i].x:
+    #                 kirby.x += 50
+    #             else:
+    #                 kirby.x -= 50
+    for a, b, group in game_world.all_collision_pairs():
+        if collide(a, b):
+            print('collision by group', group)
+            a.handle_collision(b, group)
+            b.handle_collision(a, group)
 
 
 def draw_world():
