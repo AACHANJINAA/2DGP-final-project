@@ -2,7 +2,7 @@ from pico2d import*
 import game_framework
 
 # 이 리스트로 맞는 방향 저장 -> hit클래스에 넣어주기
-hit_dir = [None, None, None, None]
+# hit_dir = [None, None, None, None]
 class BASIC_MONSTER:
 
     def __init__(self):

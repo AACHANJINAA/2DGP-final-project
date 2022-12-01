@@ -24,7 +24,7 @@ class Sword_Kirby:
         self.s_timer = 0
 
         self.event_que = []
-        self.cur_state = IDLE
+        self.cur_state = IDLE_SWORD
         self.cur_state.enter(self, None)
 
         self.Idle = load_image('kirby(sword)/kirby(sword)_idle.png')
@@ -63,7 +63,7 @@ class Sword_Kirby:
     def get_bb(self):
         return self.x - 25, self.y - 25, self.x + 25, self.y + 25
 
-class IDLE(Sword_Kirby):
+class IDLE_SWORD(Sword_Kirby):
     @staticmethod
     def enter(self, event):
         self.dir_x = 0
@@ -88,7 +88,7 @@ class IDLE(Sword_Kirby):
             self.Idle.clip_composite_draw(int(self.frame) * 31, 0, 31, 28,
                                            0.0, '', self.x, self.y, self.kx - 1, self.ky - 1)
 
-class RUN(Sword_Kirby):
+class RUN_SWORD(Sword_Kirby):
     def enter(self, event):
         if event == RD:
             self.dir_x = 1
@@ -115,7 +115,7 @@ class RUN(Sword_Kirby):
             self.Run.clip_composite_draw(int(self.frame) * 30, 0, 30, 30,
                                0.0, '', self.x, self.y, self.kx, self.ky)
 
-class JUMP(Sword_Kirby):
+class JUMP_SWORD(Sword_Kirby):
     def enter(self, event):
         if event == JD:
             self.timer = 310
@@ -124,16 +124,17 @@ class JUMP(Sword_Kirby):
         pass
     def do(self):
         self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 5
-        jump_dis = self.dir_y * RUN_SPEED_PPS * game_framework.frame_time
-        self.y += jump_dis * 1.5
-        self.x += self.face_dir_x / 1.5
-        self.x = clamp(0, self.x, 800)
-        self.timer -= 1
         if self.timer == self.s_timer:
             self.dir_y = -1
         elif self.timer == 0:
             self.dir_y = 1
             self.add_event(TIMER)
+        jump_dis = self.dir_y * RUN_SPEED_PPS * game_framework.frame_time
+        self.y += jump_dis * 1.5
+        self.x += self.face_dir_x / 1.5
+        self.x = clamp(0, self.x, 800)
+        self.timer -= 1
+
     def draw(self):
         if self.face_dir_x == -1:
             self.Jump.clip_composite_draw(int(self.frame) * 28, 0, 28, 34,
@@ -169,11 +170,11 @@ class SKILL(Sword_Kirby):
                                             0.0, '', self.x + 90, self.y + 10, self.kx + 5, self.ky + 10)
 
 next_state = {
-    IDLE:  {RU: RUN,   LU: RUN,   RD: RUN,   LD: RUN,   JD: JUMP,  TIMER: SLEEP, AD: SKILL},
-    RUN:   {RU: IDLE,  LU: IDLE,  RD: IDLE,  LD: IDLE,  JD: JUMP,  TIMER: IDLE,  AD: SKILL},
-    SLEEP: {RU: RUN,   LU: RUN,   RD: RUN,   LD: RUN,   JD: IDLE,  TIMER: IDLE,  AD: IDLE},
-    JUMP:  {RU: JUMP,  LU: JUMP,  RD: JUMP,  LD: JUMP,  JD: JUMP,  TIMER: IDLE,  AD: JUMP},
-    SKILL: {RU: SKILL, LU: SKILL, RD: SKILL, LD: SKILL, JD: SKILL, TIMER: IDLE,  AD: SKILL}
+    IDLE_SWORD:  {RU: RUN_SWORD,   LU: RUN_SWORD,   RD: RUN_SWORD,   LD: RUN_SWORD,   JD: JUMP_SWORD,  TIMER: SLEEP, AD: SKILL},
+    RUN_SWORD:   {RU: IDLE_SWORD,  LU: IDLE_SWORD,  RD: IDLE_SWORD,  LD: IDLE_SWORD,  JD: JUMP_SWORD,  TIMER: IDLE_SWORD,  AD: SKILL},
+    SLEEP: {RU: RUN_SWORD,   LU: RUN_SWORD,   RD: RUN_SWORD,   LD: RUN_SWORD,   JD: IDLE_SWORD,  TIMER: IDLE_SWORD,  AD: IDLE_SWORD},
+    JUMP_SWORD:  {RU: JUMP_SWORD,  LU: JUMP_SWORD,  RD: JUMP_SWORD,  LD: JUMP_SWORD,  JD: JUMP_SWORD,  TIMER: IDLE_SWORD,  AD: JUMP_SWORD},
+    SKILL: {RU: SKILL, LU: SKILL, RD: SKILL, LD: SKILL, JD: SKILL, TIMER: IDLE_SWORD,  AD: SKILL}
 }
 PIXEL_PER_METER = (10.0 / 0.3) # 10 pixel 30 cm
 RUN_SPEED_KMPH = 20.0 # Km / Hour
