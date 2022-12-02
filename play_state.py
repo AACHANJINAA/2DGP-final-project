@@ -1,8 +1,9 @@
 from pico2d import*
 import game_framework
 import game_world
+from Background import FixedBackground as Background
 
-from move_kirby import Kirby, SKILL
+from move_kirby import Kirby
 from Background import SWORD_BACK, SPARK_BACK, BOMBER_BACK
 from Background import SWORD_BOSS_BACK, SPARK_BOSS_BACK, BOMBER_BOSS_BACK, LAST_BOSS_BACK
 from move_boss import SWORD_BOSS, SPARK_BOSS, BOMBER_BOSS, LAST_BOSS
