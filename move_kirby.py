@@ -396,4 +396,16 @@ class Kirby:
             return self.x - 25, self.y - 25, self.x + 25, self.y + 25
 
     def handle_collision(self, other, group):
-        pass
+        self.y = 100
+        match group:
+            case 'kirby:monster':
+                self.x -= self.dir_x * 50
+            case 'kirby_skill:sword_monster':
+                if self.mode == 0:
+                    self.mode = 1
+            case 'kirby_skill:spark_monster':
+                if self.mode == 0:
+                    self.mode = 2
+            case 'kirby_skill:bomber_monster':
+                if self.mode == 0:
+                    self.mode = 3

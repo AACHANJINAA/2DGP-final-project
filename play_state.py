@@ -56,25 +56,26 @@ def enter():
 
     game_world.add_object(stage1, 0)
     game_world.add_object(monster[0], 1)
+    game_world.add_object(monster[1], 1)
+    game_world.add_object(monster[2], 1)
+    game_world.add_object(monster[3], 1)
     game_world.add_object(kirby, 1)
 
-    game_world.add_collision_group(kirby, monster[0], 'kirby:basic_monster')
+    game_world.add_collision_group(kirby, monster[0], 'kirby:monster')
+    game_world.add_collision_group(kirby, monster[1], 'kirby:monster')
+    game_world.add_collision_group(kirby, monster[2], 'kirby:monster')
+    game_world.add_collision_group(kirby, monster[3], 'kirby:monster')
+
+    game_world.add_collision_group(kirby, monster[0], 'kirby_skill:basic_monster')
+    game_world.add_collision_group(kirby, monster[1], 'kirby_skill:sword_monster')
+    game_world.add_collision_group(kirby, monster[2], 'kirby_skill:spark_monster')
+    game_world.add_collision_group(kirby, monster[3], 'kirby_skill:bomber_monster')
 
 def exit():
     game_world.clear()
 def update():
     for game_object in game_world.all_objects():
         game_object.update()
-    # for i in range(0, 4):
-    #     if collide(kirby, monster[i]):
-    #         if kirby.cur_state == SKILL:
-    #             game_world.remove_object(monster[i])
-    #         else:
-    #             print("COLLISION kirby:monster")
-    #             if kirby.x > monster[i].x:
-    #                 kirby.x += 50
-    #             else:
-    #                 kirby.x -= 50
     for a, b, group in game_world.all_collision_pairs():
         if collide(a, b):
             print('collision by group', group)
