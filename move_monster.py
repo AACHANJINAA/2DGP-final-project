@@ -1,7 +1,7 @@
 from pico2d import*
 import game_framework
 import game_world
-from move_kirby import Kirby, SKILL
+from move_kirby import Kirby
 
 # 이 리스트로 맞는 방향 저장 -> hit클래스에 넣어주기
 # hit_dir = [None, None, None, None]
@@ -46,15 +46,10 @@ class BASIC_MONSTER:
 
     def handle_collision(self, other, group):
         match group:
-            case 'kirby:monster':
+            case 'kirby:basic_monster':
                 pass
-            case 'kirby_skill:sword_monster':
+            case 'kirby_skill:basic_monster':
                 game_world.remove_object(self)
-            case 'kirby_skill:spark_monster':
-                game_world.remove_object(self)
-            case 'kirby_skill:bomber_monster':
-                game_world.remove_object(self)
-
 
 
 class SWORD_MONSTER:
@@ -92,7 +87,11 @@ class SWORD_MONSTER:
         return self.x - 25, self.y - 25, self.x + 25, self.y + 25
 
     def handle_collision(self, other, group):
-        pass
+        match group:
+            case 'kirby:sword_monster':
+                pass
+            case 'kirby_skill:sword_monster':
+                game_world.remove_object(self)
 
 
 class SPARK_MONSTER:
@@ -130,7 +129,11 @@ class SPARK_MONSTER:
         return self.x - 25, self.y - 25, self.x + 25, self.y + 25
 
     def handle_collision(self, other, group):
-        pass
+        match group:
+            case 'kirby:spark_monster':
+                pass
+            case 'kirby_skill:spark_monster':
+                game_world.remove_object(self)
 
 
 class BOMBER_MONSTER:
@@ -169,7 +172,11 @@ class BOMBER_MONSTER:
         return self.x - 25, self.y - 25, self.x + 25, self.y + 25
 
     def handle_collision(self, other, group):
-        pass
+        match group:
+            case 'kirby:bomber_monster':
+                pass
+            case 'kirby_skill:bomber_monster':
+                game_world.remove_object(self)
 
 
 class IDLE_BASIC_MONSTER:

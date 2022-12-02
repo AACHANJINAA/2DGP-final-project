@@ -138,7 +138,7 @@ class JUMP:
 
     @staticmethod
     def exit(self, event):
-        pass
+        self.y = 100
 
     @staticmethod
     def do(self):
@@ -156,10 +156,11 @@ class JUMP:
                 self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 8
             case 3:
                 self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 5
-        jump_dis = self.dir_y * RUN_SPEED_PPS * game_framework.frame_time
-        self.y += jump_dis * 1.5
+        self.y += self.dir_y * RUN_SPEED_PPS * game_framework.frame_time * 1.5
+
         self.x += self.face_dir_x / 1.5
-        self.x = clamp(0, self.x, 800)
+        #self.x = clamp(0, self.x, 800)
+
         self.timer -= 1
 
     @staticmethod
@@ -215,7 +216,7 @@ class SKILL:
 
     @staticmethod
     def exit(self, event):
-        self.mode = 0
+        pass
 
     @staticmethod
     def do(self):
@@ -390,22 +391,38 @@ class Kirby:
             self.add_event(key_event)
 
     def get_bb(self):
-        if self.cur_state == SKILL:
-            return self.x - 25, self.y - 25, self.x + 120, self.y + 25
+        if self.cur_state == SKILL and self.mode == 0:
+            return self.x - self.face_dir_x * 25, self.y - 25, \
+                   self.x + self.face_dir_x * 120, self.y + 25
+        if self.cur_state == SKILL and self.mode == 1:
+            return self.x - self.face_dir_x * 25, self.y - 25, \
+                   self.x + self.face_dir_x * 100, self.y + 40
+        elif self.cur_state == SKILL and self.mode == 2:
+            return self.x - 60, self.y - 50, \
+                   self.x + 60, self.y + 50
         else:
             return self.x - 25, self.y - 25, self.x + 25, self.y + 25
 
     def handle_collision(self, other, group):
-        self.y = 100
-        match group:
-            case 'kirby:monster':
-                self.x -= self.dir_x * 50
-            case 'kirby_skill:sword_monster':
-                if self.mode == 0:
-                    self.mode = 1
-            case 'kirby_skill:spark_monster':
-                if self.mode == 0:
-                    self.mode = 2
-            case 'kirby_skill:bomber_monster':
-                if self.mode == 0:
-                    self.mode = 3
+        if self.cur_state is SKILL:
+            match group:
+                case 'kirby_skill:sword_monster':
+                    if self.mode == 0:
+                        self.mode = 1
+                case 'kirby_skill:spark_monster':
+                    if self.mode == 0:
+                        self.mode = 2
+                case 'kirby_skill:bomber_monster':
+                    if self.mode == 0:
+                        self.mode = 3
+        else:
+            match group:
+                case 'kirby:basic_monster':
+                    self.x -= self.dir_x * 50
+                case 'kirby:sword_monster':
+                    self.x -= self.dir_x * 50
+                case 'kirby:spark_monster':
+                    self.x -= self.dir_x * 50
+                case 'kirby:bomber_monster':
+                    self.x -= self.dir_x * 50
+
