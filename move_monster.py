@@ -1,7 +1,7 @@
 from pico2d import*
 import game_framework
 import game_world
-from move_kirby import Kirby
+import server
 
 # 이 리스트로 맞는 방향 저장 -> hit클래스에 넣어주기
 # hit_dir = [None, None, None, None]
@@ -133,7 +133,9 @@ class SPARK_MONSTER:
             case 'kirby:spark_monster':
                 pass
             case 'kirby_skill:spark_monster':
-                game_world.remove_object(self)
+                if server.skill is True:
+                    game_world.remove_object(self)
+                pass
 
 
 class BOMBER_MONSTER:
@@ -173,10 +175,11 @@ class BOMBER_MONSTER:
 
     def handle_collision(self, other, group):
         match group:
-            case 'kirby:bomber_monster':
-                pass
             case 'kirby_skill:bomber_monster':
                 game_world.remove_object(self)
+            case 'kirby:bomber_monster':
+                pass
+
 
 
 class IDLE_BASIC_MONSTER:

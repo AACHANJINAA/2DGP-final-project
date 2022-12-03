@@ -327,7 +327,7 @@ next_state = {
     RUN:   {RU: IDLE, LU: IDLE, RD: IDLE, LD: IDLE, JD: JUMP, TIMER: IDLE,  AD: SKILL},
     SLEEP: {RU: RUN,  LU: RUN,  RD: RUN,  LD: RUN,  JD: IDLE, TIMER: IDLE,  AD: IDLE},
     JUMP:  {RU: JUMP, LU: JUMP, RD: JUMP, LD: JUMP, JD: JUMP, TIMER: IDLE,  AD: JUMP},
-    SKILL: {RU: RUN, LU: RUN, RD: RUN, LD: RUN, JD: JUMP, TIMER: IDLE, AD: SKILL}
+    SKILL: {RU: SKILL, LU: SKILL, RD: SKILL, LD: SKILL, JD: IDLE, TIMER: IDLE, AD: SKILL}
 }
 
 
@@ -369,6 +369,7 @@ class Kirby:
                        load_image('kirby(spark)/kirby(spark)_skill_effect.png'),
                        load_image('kirby(bomber)/kirby(bomber)_skill_effect.png')]
         self.Sleep = load_image('kirby/kirby_sleep.png')
+        self.Hp = load_image('UI/all_hp.png')
 
     def update(self):
         self.cur_state.do(self)
@@ -383,6 +384,8 @@ class Kirby:
             self.cur_state.enter(self, event)
 
     def draw(self):
+        self.Hp.clip_composite_draw(0, 0, 457, 62,
+                                    0.0, '', self.sx, self.y + 50, 50, 10)
         self.cur_state.draw(self)
         debug_print('PPPP')
         debug_print(f'Face Dir: {self.face_dir_x}, Dir: {self.dir_x}')
@@ -402,20 +405,20 @@ class Kirby:
             self.add_event(key_event)
 
     def get_bb(self):
-        if self.cur_state == SKILL and self.mode == 0:
+        if self.cur_state != SKILL:
+            return self.sx - 25, self.y - 25, self.sx + 25, self.y + 25
+        elif self.cur_state == SKILL and self.mode == 0:
             return self.sx - self.face_dir_x * 25, self.y - 25, \
                    self.sx + self.face_dir_x * 120, self.y + 25
-        if self.cur_state == SKILL and self.mode == 1:
+        elif self.cur_state == SKILL and self.mode == 1:
             return self.sx - self.face_dir_x * 25, self.y - 25, \
                    self.sx + self.face_dir_x * 100, self.y + 40
         elif self.cur_state == SKILL and self.mode == 2:
             return self.sx - 60, self.y - 50, \
                    self.sx + 60, self.y + 50
-        else:
-            return self.sx - 25, self.y - 25, self.sx + 25, self.y + 25
 
     def handle_collision(self, other, group):
-        if self.cur_state is SKILL and self.mode == 0:
+        if self.cur_state is SKILL:
             match group:
                 case 'kirby_skill:sword_monster':
                     if self.mode == 0:
@@ -426,6 +429,7 @@ class Kirby:
                 case 'kirby_skill:bomber_monster':
                     if self.mode == 0:
                         self.mode = 3
+            server.skill = True
         else:
             match group:
                 case 'kirby:basic_monster':
@@ -436,3 +440,4 @@ class Kirby:
                     self.x -= self.dir_x * 50
                 case 'kirby:bomber_monster':
                     self.x -= self.dir_x * 50
+            server.skill = False
