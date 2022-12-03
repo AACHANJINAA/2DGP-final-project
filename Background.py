@@ -13,10 +13,7 @@ class BACK:
                       load_image('boss_stage/spark_boss_stage.png'),
                       load_image('boss_stage/bomber_boss_stage.png'),
                       load_image('boss_stage/last_boss_stage.png')]
-        if self.stage_num <= 2:
-            self.canvas_width = get_canvas_width()
-        else:
-            self.canvas_width = 1200
+        self.canvas_width = get_canvas_width()
         self.canvas_height = get_canvas_height()
         self.w = self.image[self.stage_num].w
         self.h = self.image[self.stage_num].h

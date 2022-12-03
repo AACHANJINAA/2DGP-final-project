@@ -33,7 +33,7 @@ def enter():
 
     server.kirby = Kirby()
     server.monster = [BASIC_MONSTER(), SWORD_MONSTER(), SPARK_MONSTER(), BOMBER_MONSTER()]
-    server.background = BACK(3)
+    server.background = BACK(4)
 
     game_world.add_object(server.background, 0)
     game_world.add_object(server.monster[0], 1)
