@@ -5,9 +5,7 @@ import server
 #from Background import FixedBackground as Background
 
 from move_kirby import Kirby
-from Background import SWORD_BACK, SPARK_BACK, BOMBER_BACK
-from Background import SWORD_BOSS_BACK, SPARK_BOSS_BACK, BOMBER_BOSS_BACK, LAST_BOSS_BACK
-from move_boss import SWORD_BOSS, SPARK_BOSS, BOMBER_BOSS, LAST_BOSS
+from Background import BACK
 from move_monster import BASIC_MONSTER, SWORD_MONSTER, SPARK_MONSTER, BOMBER_MONSTER
 
 server.kirby = None
@@ -35,7 +33,7 @@ def enter():
 
     server.kirby = Kirby()
     server.monster = [BASIC_MONSTER(), SWORD_MONSTER(), SPARK_MONSTER(), BOMBER_MONSTER()]
-    server.background = SWORD_BACK()
+    server.background = BACK(3)
 
     game_world.add_object(server.background, 0)
     game_world.add_object(server.monster[0], 1)

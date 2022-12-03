@@ -170,6 +170,7 @@ class JUMP:
 
     @staticmethod
     def draw(self):
+        self.sx = self.x - server.background.window_left
         match self.mode:
             case 0:
                 if self.face_dir_x == -1:
@@ -340,7 +341,7 @@ class Kirby:
         self.pos_boom = 0
         self.move_boom = 0
 
-        self.sx = 0
+        self.sx = 30
         self.x, self.y = 30, 100
         self.kx, self.ky = 70, 55
         self.face_dir_x, self.dir_x = 1, 0
