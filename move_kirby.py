@@ -341,6 +341,7 @@ class Kirby:
         self.move_boom = 0
 
         self.sx = 30
+        self.hp_cnt = 8.0
         self.x, self.y = 30, 100
         self.kx, self.ky = 70, 55
         self.face_dir_x, self.dir_x = 1, 0
@@ -369,7 +370,10 @@ class Kirby:
                        load_image('kirby(spark)/kirby(spark)_skill_effect.png'),
                        load_image('kirby(bomber)/kirby(bomber)_skill_effect.png')]
         self.Sleep = load_image('kirby/kirby_sleep.png')
-        self.Hp = load_image('UI/all_hp.png')
+        self.Hp = [load_image('UI/hp.png'), load_image('UI/hp.png'),
+                   load_image('UI/hp.png'), load_image('UI/hp.png'),
+                   load_image('UI/hp.png'), load_image('UI/hp.png'),
+                   load_image('UI/hp.png'), load_image('UI/hp.png')]
 
     def update(self):
         self.cur_state.do(self)
@@ -384,8 +388,9 @@ class Kirby:
             self.cur_state.enter(self, event)
 
     def draw(self):
-        self.Hp.clip_composite_draw(0, 0, 457, 62,
-                                    0.0, '', self.sx, self.y + 50, 50, 10)
+        for i in range(0, int(self.hp_cnt)):
+            self.Hp[i].clip_composite_draw(0, 0, 457, 62,
+                                           0.0, '', self.sx - 30 + i * 10, self.y + 50, 10, 10)
         self.cur_state.draw(self)
         debug_print('PPPP')
         debug_print(f'Face Dir: {self.face_dir_x}, Dir: {self.dir_x}')
@@ -433,11 +438,12 @@ class Kirby:
         else:
             match group:
                 case 'kirby:basic_monster':
-                    self.x -= self.dir_x * 50
+                    self.x -= self.dir_x * 100
                 case 'kirby:sword_monster':
-                    self.x -= self.dir_x * 50
+                    self.x -= self.dir_x * 100
                 case 'kirby:spark_monster':
-                    self.x -= self.dir_x * 50
+                    self.x -= self.dir_x * 100
                 case 'kirby:bomber_monster':
-                    self.x -= self.dir_x * 50
+                    self.x -= self.dir_x * 100
             server.skill = False
+            self.hp_cnt -= 0.2
