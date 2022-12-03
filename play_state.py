@@ -2,14 +2,15 @@ from pico2d import*
 import game_framework
 import game_world
 import server
-#from Background import FixedBackground as Background
 
-from move_kirby import Kirby, SKILL
+from move_kirby import Kirby
 from Background import BACK
 from move_monster import BASIC_MONSTER, SWORD_MONSTER, SPARK_MONSTER, BOMBER_MONSTER
 
 server.kirby = None
-server.background = None
+server.background = [None, None, None, None,
+                     None, None, None,
+                     None, None, None, None]
 server.monster = [None, None, None, None]
 
 def collide(a, b):
@@ -33,23 +34,30 @@ def enter():
 
     server.kirby = Kirby()
     server.monster = [BASIC_MONSTER(), SWORD_MONSTER(), SPARK_MONSTER(), BOMBER_MONSTER()]
-    server.background = BACK(0)
+    b = [BACK(0, 4), BACK(0, 3), BACK(0, 2), BACK(0, 1),
+         BACK(1, 4), BACK(2, 4), BACK(3, 4),
+         BACK(4, 4), BACK(5, 4), BACK(6, 4), BACK(7, 4)]
+    # map 0 1 2 3
+    # basic_stage 4 5 6
+    # boss_stage 7 8 9 10
+
+    server.background = b[0]
 
     game_world.add_object(server.background, 0)
     #game_world.add_object(server.monster[0], 1)
     #game_world.add_object(server.monster[1], 1)
-    game_world.add_object(server.monster[2], 1)
+    #game_world.add_object(server.monster[2], 1)
     #game_world.add_object(server.monster[3], 1)
     game_world.add_object(server.kirby, 1)
 
     #game_world.add_collision_group(server.kirby, server.monster[0], 'kirby:basic_monster')
     #game_world.add_collision_group(server.kirby, server.monster[1], 'kirby:sword_monster')
-    game_world.add_collision_group(server.kirby, server.monster[2], 'kirby:spark_monster')
+    #game_world.add_collision_group(server.kirby, server.monster[2], 'kirby:spark_monster')
     #game_world.add_collision_group(server.kirby, server.monster[3], 'kirby:bomber_monster')
 
     #game_world.add_collision_group(server.kirby, server.monster[0], 'kirby_skill:basic_monster')
     #game_world.add_collision_group(server.kirby, server.monster[1], 'kirby_skill:sword_monster')
-    game_world.add_collision_group(server.kirby, server.monster[2], 'kirby_skill:spark_monster')
+    #game_world.add_collision_group(server.kirby, server.monster[2], 'kirby_skill:spark_monster')
     #game_world.add_collision_group(server.kirby, server.monster[3], 'kirby_skill:bomber_monster')
 
 def exit():

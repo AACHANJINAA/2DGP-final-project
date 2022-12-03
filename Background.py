@@ -4,7 +4,7 @@ import server
 
 
 class BACK:
-    def __init__(self, n):
+    def __init__(self, n, pn):
         self.stage_num = n
         self.image = [load_image('map/map_stage.png'),
                       load_image('basic_stage/sword_basic_stage.png'),
@@ -15,26 +15,25 @@ class BACK:
                       load_image('boss_stage/bomber_boss_stage.png'),
                       load_image('boss_stage/last_boss_stage.png')]
         self.potal = [load_image('map/potal_blue.png'),
+                      load_image('map/potal_blue.png'),
+                      load_image('map/potal_blue.png'),
                       load_image('map/potal_purple.png')]
+
         self.canvas_width = get_canvas_width()
         self.canvas_height = get_canvas_height()
         self.w = self.image[self.stage_num].w
         self.h = self.image[self.stage_num].h
         self.frame = 0.0
+        self.potal_num = pn
 
     def draw(self):
         self.image[self.stage_num].clip_draw_to_origin(self.window_left, self.window_bottom,
                                                        self.canvas_width, self.canvas_height,
                                                        0, 0)
         if self.stage_num == 0:
-            self.potal[0].clip_composite_draw(int(self.frame) * 134, 0, 134, 129,
-                                              0.0, 'h', 250, 120, 100, 90)
-            self.potal[0].clip_composite_draw(int(self.frame) * 134, 0, 134, 129,
-                                              0.0, 'h', 250 * 2, 120, 100, 90)
-            self.potal[0].clip_composite_draw(int(self.frame) * 134, 0, 134, 129,
-                                              0.0, 'h', 250 * 3, 120, 100, 90)
-            self.potal[1].clip_composite_draw(int(self.frame) * 134, 0, 134, 129,
-                                              0.0, 'h', 250 * 4, 120, 100, 90)
+            for i in range(0, self.potal_num):
+                self.potal[i].clip_composite_draw(int(self.frame) * 134, 0, 134, 129,
+                                                  0.0, 'h', 250 * (i + 1), 120, 100, 90)
 
     def update(self):
         self.frame = (self.frame + 0.02) % 3
