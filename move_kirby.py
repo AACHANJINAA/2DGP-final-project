@@ -98,7 +98,6 @@ class RUN:
 
         self.x = clamp(25, self.x, server.background.w - 25)
         self.y = clamp(25, self.y, server.background.h - 25)
-        print(self.x)
 
     @staticmethod
     def draw(self):
@@ -418,22 +417,22 @@ class Kirby:
     def handle_collision(self, other, group):
         if self.cur_state is SKILL and self.mode == 0:
             match group:
-                case 'kirby_skill:basic_monster':
-                    pass
                 case 'kirby_skill:sword_monster':
-                    self.mode = 1
+                    if self.mode == 0:
+                        self.mode = 1
                 case 'kirby_skill:spark_monster':
-                    self.mode = 2
+                    if self.mode == 0:
+                        self.mode = 2
                 case 'kirby_skill:bomber_monster':
-                    self.mode = 3
-
-        match group:
-            case 'kirby:basic_monster':
-                self.x -= self.dir_x * 50
-            case 'kirby:sword_monster':
-                self.x -= self.dir_x * 50
-            case 'kirby:spark_monster':
-                self.x -= self.dir_x * 50
-            case 'kirby:bomber_monster':
-                self.x -= self.dir_x * 50
-
+                    if self.mode == 0:
+                        self.mode = 3
+        else:
+            match group:
+                case 'kirby:basic_monster':
+                    self.x -= self.dir_x * 50
+                case 'kirby:sword_monster':
+                    self.x -= self.dir_x * 50
+                case 'kirby:spark_monster':
+                    self.x -= self.dir_x * 50
+                case 'kirby:bomber_monster':
+                    self.x -= self.dir_x * 50

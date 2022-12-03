@@ -1,3 +1,3 @@
 kirby = None
-monster = None
+monster = [None, None, None, None]
 background = None

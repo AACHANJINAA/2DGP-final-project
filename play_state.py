@@ -36,21 +36,21 @@ def enter():
     server.background = BACK(4)
 
     game_world.add_object(server.background, 0)
-    game_world.add_object(server.monster[0], 1)
-    #game_world.add_object(monster[1], 1)
-    #game_world.add_object(monster[2], 1)
-    #game_world.add_object(monster[3], 1)
+    #game_world.add_object(server.monster[0], 1)
+    #game_world.add_object(server.monster[1], 1)
+    game_world.add_object(server.monster[2], 1)
+    game_world.add_object(server.monster[3], 1)
     game_world.add_object(server.kirby, 1)
 
-    game_world.add_collision_group(server.kirby, server.monster[0], 'kirby:basic_monster')
-    #game_world.add_collision_group(kirby, monster[1], 'kirby:sword_monster')
-    #game_world.add_collision_group(kirby, monster[2], 'kirby:spark_monster')
-    #game_world.add_collision_group(kirby, monster[3], 'kirby:bomber_monster')
+    #game_world.add_collision_group(server.kirby, server.monster[0], 'kirby:basic_monster')
+    #game_world.add_collision_group(server.kirby, server.monster[1], 'kirby:sword_monster')
+    game_world.add_collision_group(server.kirby, server.monster[2], 'kirby:spark_monster')
+    game_world.add_collision_group(server.kirby, server.monster[3], 'kirby:bomber_monster')
 
-    game_world.add_collision_group(server.kirby, server.monster[0], 'kirby_skill:basic_monster')
-    #game_world.add_collision_group(kirby, monster[1], 'kirby_skill:sword_monster')
-    #game_world.add_collision_group(kirby, monster[2], 'kirby_skill:spark_monster')
-    #game_world.add_collision_group(kirby, monster[3], 'kirby_skill:bomber_monster')
+    #game_world.add_collision_group(server.kirby, server.monster[0], 'kirby_skill:basic_monster')
+    #game_world.add_collision_group(server.kirby, server.monster[1], 'kirby_skill:sword_monster')
+    game_world.add_collision_group(server.kirby, server.monster[2], 'kirby_skill:spark_monster')
+    game_world.add_collision_group(server.kirby, server.monster[3], 'kirby_skill:bomber_monster')
 
 def exit():
     game_world.clear()
