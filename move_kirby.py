@@ -1,6 +1,7 @@
 from pico2d import*
 import game_framework
 import server
+import exit_state
 
 RD, LD, RU, LU, JD, AD, TIMER = range(7)
 event_name = ['RD', 'LD', 'RU', 'LU', 'JD', 'AD', 'TIMER']
@@ -476,3 +477,6 @@ class Kirby:
             server.skill = False
             #self.add_event(HIT)
             self.hp_cnt -= 0.01
+            if self.hp_cnt < 0:
+                game_framework.change_state(exit_state)
+                self.hp_cnt = 8.0

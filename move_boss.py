@@ -259,13 +259,16 @@ class LAST_BOSS:
         self.kx, self.ky = 100, 116.8
         self.frame = 0
         self.dir = -1
+        self.dir_y = 1
+        self.timer = 200
+        self.s_timer = self.timer // 2
         self.hp_cnt = 16.0
 
         self.event_que = []
         self.cur_state = IDLE4
         self.cur_state.enter(self, None)
 
-        self.Idle = load_image('boss/last_boss.png')
+        self.Idle = load_image('boss/last/last_boss.png')
         self.Hp = [load_image('UI/hp.png'), load_image('UI/hp.png'),
                    load_image('UI/hp.png'), load_image('UI/hp.png'),
                    load_image('UI/hp.png'), load_image('UI/hp.png'),
@@ -274,6 +277,7 @@ class LAST_BOSS:
                    load_image('UI/hp.png'), load_image('UI/hp.png'),
                    load_image('UI/hp.png'), load_image('UI/hp.png'),
                    load_image('UI/hp.png'), load_image('UI/hp.png')]
+        self.Skill = load_image('boss/last/last_boss_skill.png')
 
     def update(self):
         self.cur_state.do(self)
@@ -321,6 +325,9 @@ class IDLE4:
     def do(self):
         self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
         self.x += self.dir * RUN_SPEED_PPS * game_framework.frame_time * 2
+        if 600 <= self.x <= 610:
+            self.cur_state = SKILL4
+            #self.add_event(SKILL4)
         if self.x < 50 or self.x > 1150:
             self.dir *= -1
 
@@ -334,5 +341,43 @@ class IDLE4:
         else:
             self.Idle.clip_composite_draw(int(self.frame) * 48, 0, 48, 49,
                                           0.0, '', self.sx, self.sy, self.kx, self.ky)
+
+class SKILL4:
+    @staticmethod
+    def enter(self, event):
+        self.frame = 0
+        self.timer = 200
+        self.s_timer = self.timer // 2
+
+    @staticmethod
+    def exit(self, event):
+        pass
+    @staticmethod
+    def do(self):
+        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 5
+        self.x += self.dir * RUN_SPEED_PPS * game_framework.frame_time * 1.5
+        self.y += self.dir_y * RUN_SPEED_PPS * game_framework.frame_time * 2
+        self.timer -= 1
+        if self.timer == self.s_timer:
+            self.dir_y = -1
+        elif self.timer == 0:
+            if server.kirby.y == 100:
+                server.kirby.hp_cnt -= 1
+                # 지면 흔들리는 사운드
+            self.y = self.sy = 130
+            self.timer = 200
+            self.dir_y = 1
+            self.cur_state = IDLE4
+
+    @staticmethod
+    def draw(self):
+        self.sx = self.x - server.background.window_left
+        self.sy = self.y - server.background.window_bottom
+        if self.dir == -1:
+            self.Skill.clip_composite_draw(int(self.frame) * 62, 0, 62, 63,
+                                           0.0, 'h', self.sx, self.sy, self.kx, self.ky)
+        else:
+            self.Skill.clip_composite_draw(int(self.frame) * 62, 0, 62, 63,
+                                           0.0, '', self.sx, self.sy, self.kx, self.ky)
 
 

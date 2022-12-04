@@ -22,6 +22,12 @@ class BACK:
         self.canvas_height = get_canvas_height()
         self.w = self.image[self.stage_num].w
         self.h = self.image[self.stage_num].h
+        self.window_left = clamp(0,
+                                 int(server.kirby.x) - self.canvas_width // 2,
+                                 self.w - self.canvas_width - 1)
+        self.window_bottom = clamp(0,
+                                   int(server.kirby.y) - self.canvas_height // 2,
+                                   self.h - self.canvas_height - 1)
         self.frame = 0.0
         self.potal_num = pn
 

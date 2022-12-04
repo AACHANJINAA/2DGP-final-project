@@ -16,7 +16,7 @@ server.background = [None, None, None, None,
                      None, None, None, None]
 server.monster = [None, None, None, None]
 stage = []
-server.stage_number = 4
+server.stage_number = 7
 
 def collide(a, b):
     left_a, bottom_a, right_a, top_a = a.get_bb()
