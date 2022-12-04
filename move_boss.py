@@ -2,6 +2,8 @@ from pico2d import*
 import game_framework
 import game_world
 import server
+import exit_state
+import random
 
 
 
@@ -14,6 +16,8 @@ RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 TIME_PER_ACTION = 2.0
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 8
+
+
 class SWORD_BOSS:
     def __init__(self):
         self.x, self.y = 700, 130
@@ -70,6 +74,8 @@ class SWORD_BOSS:
                 self.hp_cnt -= 0.02
                 if server.skill is True and self.hp_cnt < 0:
                     game_world.remove_object(self)
+
+
 class IDLE1:
     @staticmethod
     def enter(self, event):
@@ -96,6 +102,8 @@ class IDLE1:
         else:
             self.Idle.clip_composite_draw(int(self.frame) * 48, 0, 48, 56,
                                           0.0, '', self.sx, self.sy, self.kx, self.ky)
+
+
 class SPARK_BOSS:
     def __init__(self):
         self.x, self.y = 700, 100
@@ -151,6 +159,7 @@ class SPARK_BOSS:
                 if server.skill is True and self.hp_cnt < 0:
                     game_world.remove_object(self)
 
+
 class IDLE2:
     @staticmethod
     def enter(self, event):
@@ -178,19 +187,40 @@ class IDLE2:
             self.Idle.clip_composite_draw(int(self.frame) * 80, 0, 80, 64,
                                           0.0, '', self.sx, self.sy, self.kx, self.ky)
 
+
 class BOMBER_BOSS:
     def __init__(self):
         self.x, self.y = 1200 - 100, 500 // 2
         self.sx, self.sy = 1200 - 100, 500 // 2
         self.kx, self.ky = 200, 500
         self.frame = 0
+        self.skill_x = [0, 0, 0, 0, 0,
+                        0, 0, 0, 0, 0]
+        for i in range(0, 10):
+            self.skill_x[i] = 50 * random.randrange(1,20)
+        self.skill_y = [1100, 1100, 1100, 1100, 1100,
+                        1100, 1100, 1100, 1100, 1100]
+        self.skill_speed = [0, 0, 0, 0, 0,
+                            0, 0, 0, 0, 0]
+        for i in range(0, 10):
+            self.skill_speed[i] = random.randrange(1, 5)
         self.hp_cnt = 16.0
 
         self.event_que = []
         self.cur_state = IDLE3
         self.cur_state.enter(self, None)
 
-        self.Idle = load_image('boss/bomber_boss.png')
+        self.Idle = load_image('boss/bomber/bomber_boss.png')
+        self.Skill = [load_image('boss/bomber/bomber_boss_skill.png'),
+                      load_image('boss/bomber/bomber_boss_skill.png'),
+                      load_image('boss/bomber/bomber_boss_skill.png'),
+                      load_image('boss/bomber/bomber_boss_skill.png'),
+                      load_image('boss/bomber/bomber_boss_skill.png'),
+                      load_image('boss/bomber/bomber_boss_skill.png'),
+                      load_image('boss/bomber/bomber_boss_skill.png'),
+                      load_image('boss/bomber/bomber_boss_skill.png'),
+                      load_image('boss/bomber/bomber_boss_skill.png'),
+                      load_image('boss/bomber/bomber_boss_skill.png')]
         self.Hp = [load_image('UI/hp.png'), load_image('UI/hp.png'),
                    load_image('UI/hp.png'), load_image('UI/hp.png'),
                    load_image('UI/hp.png'), load_image('UI/hp.png'),
@@ -224,6 +254,7 @@ class BOMBER_BOSS:
 
     def get_bb(self):
         return self.sx - 60, self.sy - 200, self.sx + 60, self.sy + 200
+
     def handle_collision(self, other, group):
         match group:
             case 'kirby:bomber_boss':
@@ -244,13 +275,32 @@ class IDLE3:
     @staticmethod
     def do(self):
         self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 2
+        for i in range(0, 10):
+            self.skill_y[i] -= self.skill_speed[i]
+            if self.skill_y[i] < 100:
+                self.skill_y[i] = 1100
+                self.skill_x[i] = 50 * random.randrange(1, 20)
+                self.skill_speed[i] = random.randrange(2, 5)
+
+            if (self.skill_x[i] - 25 <= server.kirby.x <= self.skill_x[i] + 25
+                    and self.skill_y[i] - 25 < server.kirby.y < self.skill_y[i] + 25):
+                    server.kirby.hp_cnt -= 0.5
+                    self.skill_y[i] = 1100
+                    self.skill_x[i] = 50 * random.randrange(1, 20)
+                    self.skill_speed[i] = random.randrange(3, 5)
+                    if server.kirby.hp_cnt <= 0:
+                        game_framework.change_state(exit_state)
+                        server.kirby.hp_cnt = 8.0
 
     @staticmethod
     def draw(self):
         self.sx = self.x - server.background.window_left
         self.sy = self.y - server.background.window_bottom
         self.Idle.clip_composite_draw(int(self.frame) * 86, 0, 86, 136,
-                                        0.0, '', self.sx, self.sy, self.kx, self.ky)
+                                      0.0, '', self.sx, self.sy, self.kx, self.ky)
+        for i in range(0, 10):
+            self.Skill[i].clip_composite_draw(int(self.frame) * 22, 0, 22, 29,
+                                              0.0, '',  self.skill_x[i], self.skill_y[i], 50, 50)
 
 class LAST_BOSS:
     def __init__(self):
@@ -362,8 +412,12 @@ class SKILL4:
             self.dir_y = -1
         elif self.timer == 0:
             if server.kirby.y == 100:
-                server.kirby.hp_cnt -= 1
                 # 지면 흔들리는 사운드
+                server.kirby.hp_cnt -= 1
+                if server.kirby.hp_cnt <= 0:
+                    game_framework.change_state(exit_state)
+                    server.kirby.hp_cnt = 8.0
+
             self.y = self.sy = 130
             self.timer = 200
             self.dir_y = 1

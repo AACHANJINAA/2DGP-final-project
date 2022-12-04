@@ -16,7 +16,7 @@ server.background = [None, None, None, None,
                      None, None, None, None]
 server.monster = [None, None, None, None]
 stage = []
-server.stage_number = 7
+server.stage_number = 6
 
 def collide(a, b):
     left_a, bottom_a, right_a, top_a = a.get_bb()
@@ -109,7 +109,7 @@ def enter():
         case 7:  # boss_stage_final
             server.background = b[10]
             game_world.add_object(server.background, 0)
-            server.mode = 2
+            server.mode = 1
             game_world.add_object(server.kirby, 1)
             game_world.add_object(server.boss[3], 1)
             game_world.add_collision_group(server.kirby, server.boss[3], 'kirby:last_boss')

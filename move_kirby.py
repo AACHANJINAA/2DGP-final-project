@@ -475,8 +475,7 @@ class Kirby:
                 case 'kirby:last_boss':
                     self.x -= self.dir_x * 100
             server.skill = False
-            #self.add_event(HIT)
             self.hp_cnt -= 0.01
-            if self.hp_cnt < 0:
+            if self.hp_cnt <= 0:
                 game_framework.change_state(exit_state)
                 self.hp_cnt = 8.0
