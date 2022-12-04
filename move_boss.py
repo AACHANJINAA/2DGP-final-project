@@ -89,7 +89,7 @@ class IDLE1:
     def do(self):
         self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 3
         self.x += self.dir * RUN_SPEED_PPS * game_framework.frame_time
-        if self.x < 100 or self.x > 700:
+        if self.x < 100 or self.x > 1100:
             self.dir *= -1
 
     @staticmethod
@@ -172,8 +172,8 @@ class IDLE2:
     @staticmethod
     def do(self):
         self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 2
-        self.x += self.dir * RUN_SPEED_PPS * game_framework.frame_time
-        if self.x < 100 or self.x > 700:
+        self.x += self.dir * RUN_SPEED_PPS * game_framework.frame_time * 1.5
+        if self.x < 100 or self.x > 1100:
             self.dir *= -1
 
     @staticmethod
@@ -264,6 +264,7 @@ class BOMBER_BOSS:
                 if server.skill is True and self.hp_cnt < 0:
                     game_world.remove_object(self)
 
+
 class IDLE3:
     @staticmethod
     def enter(self, event):
@@ -301,6 +302,7 @@ class IDLE3:
         for i in range(0, 10):
             self.Skill[i].clip_composite_draw(int(self.frame) * 22, 0, 22, 29,
                                               0.0, '',  self.skill_x[i], self.skill_y[i], 50, 50)
+
 
 class LAST_BOSS:
     def __init__(self):
@@ -362,6 +364,7 @@ class LAST_BOSS:
                 if server.skill is True and self.hp_cnt < 0:
                     game_world.remove_object(self)
 
+
 class IDLE4:
     @staticmethod
     def enter(self, event):
@@ -391,6 +394,7 @@ class IDLE4:
         else:
             self.Idle.clip_composite_draw(int(self.frame) * 48, 0, 48, 49,
                                           0.0, '', self.sx, self.sy, self.kx, self.ky)
+
 
 class SKILL4:
     @staticmethod

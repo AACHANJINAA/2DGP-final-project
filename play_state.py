@@ -26,6 +26,7 @@ def collide(a, b):
     if top_a < bottom_b: return False
     if bottom_a > top_b: return False
     return True
+
 def handle_events():
     events = get_events()
     for event in events:
@@ -35,6 +36,7 @@ def handle_events():
             game_framework.quit()
         else:
             server.kirby.handle_event(event)
+
 def enter():
 
     server.kirby = Kirby()
@@ -147,9 +149,9 @@ def enter():
     # game_world.add_collision_group(server.kirby, server.boss[3], 'kirby:last_boss')
     # game_world.add_collision_group(server.kirby, server.boss[3], 'kirby_skill:last_boss')
 
-
 def exit():
     game_world.clear()
+
 def update():
     for game_object in game_world.all_objects():
         game_object.update()
