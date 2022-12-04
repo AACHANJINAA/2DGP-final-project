@@ -44,34 +44,34 @@ class IDLE:
 
     @staticmethod
     def draw(self):
-        match self.mode:
+        match server.mode:
             case 0:
                 if self.face_dir_x == -1:
-                    self.Idle[self.mode].clip_composite_draw(int(self.frame) * 23, 0, 22, 18,
+                    self.Idle[server.mode].clip_composite_draw(int(self.frame) * 23, 0, 22, 18,
                                                              0.0, '', self.sx, self.y, self.kx, self.ky)
                 else:
-                    self.Idle[self.mode].clip_composite_draw(int(self.frame) * 23, 0, 22, 18,
+                    self.Idle[server.mode].clip_composite_draw(int(self.frame) * 23, 0, 22, 18,
                                                              0.0, 'h', self.sx, self.y, self.kx, self.ky)
             case 1:
                 if self.face_dir_x == -1:
-                    self.Idle[self.mode].clip_composite_draw(int(self.frame) * 31, 0, 31, 28,
+                    self.Idle[server.mode].clip_composite_draw(int(self.frame) * 31, 0, 31, 28,
                                                              0.0, 'h', self.sx, self.y, self.kx, self.ky)
                 else:
-                    self.Idle[self.mode].clip_composite_draw(int(self.frame) * 31, 0, 31, 28,
+                    self.Idle[server.mode].clip_composite_draw(int(self.frame) * 31, 0, 31, 28,
                                                              0.0, '', self.sx, self.y, self.kx, self.ky)
             case 2:
                 if self.face_dir_x == -1:
-                    self.Idle[self.mode].clip_composite_draw(int(self.frame) * 23, 0, 23, 30,
+                    self.Idle[server.mode].clip_composite_draw(int(self.frame) * 23, 0, 23, 30,
                                                              0.0, 'h', self.sx, self.y, self.kx, self.ky)
                 else:
-                    self.Idle[self.mode].clip_composite_draw(int(self.frame) * 23, 0, 23, 30,
+                    self.Idle[server.mode].clip_composite_draw(int(self.frame) * 23, 0, 23, 30,
                                                              0.0, '', self.sx, self.y, self.kx, self.ky)
             case 3:
                 if self.face_dir_x == -1:
-                    self.Idle[self.mode].clip_composite_draw(int(self.frame) * 31, 0, 31, 28,
+                    self.Idle[server.mode].clip_composite_draw(int(self.frame) * 31, 0, 31, 28,
                                                              0.0, 'h', self.sx, self.y, self.kx, self.ky)
                 else:
-                    self.Idle[self.mode].clip_composite_draw(int(self.frame) * 31, 0, 31, 28,
+                    self.Idle[server.mode].clip_composite_draw(int(self.frame) * 31, 0, 31, 28,
                                                              0.0, '', self.sx, self.y, self.kx, self.ky)
 
 
@@ -102,34 +102,35 @@ class RUN:
     @staticmethod
     def draw(self):
         self.sx = self.x - server.background.window_left
-        match self.mode:
+        self.sy = self.y - server.background.window_bottom
+        match server.mode:
             case 0:
                 if self.dir_x == -1:
-                    self.Run[self.mode].clip_composite_draw(int(self.frame) * 22, 0, 22, 20,
-                                                            0.0, '', self.sx, self.y, self.kx, self.ky)
+                    self.Run[server.mode].clip_composite_draw(int(self.frame) * 22, 0, 22, 20,
+                                                            0.0, '', self.sx, self.sy, self.kx, self.ky)
                 else:
-                    self.Run[self.mode].clip_composite_draw(int(self.frame) * 22, 0, 22, 20,
-                                                            0.0, 'h', self.sx, self.y, self.kx, self.ky)
+                    self.Run[server.mode].clip_composite_draw(int(self.frame) * 22, 0, 22, 20,
+                                                            0.0, 'h', self.sx, self.sy, self.kx, self.ky)
             case 1:
                 if self.dir_x == -1:
-                    self.Run[self.mode].clip_composite_draw(int(self.frame) * 30, 0, 30, 30,
-                                                            0.0, 'h', self.sx, self.y, self.kx, self.ky)
+                    self.Run[server.mode].clip_composite_draw(int(self.frame) * 30, 0, 30, 30,
+                                                            0.0, 'h', self.sx, self.sy, self.kx, self.ky)
                 else:
-                    self.Run[self.mode].clip_composite_draw(int(self.frame) * 30, 0, 30, 30,
-                                                            0.0, '', self.sx, self.y, self.kx, self.ky)
+                    self.Run[server.mode].clip_composite_draw(int(self.frame) * 30, 0, 30, 30,
+                                                            0.0, '', self.sx, self.sy, self.kx, self.ky)
             case 2:
                 if self.dir_x == -1:
-                    self.Run[self.mode].clip_composite_draw(int(self.frame) * 29, 0, 29, 30,
-                                                            0.0, 'h', self.sx, self.y, self.kx, self.ky)
+                    self.Run[server.mode].clip_composite_draw(int(self.frame) * 29, 0, 29, 30,
+                                                            0.0, 'h', self.sx, self.sy, self.kx, self.ky)
                 else:
-                    self.Run[self.mode].clip_composite_draw(int(self.frame) * 29, 0, 29, 30,
-                                                            0.0, '', self.sx, self.y, self.kx, self.ky)
+                    self.Run[server.mode].clip_composite_draw(int(self.frame) * 29, 0, 29, 30,
+                                                            0.0, '', self.sx, self.sy, self.kx, self.ky)
             case 3:
                 if self.dir_x == -1:
-                    self.Run[self.mode].clip_composite_draw(int(self.frame) * 30, 0, 30, 30,
-                                                            0.0, 'h', self.sx, self.y, self.kx, self.ky)
+                    self.Run[server.mode].clip_composite_draw(int(self.frame) * 30, 0, 30, 30,
+                                                            0.0, 'h', self.sx, self.sy, self.kx, self.ky)
                 else:
-                    self.Run[self.mode].clip_composite_draw(int(self.frame) * 30, 0, 30, 30,
+                    self.Run[server.mode].clip_composite_draw(int(self.frame) * 30, 0, 30, 30,
                                                             0.0, '', self.sx, self.y, self.kx, self.ky)
 
 
@@ -151,7 +152,7 @@ class JUMP:
         elif self.timer == 0:
             self.dir_y = 1
             self.add_event(TIMER)
-        match self.mode:
+        match server.mode:
             case 0:
                 self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 6
             case 1:
@@ -170,42 +171,43 @@ class JUMP:
     @staticmethod
     def draw(self):
         self.sx = self.x - server.background.window_left
-        match self.mode:
+        self.sy = self.y - server.background.window_bottom
+        match server.mode:
             case 0:
                 if self.face_dir_x == -1:
-                    self.Jump[self.mode].clip_composite_draw(int(self.frame) * 25, 0, 25, 22,
-                                                             0.0, '', self.sx, self.y, self.kx, self.ky)
+                    self.Jump[server.mode].clip_composite_draw(int(self.frame) * 25, 0, 25, 22,
+                                                             0.0, '', self.sx, self.sy, self.kx, self.ky)
                 else:
-                    self.Jump[self.mode].clip_composite_draw(int(self.frame) * 25, 0, 25, 22,
-                                                             0.0, 'h', self.sx, self.y, self.kx, self.ky)
+                    self.Jump[server.mode].clip_composite_draw(int(self.frame) * 25, 0, 25, 22,
+                                                             0.0, 'h', self.sx, self.sy, self.kx, self.ky)
             case 1:
                 if self.face_dir_x == -1:
-                    self.Jump[self.mode].clip_composite_draw(int(self.frame) * 28, 0, 28, 34,
-                                                             0.0, 'h', self.sx, self.y, self.kx, self.ky)
+                    self.Jump[server.mode].clip_composite_draw(int(self.frame) * 28, 0, 28, 34,
+                                                             0.0, 'h', self.sx, self.sy, self.kx, self.ky)
                 else:
-                    self.Jump[self.mode].clip_composite_draw(int(self.frame) * 28, 0, 28, 34,
-                                                             0.0, '', self.sx, self.y, self.kx, self.ky)
+                    self.Jump[server.mode].clip_composite_draw(int(self.frame) * 28, 0, 28, 34,
+                                                             0.0, '', self.sx, self.sy, self.kx, self.ky)
             case 2:
                 if self.face_dir_x == -1:
-                    self.Jump[self.mode].clip_composite_draw(int(self.frame) * 24, 0, 24, 34,
-                                                             0.0, 'h', self.sx, self.y, self.kx, self.ky)
+                    self.Jump[server.mode].clip_composite_draw(int(self.frame) * 24, 0, 24, 34,
+                                                             0.0, 'h', self.sx, self.sy, self.kx, self.ky)
                 else:
-                    self.Jump[self.mode].clip_composite_draw(int(self.frame) * 24, 0, 24, 34,
-                                                             0.0, '', self.sx, self.y, self.kx, self.ky)
+                    self.Jump[server.mode].clip_composite_draw(int(self.frame) * 24, 0, 24, 34,
+                                                             0.0, '', self.sx, self.sy, self.kx, self.ky)
             case 3:
                 if self.face_dir_x == -1:
-                    self.Jump[self.mode].clip_composite_draw(int(self.frame) * 28, 0, 28, 34,
-                                                             0.0, 'h', self.sx, self.y, self.kx, self.ky)
+                    self.Jump[server.mode].clip_composite_draw(int(self.frame) * 28, 0, 28, 34,
+                                                             0.0, 'h', self.sx, self.sy, self.kx, self.ky)
                 else:
-                    self.Jump[self.mode].clip_composite_draw(int(self.frame) * 28, 0, 28, 34,
-                                                             0.0, '', self.sx, self.y, self.kx, self.ky)
+                    self.Jump[server.mode].clip_composite_draw(int(self.frame) * 28, 0, 28, 34,
+                                                             0.0, '', self.sx, self.sy, self.kx, self.ky)
 
 
 class SKILL:
     @staticmethod
     def enter(self, event):
         if event == AD:
-            match self.mode:
+            match server.mode:
                 case 0:
                     self.timer = 310
                 case 1:
@@ -213,11 +215,11 @@ class SKILL:
                 case 2:
                     self.timer = 420
                 case 3:
-                    if event == AD:
-                        self.move_pos = 24
-                        self.mp = 0
-                        self.pos_boom = self.x
-                        self.move_boom = 0
+                    self.move_pos = 24
+                    self.mp = 0
+                    self.pos_boom = self.sx
+                    self.move_boom = 0
+
 
     @staticmethod
     def exit(self, event):
@@ -225,7 +227,7 @@ class SKILL:
 
     @staticmethod
     def do(self):
-        match self.mode:
+        match server.mode:
             case 0:
                 self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 9
                 self.timer -= 1
@@ -256,46 +258,46 @@ class SKILL:
 
     @staticmethod
     def draw(self):
-        match self.mode:
+        match server.mode:
             case 0:
                 if self.face_dir_x == -1:
-                    self.Skill[self.mode].clip_composite_draw(int(self.frame) * 30, 0, 30, 22,
+                    self.Skill[server.mode].clip_composite_draw(int(self.frame) * 30, 0, 30, 22,
                                                               0.0, '', self.sx, self.y, self.kx + 3, self.ky + 3)
                 else:
-                    self.Skill[self.mode].clip_composite_draw(int(self.frame) * 30, 0, 30, 22,
+                    self.Skill[server.mode].clip_composite_draw(int(self.frame) * 30, 0, 30, 22,
                                                               0.0, 'h', self.sx, self.y, self.kx + 3, self.ky + 3)
             case 1:
                 if self.face_dir_x == -1:
-                    self.Skill[self.mode].clip_composite_draw(int(self.frame) * 56, 0, 56, 31,
+                    self.Skill[server.mode].clip_composite_draw(int(self.frame) * 56, 0, 56, 31,
                                                               0.0, 'h', self.sx, self.y, self.kx + 50, self.ky)
-                    self.Effect[self.mode - 1].clip_composite_draw(0, 0, 38, 40,
+                    self.Effect[server.mode - 1].clip_composite_draw(0, 0, 38, 40,
                                                                    0.0, 'h', self.sx - 90, self.y + 10, self.kx - 5, self.ky + 10)
                 else:
-                    self.Skill[self.mode].clip_composite_draw(int(self.frame) * 56, 0, 56, 31,
+                    self.Skill[server.mode].clip_composite_draw(int(self.frame) * 56, 0, 56, 31,
                                                               0.0, '', self.sx, self.y, self.kx + 50, self.ky)
-                    self.Effect[self.mode - 1].clip_composite_draw(0, 0, 38, 40,
+                    self.Effect[server.mode - 1].clip_composite_draw(0, 0, 38, 40,
                                                                    0.0, '', self.sx + 90, self.y + 10, self.kx + 5, self.ky + 10)
             case 2:
                 if self.face_dir_x == -1:
-                    self.Effect[self.mode - 1].clip_composite_draw(0, 0, 64, 64,
+                    self.Effect[server.mode - 1].clip_composite_draw(0, 0, 64, 64,
                                                                    0.0, 'h', self.sx, self.y, self.kx * 2, self.ky * 2)
-                    self.Skill[self.mode].clip_composite_draw(int(self.frame) * 22, 0, 22, 34,
+                    self.Skill[server.mode].clip_composite_draw(int(self.frame) * 22, 0, 22, 34,
                                                               0.0, 'h', self.sx, self.y, self.kx, self.ky)
                 else:
-                    self.Effect[self.mode - 1].clip_composite_draw(0, 0, 64, 64,
+                    self.Effect[server.mode - 1].clip_composite_draw(0, 0, 64, 64,
                                                                    0.0, '', self.sx, self.y, self.kx * 2, self.ky * 2)
-                    self.Skill[self.mode].clip_composite_draw(int(self.frame) * 22, 0, 22, 34,
+                    self.Skill[server.mode].clip_composite_draw(int(self.frame) * 22, 0, 22, 34,
                                                               0.0, '', self.sx, self.y, self.kx, self.ky)
             case 3:
                 if self.face_dir_x == -1:
-                    self.Effect[self.mode - 1].clip_composite_draw(int(self.frame + 1) * 23, 0, 23, 29,
+                    self.Effect[server.mode - 1].clip_composite_draw(int(self.frame + 1) * 23, 0, 23, 29,
                                                                    0.0, 'h', self.pos_boom - self.move_boom, self.y, self.kx, self.ky)
-                    self.Skill[self.mode].clip_composite_draw(self.mp, 0, self.move_pos, 34,
+                    self.Skill[server.mode].clip_composite_draw(self.mp, 0, self.move_pos, 34,
                                                               0.0, 'h', self.sx, self.y, self.kx, self.ky)
                 else:
-                    self.Effect[self.mode - 1].clip_composite_draw(int(self.frame + 1) * 23, 0, 23, 29,
+                    self.Effect[server.mode - 1].clip_composite_draw(int(self.frame + 1) * 23, 0, 23, 29,
                                                                    0.0, '', self.pos_boom + self.move_boom, self.y, self.kx, self.ky)
-                    self.Skill[self.mode].clip_composite_draw(self.mp, 0, self.move_pos, 34,
+                    self.Skill[server.mode].clip_composite_draw(self.mp, 0, self.move_pos, 34,
                                                               0.0, '', self.sx, self.y, self.kx, self.ky)
 
 
@@ -326,21 +328,20 @@ next_state = {
     IDLE:  {RU: RUN,  LU: RUN,  RD: RUN,  LD: RUN,  JD: JUMP, TIMER: SLEEP, AD: SKILL},
     RUN:   {RU: IDLE, LU: IDLE, RD: IDLE, LD: IDLE, JD: JUMP, TIMER: IDLE,  AD: SKILL},
     SLEEP: {RU: RUN,  LU: RUN,  RD: RUN,  LD: RUN,  JD: IDLE, TIMER: IDLE,  AD: IDLE},
-    JUMP:  {RU: JUMP, LU: JUMP, RD: JUMP, LD: JUMP, JD: JUMP, TIMER: IDLE,  AD: JUMP},
-    SKILL: {RU: SKILL, LU: SKILL, RD: SKILL, LD: SKILL, JD: IDLE, TIMER: IDLE, AD: SKILL}
+    JUMP:  {RU: JUMP, LU: JUMP, RD: JUMP, LD: JUMP, JD: IDLE, TIMER: IDLE,  AD: SKILL},
+    SKILL: {RU: RUN,  LU: RUN,  RD: RUN,  LD: RUN,  JD: IDLE, TIMER: IDLE,  AD: SKILL},
 }
 
 
 class Kirby:
     def __init__(self):
-        self.mode = 0
 
         self.move_pos = 0
         self.mp = 0
         self.pos_boom = 0
         self.move_boom = 0
 
-        self.sx = 30
+        self.sx, self.sy = 30, 100
         self.hp_cnt = 8.0
         self.x, self.y = 30, 100
         self.kx, self.ky = 70, 55
@@ -370,6 +371,7 @@ class Kirby:
                        load_image('kirby(spark)/kirby(spark)_skill_effect.png'),
                        load_image('kirby(bomber)/kirby(bomber)_skill_effect.png')]
         self.Sleep = load_image('kirby/kirby_sleep.png')
+        self.Hit = load_image('kirby/kirby_hit.png')
         self.Hp = [load_image('UI/hp.png'), load_image('UI/hp.png'),
                    load_image('UI/hp.png'), load_image('UI/hp.png'),
                    load_image('UI/hp.png'), load_image('UI/hp.png'),
@@ -390,7 +392,7 @@ class Kirby:
     def draw(self):
         for i in range(0, int(self.hp_cnt)):
             self.Hp[i].clip_composite_draw(0, 0, 457, 62,
-                                           0.0, '', self.sx - 30 + i * 10, self.y + 50, 10, 10)
+                                           0.0, '', self.sx - 30 + i * 10, self.sy + 50, 10, 10)
         self.cur_state.draw(self)
         debug_print('PPPP')
         debug_print(f'Face Dir: {self.face_dir_x}, Dir: {self.dir_x}')
@@ -398,7 +400,7 @@ class Kirby:
 
     def set_background(self, bg):
         self.bg = bg
-        self.x = self.bg.w / 2
+        self.sx = self.bg.w / 2
         self.y = self.bg.h / 2
 
     def add_event(self, event):
@@ -411,29 +413,47 @@ class Kirby:
 
     def get_bb(self):
         if self.cur_state != SKILL:
-            return self.sx - 25, self.y - 25, self.sx + 25, self.y + 25
-        elif self.cur_state == SKILL and self.mode == 0:
-            return self.sx - self.face_dir_x * 25, self.y - 25, \
-                   self.sx + self.face_dir_x * 120, self.y + 25
-        elif self.cur_state == SKILL and self.mode == 1:
-            return self.sx - self.face_dir_x * 25, self.y - 25, \
-                   self.sx + self.face_dir_x * 100, self.y + 40
-        elif self.cur_state == SKILL and self.mode == 2:
-            return self.sx - 60, self.y - 50, \
-                   self.sx + 60, self.y + 50
+            return self.sx - 25, self.sy - 25, self.sx + 25, self.sy + 25
+        elif self.cur_state == SKILL and server.mode == 0:
+            if self.face_dir_x == 1:
+                return self.sx - 25, self.sy - 25, \
+                       self.sx + 50, self.sy + 25
+            else:
+                return self.sx - 50, self.sy - 25, \
+                       self.sx + 25, self.sy + 25
+        elif self.cur_state == SKILL and server.mode == 1:
+            if self.face_dir_x == 1:
+                return self.sx - 25, self.sy - 25, \
+                       self.sx + 120, self.sy + 40
+            else:
+                return self.sx - 120, self.sy - 25, \
+                       self.sx + 25, self.sy + 40
+        elif self.cur_state == SKILL and server.mode == 2:
+            return self.sx - 60, self.sy - 50, \
+                   self.sx + 60, self.sy + 50
+        elif self.cur_state == SKILL and server.mode == 3:
+            return self.sx - 25, self.sy - 25, self.sx + 25, self.sy + 25
 
     def handle_collision(self, other, group):
         if self.cur_state is SKILL:
             match group:
                 case 'kirby_skill:sword_monster':
-                    if self.mode == 0:
-                        self.mode = 1
+                    if server.mode == 0:
+                        server.mode = 1
                 case 'kirby_skill:spark_monster':
-                    if self.mode == 0:
-                        self.mode = 2
+                    if server.mode == 0:
+                        server.mode = 2
                 case 'kirby_skill:bomber_monster':
-                    if self.mode == 0:
-                        self.mode = 3
+                    if server.mode == 0:
+                        server.mode = 3
+                case 'kirby_skill:sword_boss':
+                    pass
+                case 'kirby_skill:spark_boss':
+                    pass
+                case 'kirby_skill:sword_boss':
+                    pass
+                case 'kirby_skill:last_boss':
+                    pass
             server.skill = True
         else:
             match group:
@@ -445,5 +465,14 @@ class Kirby:
                     self.x -= self.dir_x * 100
                 case 'kirby:bomber_monster':
                     self.x -= self.dir_x * 100
+                case 'kirby:sword_boss':
+                    self.x -= self.dir_x * 100
+                case 'kirby:spark_boss':
+                    self.x -= self.dir_x * 100
+                case 'kirby:bomber_boss':
+                    self.x -= self.dir_x * 100
+                case 'kirby:last_boss':
+                    self.x -= self.dir_x * 100
             server.skill = False
-            self.hp_cnt -= 0.2
+            #self.add_event(HIT)
+            self.hp_cnt -= 0.01

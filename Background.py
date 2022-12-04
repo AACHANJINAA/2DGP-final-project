@@ -1,5 +1,4 @@
 from pico2d import*
-import game_framework
 import server
 
 
@@ -36,7 +35,7 @@ class BACK:
                                                   0.0, 'h', 250 * (i + 1), 120, 100, 90)
 
     def update(self):
-        self.frame = (self.frame + 0.02) % 3
+        self.frame = (self.frame + 0.2) % 3
         self.window_left = clamp(0,
                                  int(server.kirby.x) - self.canvas_width // 2,
                                  self.w - self.canvas_width - 1)

@@ -3,9 +3,6 @@ import game_framework
 import game_world
 import server
 
-# 이 리스트로 맞는 방향 저장 -> hit클래스에 넣어주기
-# hit_dir = [None, None, None, None]
-
 
 class BASIC_MONSTER:
 
@@ -14,6 +11,7 @@ class BASIC_MONSTER:
         self.kx, self.ky = 70, 55
         self.frame = 0
         self.dir = -1
+        self.sx, self.sy = 700, 100
 
         self.event_que = []
         self.cur_state = IDLE_BASIC_MONSTER
@@ -42,145 +40,16 @@ class BASIC_MONSTER:
         pass
 
     def get_bb(self):
-        return self.x - 25, self.y - 25, self.x + 25, self.y + 25
+        return self.sx - 25, self.sy - 25, self.sx + 25, self.sy + 25
 
     def handle_collision(self, other, group):
         match group:
             case 'kirby:basic_monster':
                 pass
             case 'kirby_skill:basic_monster':
-                game_world.remove_object(self)
-
-
-class SWORD_MONSTER:
-    def __init__(self):
-        self.x, self.y = 300, 100
-        self.kx, self.ky = 70, 55
-        self.frame = 0
-        self.dir = -1
-
-        self.event_que = []
-        self.cur_state = IDLE_SWORD_MONSTER
-        self.cur_state.enter(self, None)
-
-        self.Idle = load_image('basic_monster/sword/sword_monster.png')
-        self.Hit = load_image('basic_monster/sword/sword_monster_hit.png')
-
-    def update(self):
-        self.cur_state.do(self)
-
-        if self.event_que:
-            event = self.event_que.pop()
-            self.cur_state.exit(self, event)
-
-            self.cur_state.enter(self, event)
-
-    def draw(self):
-        self.cur_state.draw(self)
-
-    def add_event(self, event):
-        self.event_que.insert(0, event)
-
-    def handle_event(self, event):
-        pass
-    def get_bb(self):
-        return self.x - 25, self.y - 25, self.x + 25, self.y + 25
-
-    def handle_collision(self, other, group):
-        match group:
-            case 'kirby:sword_monster':
-                pass
-            case 'kirby_skill:sword_monster':
-                game_world.remove_object(self)
-
-
-class SPARK_MONSTER:
-    def __init__(self):
-        self.x, self.y = 100, 100
-        self.kx, self.ky = 70, 55
-        self.frame = 0
-        self.dir = -1
-
-        self.event_que = []
-        self.cur_state = IDLE_SPARK_MONSTER
-        self.cur_state.enter(self, None)
-
-        self.Idle = load_image('basic_monster/spark/spark_monster.png')
-        self.Hit = load_image('basic_monster/spark/spark_monster_hit.png')
-
-    def update(self):
-        self.cur_state.do(self)
-
-        if self.event_que:
-            event = self.event_que.pop()
-            self.cur_state.exit(self, event)
-
-            self.cur_state.enter(self, event)
-
-    def draw(self):
-        self.cur_state.draw(self)
-
-    def add_event(self, event):
-        self.event_que.insert(0, event)
-
-    def handle_event(self, event):
-        pass
-    def get_bb(self):
-        return self.x - 25, self.y - 25, self.x + 25, self.y + 25
-
-    def handle_collision(self, other, group):
-        match group:
-            case 'kirby:spark_monster':
-                pass
-            case 'kirby_skill:spark_monster':
                 if server.skill is True:
                     game_world.remove_object(self)
                 pass
-
-
-class BOMBER_MONSTER:
-    def __init__(self):
-        self.x, self.y = 500, 100
-        self.kx, self.ky = 70, 55
-        self.frame = 0
-        self.dir = -1
-
-        self.event_que = []
-        self.cur_state = IDLE_BOMBER_MONSTER
-        self.cur_state.enter(self, None)
-
-        self.Idle = load_image('basic_monster/bomber/bomber_monster.png')
-        self.Hit = load_image('basic_monster/bomber/bomber_monster_hit.png')
-
-    def update(self):
-        self.cur_state.do(self)
-
-        if self.event_que:
-            event = self.event_que.pop()
-            self.cur_state.exit(self, event)
-
-            self.cur_state.enter(self, event)
-
-    def draw(self):
-        self.cur_state.draw(self)
-
-    def add_event(self, event):
-        self.event_que.insert(0, event)
-
-    def handle_event(self, event):
-        pass
-
-    def get_bb(self):
-        return self.x - 25, self.y - 25, self.x + 25, self.y + 25
-
-    def handle_collision(self, other, group):
-        match group:
-            case 'kirby_skill:bomber_monster':
-                game_world.remove_object(self)
-            case 'kirby:bomber_monster':
-                pass
-
-
 
 class IDLE_BASIC_MONSTER:
     @staticmethod
@@ -200,13 +69,59 @@ class IDLE_BASIC_MONSTER:
 
     @staticmethod
     def draw(self):
+        self.sx = self.x - server.background.window_left
+        self.sy = self.y - server.background.window_bottom
         if self.dir == -1:
             self.Idle.clip_composite_draw(int(self.frame) * 22, 0, 22, 19,
-                                          0.0, '', self.x, self.y, self.kx, self.ky)
+                                          0.0, '', self.sx, self.sy, self.kx, self.ky)
         else:
             self.Idle.clip_composite_draw(int(self.frame) * 22, 0, 22, 19,
-                                          0.0, 'h', self.x, self.y, self.kx, self.ky)
+                                          0.0, 'h', self.sx, self.sy, self.kx, self.ky)
 
+class SWORD_MONSTER:
+    def __init__(self):
+        self.x, self.y = 300, 100
+        self.kx, self.ky = 70, 55
+        self.frame = 0
+        self.dir = -1
+        self.sx, self.sy = 700, 100
+
+        self.event_que = []
+        self.cur_state = IDLE_SWORD_MONSTER
+        self.cur_state.enter(self, None)
+
+        self.Idle = load_image('basic_monster/sword/sword_monster.png')
+        self.Hit = load_image('basic_monster/sword/sword_monster_hit.png')
+
+    def update(self):
+        self.cur_state.do(self)
+
+        if self.event_que:
+            event = self.event_que.pop()
+            self.cur_state.exit(self, event)
+
+            self.cur_state.enter(self, event)
+
+    def draw(self):
+        self.cur_state.draw(self)
+        draw_rectangle(*self.get_bb())
+
+    def add_event(self, event):
+        self.event_que.insert(0, event)
+
+    def handle_event(self, event):
+        pass
+    def get_bb(self):
+        return self.sx - 25, self.sy - 25, self.sx + 25, self.sy + 25
+
+    def handle_collision(self, other, group):
+        match group:
+            case 'kirby:sword_monster':
+                pass
+            case 'kirby_skill:sword_monster':
+                if server.skill is True:
+                    game_world.remove_object(self)
+                pass
 
 class IDLE_SWORD_MONSTER:
     @staticmethod
@@ -226,13 +141,60 @@ class IDLE_SWORD_MONSTER:
 
     @staticmethod
     def draw(self):
+        self.sx = self.x - server.background.window_left
+        self.sy = self.y - server.background.window_bottom
         if self.dir == -1:
             self.Idle.clip_composite_draw(int(self.frame) * 27, 0, 27, 23,
-                                          0.0, 'h', self.x, self.y, self.kx, self.ky)
+                                          0.0, 'h', self.sx, self.sy, self.kx, self.ky)
         else:
             self.Idle.clip_composite_draw(int(self.frame) * 27, 0, 27, 23,
-                                          0.0, '', self.x, self.y, self.kx, self.ky)
+                                          0.0, '', self.sx, self.sy, self.kx, self.ky)
 
+
+class SPARK_MONSTER:
+    def __init__(self):
+        self.x, self.y = 100, 100
+        self.kx, self.ky = 70, 55
+        self.frame = 0
+        self.dir = -1
+        self.sx, self.sy = 700, 100
+
+        self.event_que = []
+        self.cur_state = IDLE_SPARK_MONSTER
+        self.cur_state.enter(self, None)
+
+        self.Idle = load_image('basic_monster/spark/spark_monster.png')
+        self.Hit = load_image('basic_monster/spark/spark_monster_hit.png')
+
+    def update(self):
+        self.cur_state.do(self)
+
+        if self.event_que:
+            event = self.event_que.pop()
+            self.cur_state.exit(self, event)
+
+            self.cur_state.enter(self, event)
+
+    def draw(self):
+        self.cur_state.draw(self)
+        draw_rectangle(*self.get_bb())
+
+    def add_event(self, event):
+        self.event_que.insert(0, event)
+
+    def handle_event(self, event):
+        pass
+    def get_bb(self):
+        return self.sx - 25, self.sy - 25, self.sx + 25, self.sy + 25
+
+    def handle_collision(self, other, group):
+        match group:
+            case 'kirby:spark_monster':
+                pass
+            case 'kirby_skill:spark_monster':
+                if server.skill is True:
+                    game_world.remove_object(self)
+                pass
 
 class IDLE_SPARK_MONSTER:
     @staticmethod
@@ -252,13 +214,61 @@ class IDLE_SPARK_MONSTER:
 
     @staticmethod
     def draw(self):
+        self.sx = self.x - server.background.window_left
+        self.sy = self.y - server.background.window_bottom
         if self.dir == -1:
             self.Idle.clip_composite_draw(int(self.frame) * 22, 0, 22, 19,
-                                          0.0, 'h', self.x, self.y, self.kx, self.ky)
+                                          0.0, 'h', self.sx, self.sy, self.kx, self.ky)
         else:
             self.Idle.clip_composite_draw(int(self.frame) * 22, 0, 22, 19,
-                                          0.0, '', self.x, self.y, self.kx, self.ky)
+                                          0.0, '', self.sx, self.sy, self.kx, self.ky)
 
+
+class BOMBER_MONSTER:
+    def __init__(self):
+        self.x, self.y = 500, 100
+        self.kx, self.ky = 70, 55
+        self.frame = 0
+        self.dir = -1
+        self.sx, self.sy = 700, 100
+
+        self.event_que = []
+        self.cur_state = IDLE_BOMBER_MONSTER
+        self.cur_state.enter(self, None)
+
+        self.Idle = load_image('basic_monster/bomber/bomber_monster.png')
+        self.Hit = load_image('basic_monster/bomber/bomber_monster_hit.png')
+
+    def update(self):
+        self.cur_state.do(self)
+
+        if self.event_que:
+            event = self.event_que.pop()
+            self.cur_state.exit(self, event)
+
+            self.cur_state.enter(self, event)
+
+    def draw(self):
+        self.cur_state.draw(self)
+        draw_rectangle(*self.get_bb())
+
+    def add_event(self, event):
+        self.event_que.insert(0, event)
+
+    def handle_event(self, event):
+        pass
+
+    def get_bb(self):
+        return self.sx - 25, self.sy - 25, self.sx + 25, self.sy + 25
+
+    def handle_collision(self, other, group):
+        match group:
+            case 'kirby:bomber_monster':
+                pass
+            case 'kirby_skill:bomber_monster':
+                if server.skill is True:
+                    game_world.remove_object(self)
+                pass
 
 class IDLE_BOMBER_MONSTER:
     @staticmethod
@@ -278,12 +288,18 @@ class IDLE_BOMBER_MONSTER:
 
     @staticmethod
     def draw(self):
+        self.sx = self.x - server.background.window_left
+        self.sy = self.y - server.background.window_bottom
         if self.dir == -1:
             self.Idle.clip_composite_draw(int(self.frame) * 22, 0, 22, 26,
-                                          0.0, 'h', self.x, self.y, self.kx, self.ky)
+                                          0.0, 'h', self.sx, self.sy, self.kx, self.ky)
         else:
             self.Idle.clip_composite_draw(int(self.frame) * 22, 0, 22, 26,
-                                          0.0, '', self.x, self.y, self.kx, self.ky)
+                                          0.0, '', self.sx, self.sy, self.kx, self.ky)
+
+
+
+
 
 
 class HIT_BASIC_MONSTER:
