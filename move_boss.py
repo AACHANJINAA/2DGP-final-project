@@ -322,6 +322,8 @@ class LAST_BOSS:
         self.s_timer = self.timer // 2
         self.hp_cnt = 16.0
 
+        self.font = load_font('ENCR10B.TTF', 30)
+
         self.event_que = []
         self.cur_state = IDLE4
         self.cur_state.enter(self, None)
@@ -443,6 +445,7 @@ class SKILL4:
     def draw(self):
         self.sx = self.x - server.background.window_left
         self.sy = self.y - server.background.window_bottom
+        self.font.draw(self.sx - 50, self.sy + 50, 'JUMP!!', (255, 255, 0))
         if self.dir == -1:
             self.Skill.clip_composite_draw(int(self.frame) * 62, 0, 62, 63,
                                            0.0, 'h', self.sx, self.sy, self.kx, self.ky)

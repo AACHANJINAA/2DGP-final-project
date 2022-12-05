@@ -80,7 +80,7 @@ class RUN:
     @staticmethod
     def enter(self, event):
         if event == RD:
-            self.dir_x += 1
+            self.dir_x = 1
         elif event == LD:
             self.dir_x -= 1
         elif event == RU:
@@ -94,9 +94,9 @@ class RUN:
 
     @staticmethod
     def do(self):
-        if 0.0 < self.frame < 0.05 or 1.0 < self.frame < 1.05 \
-           or 2.0 < self.frame < 2.05 or 3.0 < self.frame < 3.05 \
-           or 4.0 < self.frame < 4.05 or 5.0 < self.frame < 5.05:
+        if 0.0 < self.frame < 0.02 \
+           or 3.49 < self.frame < 3.51 \
+           or 5.98 < self.frame < 6.0:
             self.basic_sound[3].play()
         self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 6
         self.x += self.dir_x * RUN_SPEED_PPS * game_framework.frame_time
@@ -143,9 +143,10 @@ class JUMP:
     @staticmethod
     def enter(self, event):
         self.basic_sound[0].play()
+        self.timer = 310
+        self.s_timer = self.timer // 2
         if event == JD:
-            self.timer = 310
-            self.s_timer = self.timer // 2
+           self.dir_y = 1
 
     @staticmethod
     def exit(self, event):
@@ -171,7 +172,7 @@ class JUMP:
         self.y += self.dir_y * RUN_SPEED_PPS * game_framework.frame_time * 1.5
 
         self.x += self.face_dir_x / 1.5
-        #self.x = clamp(0, self.x, 800)
+        self.x = clamp(25, self.x, server.background.w - 25)
 
         self.timer -= 1
 
@@ -341,7 +342,7 @@ next_state = {
     IDLE:  {RU: RUN,  LU: RUN,  RD: RUN,  LD: RUN,  JD: JUMP, TIMER: SLEEP, AD: SKILL},
     RUN:   {RU: IDLE, LU: IDLE, RD: IDLE, LD: IDLE, JD: JUMP, TIMER: IDLE,  AD: SKILL},
     SLEEP: {RU: RUN,  LU: RUN,  RD: RUN,  LD: RUN,  JD: IDLE, TIMER: IDLE,  AD: IDLE},
-    JUMP:  {RU: JUMP, LU: JUMP, RD: JUMP, LD: JUMP, JD: IDLE, TIMER: IDLE,  AD: SKILL},
+    JUMP:  {RU: IDLE, LU: IDLE, RD: IDLE, LD: IDLE, JD: IDLE, TIMER: IDLE,  AD: SKILL},
     SKILL: {RU: RUN,  LU: RUN,  RD: RUN,  LD: RUN,  JD: IDLE, TIMER: IDLE,  AD: IDLE},
 }
 
@@ -357,7 +358,7 @@ class Kirby:
         self.hp_cnt = 8.0
         self.x, self.y = 30, 100
         self.kx, self.ky = 70, 55
-        self.face_dir_x, self.dir_x = 1, 0
+        self.face_dir_x, self.dir_x = 0, 0
         self.dir_y = 1
         self.frame = 0
         self.timer = 0
@@ -498,6 +499,8 @@ class Kirby:
                     self.x -= self.dir_x * 100
                 case 'kirby:last_boss':
                     self.x -= self.dir_x * 100
+                case 'kirby:enter_potal':
+                    self.hp_cnt += 0.02
             self.basic_sound[2].play()
             server.skill = False
             self.hp_cnt -= 0.02
