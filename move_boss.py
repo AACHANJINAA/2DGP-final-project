@@ -73,6 +73,7 @@ class SWORD_BOSS:
             case'kirby_skill:sword_boss':
                 self.hp_cnt -= 0.02
                 if server.skill is True and self.hp_cnt < 0:
+                    server.other_boss_die = True
                     game_world.remove_object(self)
 
 
@@ -157,6 +158,7 @@ class SPARK_BOSS:
             case 'kirby_skill:spark_boss':
                 self.hp_cnt -= 0.02
                 if server.skill is True and self.hp_cnt < 0:
+                    server.other_boss_die = True
                     game_world.remove_object(self)
 
 
@@ -172,8 +174,8 @@ class IDLE2:
     @staticmethod
     def do(self):
         self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 2
-        self.x += self.dir * RUN_SPEED_PPS * game_framework.frame_time * 1.5
-        if self.x < 100 or self.x > 1100:
+        self.x += self.dir * RUN_SPEED_PPS * game_framework.frame_time * 3
+        if self.x < 50 or self.x > 1150:
             self.dir *= -1
 
     @staticmethod
@@ -229,6 +231,8 @@ class BOMBER_BOSS:
                    load_image('UI/hp.png'), load_image('UI/hp.png'),
                    load_image('UI/hp.png'), load_image('UI/hp.png'),
                    load_image('UI/hp.png'), load_image('UI/hp.png')]
+        self.collide_sound = load_wav('bgm/boss_skills/bomber_boss_skill_collide.wav')
+        self.collide_sound.set_volume(82)
 
     def update(self):
         self.cur_state.do(self)
@@ -262,6 +266,7 @@ class BOMBER_BOSS:
             case 'kirby_skill:bomber_boss':
                 self.hp_cnt -= 0.02
                 if server.skill is True and self.hp_cnt < 0:
+                    server.other_boss_die = True
                     game_world.remove_object(self)
 
 
@@ -285,6 +290,7 @@ class IDLE3:
 
             if (self.skill_x[i] - 25 <= server.kirby.x <= self.skill_x[i] + 25
                     and self.skill_y[i] - 25 < server.kirby.y < self.skill_y[i] + 25):
+                    self.collide_sound.play()
                     server.kirby.hp_cnt -= 0.5
                     self.skill_y[i] = 1100
                     self.skill_x[i] = 50 * random.randrange(1, 20)
@@ -330,6 +336,10 @@ class LAST_BOSS:
                    load_image('UI/hp.png'), load_image('UI/hp.png'),
                    load_image('UI/hp.png'), load_image('UI/hp.png')]
         self.Skill = load_image('boss/last/last_boss_skill.png')
+        self.collide_sound = [load_wav('bgm/boss_skills/last_boss_skill_start.wav'),
+                              load_wav('bgm/boss_skills/last_boss_skill_collide.wav')]
+        self.collide_sound[0].set_volume(120)
+        self.collide_sound[1].set_volume(120)
 
     def update(self):
         self.cur_state.do(self)
@@ -360,8 +370,9 @@ class LAST_BOSS:
             case 'kirby:last_boss':
                 pass
             case 'kirby_skill:last_boss':
-                self.hp_cnt -= 0.005
+                self.hp_cnt -= 0.01
                 if server.skill is True and self.hp_cnt < 0:
+                    server.last_boss_die = True
                     game_world.remove_object(self)
 
 
@@ -379,6 +390,7 @@ class IDLE4:
         self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
         self.x += self.dir * RUN_SPEED_PPS * game_framework.frame_time * 2
         if 600 <= self.x <= 610:
+            self.collide_sound[0].play()
             self.cur_state = SKILL4
             #self.add_event(SKILL4)
         if self.x < 50 or self.x > 1150:
@@ -416,7 +428,7 @@ class SKILL4:
             self.dir_y = -1
         elif self.timer == 0:
             if server.kirby.y == 100:
-                # 지면 흔들리는 사운드
+                self.collide_sound[1].play()
                 server.kirby.hp_cnt -= 1
                 if server.kirby.hp_cnt <= 0:
                     game_framework.change_state(exit_state)

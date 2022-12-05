@@ -41,7 +41,7 @@ def enter():
     server.kirby = Kirby()
     server.monster = [BASIC_MONSTER(), SWORD_MONSTER(), SPARK_MONSTER(), BOMBER_MONSTER()]
     server.boss = [SWORD_BOSS(), SPARK_BOSS(), BOMBER_BOSS(), LAST_BOSS()]
-    server.stage_number = 5
+    server.stage_number = 7
     stage(server.stage_number)
 
 

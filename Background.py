@@ -4,10 +4,23 @@ import server
 
 class BACK:
     def __init__(self, n, pn):
-        # self.bgm = load_music('bgm/kirby_basic_music.mp3')
-        # self.bgm.set_volume(32)
-        # self.bgm.repeat_play()
         self.stage_num = n
+        if server.other_boss_die:
+            self.bgm = load_music('bgm/kill_other_boss.mp3')
+            self.bgm.set_volume(64)
+            self.bgm.repeat_play()
+        elif server.last_boss_die:
+            self.bgm = load_music('bgm/kill_last_boss.mp3')
+            self.bgm.set_volume(120)
+            self.bgm.repeat_play()
+        elif self.stage_num == 1 or self.stage_num == 3 or self.stage_num == 5:
+            self.bgm = load_music('bgm/kirby_basic_music.mp3')
+            self.bgm.set_volume(32)
+            self.bgm.repeat_play()
+        elif self.stage_num == 2 or self.stage_num == 4 or self.stage_num == 6:
+            self.bgm = load_music('bgm/kirby_boss_music.mp3')
+            self.bgm.set_volume(32)
+            self.bgm.repeat_play()
         self.image = [load_image('map/map_stage.png'),
                       load_image('basic_stage/sword_basic_stage.png'),
                       load_image('basic_stage/spark_basic_stage.png'),
@@ -47,6 +60,12 @@ class BACK:
                                                   0.0, 'h', 250 * (i + 1), 120, 100, 90)
 
     def update(self):
+        if server.other_boss_die:
+            self.__init__(self.stage_num, self.potal_num)
+            server.other_boss_die = False
+        if server.last_boss_die:
+            self.__init__(self.stage_num, self.potal_num)
+            server.last_boss_die = False
         self.frame = (self.frame + 0.2) % 3
         self.window_left = clamp(0,
                                  int(server.kirby.x) - self.canvas_width // 2,

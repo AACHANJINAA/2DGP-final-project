@@ -94,6 +94,10 @@ class RUN:
 
     @staticmethod
     def do(self):
+        if 0.0 < self.frame < 0.05 or 1.0 < self.frame < 1.05 \
+           or 2.0 < self.frame < 2.05 or 3.0 < self.frame < 3.05 \
+           or 4.0 < self.frame < 4.05 or 5.0 < self.frame < 5.05:
+            self.basic_sound[3].play()
         self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 6
         self.x += self.dir_x * RUN_SPEED_PPS * game_framework.frame_time
 
@@ -138,6 +142,7 @@ class RUN:
 class JUMP:
     @staticmethod
     def enter(self, event):
+        self.basic_sound[0].play()
         if event == JD:
             self.timer = 310
             self.s_timer = self.timer // 2
@@ -151,6 +156,7 @@ class JUMP:
         if self.timer == self.s_timer:
             self.dir_y = -1
         elif self.timer == 0:
+            self.basic_sound[1].play()
             self.dir_y = 1
             self.add_event(TIMER)
         match server.mode:
@@ -221,7 +227,6 @@ class SKILL:
                     self.pos_boom = self.sx
                     self.move_boom = 0
 
-
     @staticmethod
     def exit(self, event):
         self.move_boom = 0
@@ -230,25 +235,27 @@ class SKILL:
     def do(self):
         match server.mode:
             case 0:
+                self.skill_sound[0].play()
                 self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 9
                 self.timer -= 1
                 if self.timer == 0:
                     self.add_event(TIMER)
             case 1:
+                self.skill_sound[1].play()
                 self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 3
                 self.timer -= 1
                 if self.timer == 0:
                     self.add_event(TIMER)
             case 2:
+                self.skill_sound[2].play()
                 self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 2
                 self.timer -= 1
                 if self.timer == 0:
                     self.add_event(TIMER)
             case 3:
+                if self.frame < 1: self.skill_sound[3].play()
                 self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 3
                 self.move_boom += self.face_dir_x * 2 * RUN_SPEED_PPS * game_framework.frame_time
-                # if 50 <= self.pos_boom + self.face_dir_x * self.move_boom <= 1150:
-                #     self.cur_state = IDLE
                 if int(self.frame) == 1:
                     self.move_pos = 33
                     self.mp = 24
@@ -335,7 +342,7 @@ next_state = {
     RUN:   {RU: IDLE, LU: IDLE, RD: IDLE, LD: IDLE, JD: JUMP, TIMER: IDLE,  AD: SKILL},
     SLEEP: {RU: RUN,  LU: RUN,  RD: RUN,  LD: RUN,  JD: IDLE, TIMER: IDLE,  AD: IDLE},
     JUMP:  {RU: JUMP, LU: JUMP, RD: JUMP, LD: JUMP, JD: IDLE, TIMER: IDLE,  AD: SKILL},
-    SKILL: {RU: RUN,  LU: RUN,  RD: RUN,  LD: RUN,  JD: IDLE, TIMER: IDLE,  AD: SKILL},
+    SKILL: {RU: RUN,  LU: RUN,  RD: RUN,  LD: RUN,  JD: IDLE, TIMER: IDLE,  AD: IDLE},
 }
 
 
@@ -381,6 +388,17 @@ class Kirby:
                    load_image('UI/hp.png'), load_image('UI/hp.png'),
                    load_image('UI/hp.png'), load_image('UI/hp.png'),
                    load_image('UI/hp.png'), load_image('UI/hp.png')]
+        self.basic_sound = [load_wav('bgm/kirby_basic/kirby_jump.wav'),
+                            load_wav('bgm/kirby_basic/kirby_arrive_ground.wav'),
+                            load_wav('bgm/kirby_basic/kirby_hit_damage.wav'),
+                            load_wav('bgm/kirby_basic/kirby_run.wav')]
+        self.skill_sound = [load_wav('bgm/kirby_skills/basic_skill_music.wav'),
+                            load_wav('bgm/kirby_skills/sword_skill_music.wav'),
+                            load_wav('bgm/kirby_skills/spark_skill_music.wav'),
+                            load_wav('bgm/kirby_skills/bomber_skill_music.wav'),]
+        for i in range(0, 4):
+            self.skill_sound[i].set_volume(32)
+            self.basic_sound[i].set_volume(32)
 
     def update(self):
         self.cur_state.do(self)
@@ -424,8 +442,8 @@ class Kirby:
                 return self.sx - 25, self.sy - 25, \
                        self.sx + 75, self.sy + 25
             else:
-                return self.sx - 50, self.sy - 25, \
-                       self.sx + 75, self.sy + 25
+                return self.sx - 75, self.sy - 25, \
+                       self.sx + 25, self.sy + 25
         elif self.cur_state == SKILL and server.mode == 1:
             if self.face_dir_x == 1:
                 return self.sx - 25, self.sy - 25, \
@@ -480,8 +498,9 @@ class Kirby:
                     self.x -= self.dir_x * 100
                 case 'kirby:last_boss':
                     self.x -= self.dir_x * 100
+            self.basic_sound[2].play()
             server.skill = False
-            self.hp_cnt -= 0.01
+            self.hp_cnt -= 0.02
             if self.hp_cnt <= 0:
+                self.__init__()
                 game_framework.change_state(exit_state)
-                self.hp_cnt = 8.0
