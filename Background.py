@@ -4,6 +4,9 @@ import server
 
 class BACK:
     def __init__(self, n, pn):
+        # self.bgm = load_music('bgm/kirby_basic_music.mp3')
+        # self.bgm.set_volume(32)
+        # self.bgm.repeat_play()
         self.stage_num = n
         self.image = [load_image('map/map_stage.png'),
                       load_image('basic_stage/sword_basic_stage.png'),
@@ -30,6 +33,9 @@ class BACK:
                                    self.h - self.canvas_height - 1)
         self.frame = 0.0
         self.potal_num = pn
+
+
+
 
     def draw(self):
         self.image[self.stage_num].clip_draw_to_origin(self.window_left, self.window_bottom,

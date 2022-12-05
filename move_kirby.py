@@ -224,7 +224,7 @@ class SKILL:
 
     @staticmethod
     def exit(self, event):
-        pass
+        self.move_boom = 0
 
     @staticmethod
     def do(self):
@@ -246,7 +246,9 @@ class SKILL:
                     self.add_event(TIMER)
             case 3:
                 self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 3
-                self.move_boom += 2 * RUN_SPEED_PPS * game_framework.frame_time
+                self.move_boom += self.face_dir_x * 2 * RUN_SPEED_PPS * game_framework.frame_time
+                # if 50 <= self.pos_boom + self.face_dir_x * self.move_boom <= 1150:
+                #     self.cur_state = IDLE
                 if int(self.frame) == 1:
                     self.move_pos = 33
                     self.mp = 24
@@ -292,14 +294,17 @@ class SKILL:
             case 3:
                 if self.face_dir_x == -1:
                     self.Effect[server.mode - 1].clip_composite_draw(int(self.frame + 1) * 23, 0, 23, 29,
-                                                                   0.0, 'h', self.pos_boom - self.move_boom, self.y, self.kx, self.ky)
+                                                                     0.0, 'h', self.pos_boom + self.move_boom,
+                                                                     self.y, self.kx, self.ky)
                     self.Skill[server.mode].clip_composite_draw(self.mp, 0, self.move_pos, 34,
-                                                              0.0, 'h', self.sx, self.y, self.kx, self.ky)
+                                                                0.0, 'h', self.sx, self.y, self.kx, self.ky)
                 else:
                     self.Effect[server.mode - 1].clip_composite_draw(int(self.frame + 1) * 23, 0, 23, 29,
-                                                                   0.0, '', self.pos_boom + self.move_boom, self.y, self.kx, self.ky)
+                                                                     0.0, '', self.pos_boom + self.move_boom,
+                                                                     self.y, self.kx, self.ky)
                     self.Skill[server.mode].clip_composite_draw(self.mp, 0, self.move_pos, 34,
-                                                              0.0, '', self.sx, self.y, self.kx, self.ky)
+                                                                0.0, '', self.sx, self.y, self.kx, self.ky)
+
 
 
 class SLEEP:
@@ -336,7 +341,6 @@ next_state = {
 
 class Kirby:
     def __init__(self):
-
         self.move_pos = 0
         self.mp = 0
         self.pos_boom = 0
@@ -418,10 +422,10 @@ class Kirby:
         elif self.cur_state == SKILL and server.mode == 0:
             if self.face_dir_x == 1:
                 return self.sx - 25, self.sy - 25, \
-                       self.sx + 50, self.sy + 25
+                       self.sx + 75, self.sy + 25
             else:
                 return self.sx - 50, self.sy - 25, \
-                       self.sx + 25, self.sy + 25
+                       self.sx + 75, self.sy + 25
         elif self.cur_state == SKILL and server.mode == 1:
             if self.face_dir_x == 1:
                 return self.sx - 25, self.sy - 25, \
@@ -433,7 +437,9 @@ class Kirby:
             return self.sx - 60, self.sy - 50, \
                    self.sx + 60, self.sy + 50
         elif self.cur_state == SKILL and server.mode == 3:
-            return self.sx - 25, self.sy - 25, self.sx + 25, self.sy + 25
+            return self.pos_boom + self.move_boom - 25, self.sy - 25, \
+                   self.pos_boom + self.move_boom + 25, self.sy + 25
+
 
     def handle_collision(self, other, group):
         if self.cur_state is SKILL:
@@ -451,7 +457,7 @@ class Kirby:
                     pass
                 case 'kirby_skill:spark_boss':
                     pass
-                case 'kirby_skill:sword_boss':
+                case 'kirby_skill:bomber_boss':
                     pass
                 case 'kirby_skill:last_boss':
                     pass

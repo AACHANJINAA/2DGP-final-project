@@ -7,6 +7,7 @@ stop = False
 logo_time = 0.0
 
 def enter():
+
     global image
     image = load_image('map/logo.png')
     clear_canvas()
