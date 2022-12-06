@@ -71,7 +71,7 @@ class SWORD_BOSS:
             case 'kirby:sword_boss':
                 pass
             case'kirby_skill:sword_boss':
-                self.hp_cnt -= 0.02
+                self.hp_cnt -= 0.1
                 if server.skill is True and self.hp_cnt < 0:
                     server.other_boss_die = True
                     game_world.remove_object(self)
@@ -156,7 +156,7 @@ class SPARK_BOSS:
             case 'kirby:spark_boss':
                 pass
             case 'kirby_skill:spark_boss':
-                self.hp_cnt -= 0.02
+                self.hp_cnt -= 0.1
                 if server.skill is True and self.hp_cnt < 0:
                     server.other_boss_die = True
                     game_world.remove_object(self)
@@ -264,7 +264,7 @@ class BOMBER_BOSS:
             case 'kirby:bomber_boss':
                 pass
             case 'kirby_skill:bomber_boss':
-                self.hp_cnt -= 0.02
+                self.hp_cnt -= 0.1
                 if server.skill is True and self.hp_cnt < 0:
                     server.other_boss_die = True
                     game_world.remove_object(self)
@@ -373,7 +373,7 @@ class LAST_BOSS:
             case 'kirby:last_boss':
                 pass
             case 'kirby_skill:last_boss':
-                self.hp_cnt -= 0.01
+                self.hp_cnt -= 0.05
                 if server.skill is True and self.hp_cnt < 0:
                     server.last_boss_die = True
                     game_world.remove_object(self)

@@ -45,6 +45,8 @@ class IDLE:
 
     @staticmethod
     def draw(self):
+        self.sx = self.x - server.background.window_left
+        self.sy = self.y - server.background.window_bottom
         match server.mode:
             case 0:
                 if self.face_dir_x == -1:
@@ -80,7 +82,7 @@ class RUN:
     @staticmethod
     def enter(self, event):
         if event == RD:
-            self.dir_x = 1
+            self.dir_x += 1
         elif event == LD:
             self.dir_x -= 1
         elif event == RU:
@@ -269,6 +271,8 @@ class SKILL:
 
     @staticmethod
     def draw(self):
+        self.sx = self.x - server.background.window_left
+        self.sy = self.y - server.background.window_bottom
         match server.mode:
             case 0:
                 if self.face_dir_x == -1:
@@ -314,7 +318,6 @@ class SKILL:
                                                                 0.0, '', self.sx, self.y, self.kx, self.ky)
 
 
-
 class SLEEP:
     @staticmethod
     def enter(self, event):
@@ -341,8 +344,8 @@ class SLEEP:
 next_state = {
     IDLE:  {RU: RUN,  LU: RUN,  RD: RUN,  LD: RUN,  JD: JUMP, TIMER: SLEEP, AD: SKILL},
     RUN:   {RU: IDLE, LU: IDLE, RD: IDLE, LD: IDLE, JD: JUMP, TIMER: IDLE,  AD: SKILL},
-    SLEEP: {RU: RUN,  LU: RUN,  RD: RUN,  LD: RUN,  JD: IDLE, TIMER: IDLE,  AD: IDLE},
-    JUMP:  {RU: IDLE, LU: IDLE, RD: IDLE, LD: IDLE, JD: IDLE, TIMER: IDLE,  AD: SKILL},
+    SLEEP: {RU: RUN,  LU: RUN,  RD: RUN,  LD: RUN,  JD: IDLE, TIMER: IDLE,  AD: SKILL},
+    JUMP:  {RU: IDLE, LU: IDLE, RD: IDLE, LD: IDLE, JD: JUMP, TIMER: IDLE,  AD: SKILL},
     SKILL: {RU: RUN,  LU: RUN,  RD: RUN,  LD: RUN,  JD: IDLE, TIMER: IDLE,  AD: IDLE},
 }
 
