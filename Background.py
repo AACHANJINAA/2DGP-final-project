@@ -60,11 +60,11 @@ class BACK:
 
     def update(self):
         if server.other_boss_die:
+            server.stage_number += 1
+            server.potal_number += 1
             self.__init__(self.stage_num)
-            delay(10.0)
             server.other_boss_die = False
-            server.stage_number = 0
-            server.potal_number = 1
+            server.stage_replay = True
 
 
         if server.last_boss_die:
@@ -96,17 +96,17 @@ class POTAL:
     def draw(self):
         if self.stage_num == 0 and self.potal_num < 3:
             self.potal[0].clip_composite_draw(int(self.frame) * 134, 0, 134, 129,
-                                             0.0, 'h', 250 * (self.potal_num + 1), 120, 100, 100)
+                                             0.0, 'h', 250 * (self.potal_num + 1), 320, 100, 100)
         elif self.stage_num == 0 and self.potal_num == 3:
             self.potal[1].clip_composite_draw(int(self.frame) * 134, 0, 134, 129,
-                                             0.0, 'h', 250 * (self.potal_num + 1), 120, 100, 100)
+                                             0.0, 'h', 250 * (self.potal_num + 1), 320, 100, 100)
         elif self.stage_num == 1 or self.stage_num == 3 or self.stage_num == 5:
             self.sx = 2200 - server.background.window_left
             self.sy = 120 - server.background.window_bottom
             self.potal[0].clip_composite_draw(int(self.frame) * 134, 0, 134, 129,
                                              0.0, 'h', self.sx, self.sy, 100, 100)
         elif self.stage_num == 2 or self.stage_num == 4 or self.stage_num == 6:
-            self.sx,self.sy = 2700, 2000
+            self.sx, self.sy = 2700, 2000
             self.potal[0].clip_composite_draw(int(self.frame) * 134, 0, 134, 129,
                                               0.0, 'h', self.sx, self.sy, 100, 100)
         draw_rectangle(*self.get_bb())
@@ -117,8 +117,8 @@ class POTAL:
 
     def get_bb(self):
         if self.stage_num == 0:
-            return 250 * (self.potal_num + 1) - 50, 120 - 50, \
-                   250 * (self.potal_num + 1) + 50, 120 + 50,
+            return 250 * (self.potal_num + 1) - 50, 320 - 50, \
+                   250 * (self.potal_num + 1) + 50, 320 + 50,
         else:
             return self.sx - 50, self.sy - 50, \
                    self.sx + 50, self.sy + 50
@@ -133,22 +133,22 @@ class POTAL:
                             server.stage_number = 1
                             server.stage_replay = True
                         case 1:
-                            server.stage_number = 3
+                            server.stage_number = 4
                             server.stage_replay = True
                         case 2:
-                            server.stage_number = 5
+                            server.stage_number = 7
                             server.stage_replay = True
                         case 3:
-                            server.stage_number = 7
+                            server.stage_number = 10
                             server.stage_replay = True
                 case 1:
                     server.stage_number = 2
                     server.stage_replay = True
                 case 3:
-                    server.stage_number = 4
+                    server.stage_number = 5
                     server.stage_replay = True
                 case 5:
-                    server.stage_number = 6
+                    server.stage_number = 8
                     server.stage_replay = True
 
 

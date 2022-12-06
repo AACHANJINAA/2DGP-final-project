@@ -6,8 +6,9 @@ import server
 
 class BASIC_MONSTER:
 
-    def __init__(self):
-        self.x, self.y = 700, 100
+    def __init__(self, x):
+        self.store_x = x
+        self.x, self.y = x, 100
         self.kx, self.ky = 70, 55
         self.frame = 0
         self.dir = -1
@@ -64,7 +65,7 @@ class IDLE_BASIC_MONSTER:
     def do(self):
         self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % 4
         self.x += self.dir * RUN_SPEED_PPS * game_framework.frame_time / 2
-        if self.x < 100 or self.x > 700:
+        if self.x < 50 or self.x > self.store_x + 200 or self.x < self.store_x - 200 or self.x > 2350:
             self.dir *= -1
 
     @staticmethod
@@ -153,7 +154,7 @@ class IDLE_SWORD_MONSTER:
 
 class SPARK_MONSTER:
     def __init__(self):
-        self.x, self.y = 100, 100
+        self.x, self.y = 300, 100
         self.kx, self.ky = 70, 55
         self.frame = 0
         self.dir = -1
@@ -226,7 +227,7 @@ class IDLE_SPARK_MONSTER:
 
 class BOMBER_MONSTER:
     def __init__(self):
-        self.x, self.y = 500, 100
+        self.x, self.y = 300, 100
         self.kx, self.ky = 70, 55
         self.frame = 0
         self.dir = -1
@@ -298,100 +299,6 @@ class IDLE_BOMBER_MONSTER:
                                           0.0, '', self.sx, self.sy, self.kx, self.ky)
 
 
-
-
-
-
-class HIT_BASIC_MONSTER:
-    @staticmethod
-    def enter(self, event):
-        self.frame = 0
-        self.dir = -1
-
-    @staticmethod
-    def exit(self, event):
-        pass
-    @staticmethod
-    def do(self):
-        self.x += self.dir * RUN_SPEED_PPS
-
-    @staticmethod
-    def draw(self):
-        if self.dir == -1:
-            self.Hit.clip_composite_draw(0, 0, 21, 18,
-                                          0.0, '', self.x, self.y, self.kx, self.ky)
-        else:
-            self.Hit.clip_composite_draw(0, 0, 21, 18,
-                                          0.0, 'h', self.x, self.y, self.kx, self.ky)
-
-
-class HIT_SWORD_MONSTER:
-    @staticmethod
-    def enter(self, event):
-        self.frame = 0
-        self.dir = -1
-
-    @staticmethod
-    def exit(self, event):
-        pass
-    @staticmethod
-    def do(self):
-        self.x += self.dir * RUN_SPEED_PPS
-
-    @staticmethod
-    def draw(self):
-        if self.dir == -1:
-            self.Hit.clip_composite_draw(0, 0, 18, 25,
-                                          0.0, 'h', self.x, self.y, self.kx, self.ky)
-        else:
-            self.Hit.clip_composite_draw(0, 0, 18, 25,
-                                          0.0, '', self.x, self.y, self.kx, self.ky)
-
-
-class HIT_SPARK_MONSTER:
-    @staticmethod
-    def enter(self, event):
-        self.frame = 0
-        self.dir = -1
-
-    @staticmethod
-    def exit(self, event):
-        pass
-    @staticmethod
-    def do(self):
-        self.x += self.dir * RUN_SPEED_PPS
-
-    @staticmethod
-    def draw(self):
-        if self.dir == -1:
-            self.Hit.clip_composite_draw(0, 0, 18, 17,
-                                          0.0, 'h', self.x, self.y, self.kx, self.ky)
-        else:
-            self.Hit.clip_composite_draw(0, 0, 18, 17,
-                                          0.0, '', self.x, self.y, self.kx, self.ky)
-
-
-class HIT_BOMBER_MONSTER:
-    @staticmethod
-    def enter(self, event):
-        self.frame = 0
-        self.dir = -1
-
-    @staticmethod
-    def exit(self, event):
-        pass
-    @staticmethod
-    def do(self):
-        self.x += self.dir * RUN_SPEED_PPS
-
-    @staticmethod
-    def draw(self):
-        if self.dir == -1:
-            self.Hit.clip_composite_draw(0, 0, 19, 26,
-                                          0.0, '', self.x, self.y, self.kx, self.ky)
-        else:
-            self.Hit.clip_composite_draw(0, 0, 19, 26,
-                                          0.0, 'h', self.x, self.y, self.kx, self.ky)
 
 
 PIXEL_PER_METER = (10.0 / 0.3) # 10 pixel 30 cm

@@ -484,7 +484,7 @@ class Kirby:
         else:
             match group:
                 case 'kirby:basic_monster':
-                    self.x -= self.dir_x * 100
+                    self.x -= self.dir_x * 10
                 case 'kirby:sword_monster':
                     self.x -= self.dir_x * 100
                 case 'kirby:spark_monster':
@@ -503,7 +503,6 @@ class Kirby:
                     self.hp_cnt += 0.02
             self.basic_sound[2].play()
             server.skill = False
-            self.hp_cnt -= 0.02
             if self.hp_cnt <= 0:
                 self.__init__()
                 game_framework.change_state(exit_state)

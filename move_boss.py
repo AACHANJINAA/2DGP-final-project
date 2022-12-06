@@ -286,7 +286,7 @@ class IDLE3:
             if self.skill_y[i] < 100:
                 self.skill_y[i] = 1100
                 self.skill_x[i] = 50 * random.randrange(1, 20)
-                self.skill_speed[i] = random.randrange(2, 5)
+                self.skill_speed[i] = random.randrange(1, 3)
 
             if (self.skill_x[i] - 25 <= server.kirby.x <= self.skill_x[i] + 25
                     and self.skill_y[i] - 25 < server.kirby.y < self.skill_y[i] + 25):
@@ -294,7 +294,7 @@ class IDLE3:
                     server.kirby.hp_cnt -= 0.5
                     self.skill_y[i] = 1100
                     self.skill_x[i] = 50 * random.randrange(1, 20)
-                    self.skill_speed[i] = random.randrange(3, 5)
+                    self.skill_speed[i] = random.randrange(1, 3)
                     if server.kirby.hp_cnt <= 0:
                         game_framework.change_state(exit_state)
                         server.kirby.hp_cnt = 8.0
