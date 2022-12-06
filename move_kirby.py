@@ -420,7 +420,7 @@ class Kirby:
         self.cur_state.draw(self)
         debug_print('PPPP')
         debug_print(f'Face Dir: {self.face_dir_x}, Dir: {self.dir_x}')
-        draw_rectangle(*self.get_bb())
+        #draw_rectangle(*self.get_bb())
 
     def set_background(self, bg):
         self.bg = bg

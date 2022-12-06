@@ -173,6 +173,7 @@ def exit():
     game_world.clear()
 
 def update():
+    global BM
     if server.stage_replay:
         game_world.remove_object(server.kirby)
         print(server.stage_number - 1)
@@ -180,7 +181,9 @@ def update():
         game_world.remove_object(server.background)
         stage(server.stage_number)
         server.stage_replay = False
-
+    if server.stage_restart:
+        stage(server.stage_number)
+        server.stage_restart = False
 
     for game_object in game_world.all_objects():
         game_object.update()

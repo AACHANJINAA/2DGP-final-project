@@ -112,7 +112,7 @@ class POTAL:
             self.sx, self.sy = 2700, 2000
             self.potal[0].clip_composite_draw(int(self.frame) * 134, 0, 134, 129,
                                               0.0, 'h', self.sx, self.sy, 100, 100)
-        draw_rectangle(*self.get_bb())
+        #draw_rectangle(*self.get_bb())
         pass
     def update(self):
         self.frame = (self.frame + 0.2) % 3
