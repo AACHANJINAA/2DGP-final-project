@@ -81,7 +81,7 @@ class IDLE_BASIC_MONSTER:
 
 class SWORD_MONSTER:
     def __init__(self):
-        self.x, self.y = 300, 100
+        self.x, self.y = 450, 100
         self.kx, self.ky = 70, 55
         self.frame = 0
         self.dir = -1
@@ -154,7 +154,7 @@ class IDLE_SWORD_MONSTER:
 
 class SPARK_MONSTER:
     def __init__(self):
-        self.x, self.y = 300, 100
+        self.x, self.y = 450, 100
         self.kx, self.ky = 70, 55
         self.frame = 0
         self.dir = -1
@@ -227,7 +227,7 @@ class IDLE_SPARK_MONSTER:
 
 class BOMBER_MONSTER:
     def __init__(self):
-        self.x, self.y = 300, 100
+        self.x, self.y = 450, 100
         self.kx, self.ky = 70, 55
         self.frame = 0
         self.dir = -1

@@ -55,7 +55,7 @@ def enter():
                     POTAL(0, 3),
                     POTAL(7, 0)]
     BM = [BASIC_MONSTER(500), BASIC_MONSTER(600), BASIC_MONSTER(800),
-          BASIC_MONSTER(900), BASIC_MONSTER(1100), BASIC_MONSTER(1300),
+          BASIC_MONSTER(1000), BASIC_MONSTER(1200), BASIC_MONSTER(1250),
           BASIC_MONSTER(1600), BASIC_MONSTER(1900), BASIC_MONSTER(2000)]
     server.monster = [BASIC_MONSTER(300), SWORD_MONSTER(), SPARK_MONSTER(), BOMBER_MONSTER()]
     server.boss = [SWORD_BOSS(), SPARK_BOSS(), BOMBER_BOSS(), LAST_BOSS()]
@@ -63,7 +63,6 @@ def enter():
 
 def stage(n):
     global BM
-    server.kirby.x = 30
     server.kirby.hp_cnt = 8.0
     match n:
         case 0:  # map(potal_num is 0)
@@ -73,6 +72,7 @@ def stage(n):
             game_world.add_object(server.potal[0], 0)
             game_world.add_object(server.kirby, 1)
         case 1:  # basic_stage_1
+            server.kirby.x = 30
             game_world.add_collision_group(server.kirby, server.potal[1], 'kirby:enter_potal')
             server.background = BACK(1)
             game_world.add_object(server.background, 0)
@@ -86,6 +86,7 @@ def stage(n):
             game_world.add_collision_group(server.kirby, server.monster[1], 'kirby:sword_monster')
             game_world.add_collision_group(server.kirby, server.monster[1], 'kirby_skill:sword_monster')
         case 2:  # boss_stage_1
+            server.kirby.x = 30
             game_world.add_object(server.potal[2], 0)
             server.background = BACK(4)
             game_world.add_object(server.background, 0)
@@ -102,6 +103,7 @@ def stage(n):
             game_world.add_object(server.potal[3], 0)
             game_world.add_object(server.kirby, 1)
         case 4:  # basic_stage_2
+            server.kirby.x = 30
             game_world.add_collision_group(server.kirby, server.potal[4], 'kirby:enter_potal')
             server.background = BACK(2)
             game_world.add_object(server.background, 0)
@@ -115,6 +117,7 @@ def stage(n):
             game_world.add_collision_group(server.kirby, server.monster[2], 'kirby:spark_monster')
             game_world.add_collision_group(server.kirby, server.monster[2], 'kirby_skill:spark_monster')
         case 5:  # boss_stage_2
+            server.kirby.x = 30
             server.background = BACK(5)
             game_world.add_object(server.background, 0)
             server.mode = 2
@@ -131,6 +134,7 @@ def stage(n):
             server.mode = 0
             game_world.add_object(server.kirby, 1)
         case 7:  # basic_stage_3
+            server.kirby.x = 30
             game_world.add_collision_group(server.kirby, server.potal[7], 'kirby:enter_potal')
             server.background = BACK(3)
             game_world.add_object(server.background, 0)
@@ -144,6 +148,7 @@ def stage(n):
             game_world.add_collision_group(server.kirby, server.monster[3], 'kirby:bomber_monster')
             game_world.add_collision_group(server.kirby, server.monster[3], 'kirby_skill:bomber_monster')
         case 8:  # boss_stage_3
+            server.kirby.x = 30
             server.background = BACK(6)
             game_world.add_object(server.background, 0)
             server.mode = 3
@@ -160,6 +165,7 @@ def stage(n):
             server.mode = 0
             game_world.add_object(server.kirby, 1)
         case 10:  # boss_stage_final
+            server.kirby.x = 30
             server.background = BACK(7)
             game_world.add_object(server.background, 0)
             server.mode = 1
@@ -167,7 +173,6 @@ def stage(n):
             game_world.add_object(server.boss[3], 1)
             game_world.add_collision_group(server.kirby, server.boss[3], 'kirby:last_boss')
             game_world.add_collision_group(server.kirby, server.boss[3], 'kirby_skill:last_boss')
-    server.kirby.x = 30
 
 def exit():
     game_world.clear()
@@ -182,6 +187,9 @@ def update():
         stage(server.stage_number)
         server.stage_replay = False
     if server.stage_restart:
+        game_world.clear()
+        if server.stage_number != 2 or 5 or 8 or 10:
+            server.mode = 0
         stage(server.stage_number)
         server.stage_restart = False
 

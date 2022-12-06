@@ -398,7 +398,10 @@ class Kirby:
                             load_wav('bgm/kirby_skills/spark_skill_music.wav'),
                             load_wav('bgm/kirby_skills/bomber_skill_music.wav'),]
         for i in range(0, 4):
-            self.skill_sound[i].set_volume(64)
+            if i == 3:
+                self.skill_sound[i].set_volume(32)
+            else:
+                self.skill_sound[i].set_volume(64)
             self.basic_sound[i].set_volume(32)
 
     def update(self):

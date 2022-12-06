@@ -87,6 +87,7 @@ class BACK:
 
 class POTAL:
     def __init__(self, n, pn):
+        self.font = load_font('ENCR10B.TTF', 30)
         self.stage_num = n
         self.potal = [load_image('map/potal_blue.png'),
                       load_image('map/potal_purple.png')]
@@ -98,6 +99,7 @@ class POTAL:
 
     def draw(self):
         if self.stage_num == 0 and self.potal_num < 3:
+            self.font.draw(600, 400, 'ENTER THE POTAL!!', (255, 0, 255))
             self.potal[0].clip_composite_draw(int(self.frame) * 134, 0, 134, 129,
                                              0.0, 'h', 250 * (self.potal_num + 1), 320, 100, 100)
         elif self.stage_num == 0 and self.potal_num == 3:

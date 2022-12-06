@@ -55,7 +55,7 @@ class SWORD_BOSS:
         for i in range(0, int(self.hp_cnt)):
             self.Hp[i].clip_composite_draw(0, 0, 457, 62,
                                            0.0, '', self.x - 70 + i * 10, self.y + 80, 20, 20)
-        draw_rectangle(*self.get_bb())
+        #draw_rectangle(*self.get_bb())
 
     def add_event(self, event):
         self.event_que.insert(0, event)
@@ -142,7 +142,7 @@ class SPARK_BOSS:
         for i in range(0, int(self.hp_cnt)):
             self.Hp[i].clip_composite_draw(0, 0, 457, 62,
                                            0.0, '', self.sx - 70 + i * 10, self.sy + 80, 20, 20)
-        draw_rectangle(*self.get_bb())
+        #draw_rectangle(*self.get_bb())
     def add_event(self, event):
         self.event_que.insert(0, event)
 
@@ -248,7 +248,7 @@ class BOMBER_BOSS:
         for i in range(0, int(self.hp_cnt)):
             self.Hp[i].clip_composite_draw(0, 0, 600, 400,
                                            0.0, '', self.sx - 70 + i * 10, self.sy + 220, 20, 20)
-        draw_rectangle(*self.get_bb())
+        #draw_rectangle(*self.get_bb())
 
     def add_event(self, event):
         self.event_que.insert(0, event)
@@ -357,7 +357,8 @@ class LAST_BOSS:
         for i in range(0, int(self.hp_cnt)):
             self.Hp[i].clip_composite_draw(0, 0, 457, 62,
                                            0.0, '', self.sx - 70 + i * 10, self.sy + 80, 20, 20)
-        draw_rectangle(*self.get_bb())
+
+        #draw_rectangle(*self.get_bb())
 
     def add_event(self, event):
         self.event_que.insert(0, event)
