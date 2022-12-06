@@ -398,7 +398,7 @@ class Kirby:
                             load_wav('bgm/kirby_skills/spark_skill_music.wav'),
                             load_wav('bgm/kirby_skills/bomber_skill_music.wav'),]
         for i in range(0, 4):
-            self.skill_sound[i].set_volume(32)
+            self.skill_sound[i].set_volume(64)
             self.basic_sound[i].set_volume(32)
 
     def update(self):
@@ -484,24 +484,25 @@ class Kirby:
         else:
             match group:
                 case 'kirby:basic_monster':
-                    self.x -= self.dir_x * 10
+                    self.x -= self.face_dir_x * 10
                 case 'kirby:sword_monster':
-                    self.x -= self.dir_x * 100
+                    self.x -= self.face_dir_x * 10
                 case 'kirby:spark_monster':
-                    self.x -= self.dir_x * 100
+                    self.x -= self.face_dir_x * 10
                 case 'kirby:bomber_monster':
-                    self.x -= self.dir_x * 100
+                    self.x -= self.face_dir_x * 10
                 case 'kirby:sword_boss':
-                    self.x -= self.dir_x * 100
+                    self.x -= self.face_dir_x * 10
                 case 'kirby:spark_boss':
-                    self.x -= self.dir_x * 100
+                    self.x -= self.face_dir_x * 10
                 case 'kirby:bomber_boss':
-                    self.x -= self.dir_x * 100
+                    self.x -= self.face_dir_x * 10
                 case 'kirby:last_boss':
-                    self.x -= self.dir_x * 100
+                    self.x -= self.face_dir_x * 10
                 case 'kirby:enter_potal':
                     self.hp_cnt += 0.02
             self.basic_sound[2].play()
+            self.hp_cnt -= 0.02
             server.skill = False
             if self.hp_cnt <= 0:
                 self.__init__()

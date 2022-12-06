@@ -1,6 +1,7 @@
 from pico2d import*
 import server
-import game_world
+import game_framework
+import end_state
 
 
 class BACK:
@@ -20,7 +21,7 @@ class BACK:
             self.bgm.repeat_play()
         elif self.stage_num == 1 or self.stage_num == 3 or self.stage_num == 5:
             self.bgm = load_music('bgm/kirby_basic_music.mp3')
-            self.bgm.set_volume(32)
+            self.bgm.set_volume(120)
             self.bgm.repeat_play()
         elif self.stage_num == 2 or self.stage_num == 4 or self.stage_num == 6:
             self.bgm = load_music('bgm/kirby_boss_music.mp3')
@@ -59,6 +60,8 @@ class BACK:
                                                        0, 0)
 
     def update(self):
+        if server.last_boss_die:
+            game_framework.change_state(end_state)
         if server.other_boss_die:
             server.stage_number += 1
             server.potal_number += 1
